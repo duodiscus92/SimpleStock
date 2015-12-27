@@ -1,0 +1,8 @@
+sym16_simple_stock_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: SYM16SimpleStockBundle:Default:index }
+
+sym16_simple_stock_ilike:
+    path:     /iLike
+    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:iLike}
+    

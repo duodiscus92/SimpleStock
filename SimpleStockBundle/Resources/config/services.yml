@@ -1,0 +1,4 @@
+services:
+#    sym16_simple_stock.example:
+#        class: SYM16\SimpleStockBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
