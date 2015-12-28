@@ -3,6 +3,9 @@ sym16_simple_stock_homepage:
     defaults: { _controller: SYM16SimpleStockBundle:Default:index }
 
 sym16_simple_stock_ilike:
-    path:     /iLike
+    path:     /iLike/{un_verbe_a_l_infinitif}
     defaults: { _controller: SYM16SimpleStockBundle:MonPremier:iLike}
     
+sym16_simple_stock_produit:
+    path:     /{multiplicande}/{multiplicateur}
+    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:produit}
