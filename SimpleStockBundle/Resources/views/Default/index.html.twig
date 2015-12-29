@@ -1,5 +1,18 @@
 <html>
   <body>
-    Hello {{ name }}!
+    <h2>Hello utilisateur {{ name }}!</h2>
+    <h2>Ceci est le menu principal du Simple Stock</h2>
+    <h3>Opérations simples (rien à voir avec le Stock):</h3>
+    <ul>
+	<li><a href="{{ path('sym16_simple_stock_produit', 
+		{'multiplicande':'5', 'multiplicateur':'3'}) }}">
+		Calculer le produit de deux nombres</a></li>
+        <li><a href="{{ path('sym16_simple_stock_puissance',
+		{'valeur':'2', 'exposant':'10'}) }}">
+		Caluler l'élévation à la puissance</a></li>
+        <li><a href="{{ path('sym16_simple_stock_racine',
+		{'valeur':'27', 'radical':'3'}) }}">
+		Caluler la racine d'un nombre (pas encore implémenté)</a></li>
+    </ul>
   </body>
 </html>

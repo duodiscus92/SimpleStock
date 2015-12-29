@@ -1,5 +1,5 @@
 sym16_simple_stock_homepage:
-    path:     /hello/{name}
+    path:     /index/{name}
     defaults: { _controller: SYM16SimpleStockBundle:Default:index }
 
 sym16_simple_stock_ilike:
@@ -16,3 +16,11 @@ sym16_simple_stock_produit:
 sym16_simple_stock_puissance:
     path:     /puissance
     defaults: { _controller: SYM16SimpleStockBundle:MonPremier:puissance}
+
+sym16_simple_stock_racine:
+    path:     /racine/{valeur}/{radical}
+    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:racine}
+    requirements:
+        multiplicande:    ^[0-9]+$
+        multiplicateur:   ^[0-9]+$
+

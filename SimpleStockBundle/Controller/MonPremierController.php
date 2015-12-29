@@ -4,6 +4,7 @@ namespace SYM16\SimpleStockBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /*class MonPremierController extends Controller
 {
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MonPremierController extends Controller
 {
+    //J'aime ....
     public function iLikeAction($un_verbe_a_l_infinitif){
         return new Response("J'aime beaucoup ".$un_verbe_a_l_infinitif.' !');
     }
@@ -49,5 +51,17 @@ class MonPremierController extends Controller
 		      'exposant' => $exposant,
 		      'resultat' => $resultat)
         );
+    }
+
+    // extraction d'une racine (pas encore implementee)
+    public function racineAction($valeur, $radical){
+
+	$url = $this->get('router')->
+	    generate('sym16_simple_stock_homepage', array('name' =>'Jacques'));
+	return new RedirectResponse($url);
+
+/*	return this->redirectToRoute
+	    ('sym16_simple_stock_homepage', array('name' =>'Jacques'));
+*/
     }
 }
