@@ -13,6 +13,11 @@
         <li><a href="{{ path('sym16_simple_stock_racine',
 		{'valeur':'27', 'radical':'3'}) }}">
 		Caluler la racine d'un nombre (pas encore implémenté)</a></li>
+        <ul>
+        	{% for message in app.session.flashbag.get('info') %}
+	    		<li>{{message}}</li>
+        	{% endfor %}
+    	</ul>
     </ul>
   </body>
 </html>

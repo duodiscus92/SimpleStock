@@ -56,6 +56,11 @@ class MonPremierController extends Controller
     // extraction d'une racine (pas encore implementee)
     public function racineAction($valeur, $radical){
 
+	$this->get('session')->getFlashBag()
+		->add('info','Choix indisponible, faites un autre choix');
+	$this->get('session')->getFlashBag()
+		->add('info','Presser F5 pour supprimer ce message flash');
+
 	$url = $this->get('router')->
 	    generate('sym16_simple_stock_homepage', array('name' =>'Jacques'));
 	return new RedirectResponse($url);
