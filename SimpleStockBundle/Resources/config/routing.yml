@@ -9,6 +9,9 @@ sym16_simple_stock_ilike:
 sym16_simple_stock_produit:
     path:     /{multiplicande}/{multiplicateur}
     defaults: { _controller: SYM16SimpleStockBundle:MonPremier:produit}
+    requirements:
+        multiplicande:    ^[0-9a-fA-f]*$
+        multiplicateur:   ^[0-9a-fA-f]*$
 
 sym16_simple_stock_puissance:
     path:     /puissance
