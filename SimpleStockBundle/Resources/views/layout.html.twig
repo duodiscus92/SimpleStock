@@ -1,0 +1,22 @@
+{#<!DOCTYPE html>
+
+<html>
+  <body>#}
+{% extends '::stocklayout.html.twig' %}
+      {% block HEADER %}
+    <h2>Bienvenue sur Simple Stock dans le stock : {{stockname}}</h2>
+    <h3>Utilisateur : {{ stockuser }} - Votre statut est :{{stockuserstatut}}</h3>
+      {% endblock %}
+    {% block BLOCA %}
+    {% endblock %}
+    {% block FOOTER %}
+    <footer>
+    <dl>
+    <ht><b>Mentions légales</b></dt>
+    <dd>Propulsé par : Symfony, Linux, Apache, PHP, MySQL</dd>
+    <dd>Projet réalisé par les étudiants de {{university}}, Cursus : {{cursus}}, Cours : {{lecture}}, Prof :  {{prof}}</dd>
+    </dl>
+    </footer>
+    {% endblock%}
+{#  </body>
+</html>#}

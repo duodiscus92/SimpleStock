@@ -1,0 +1,14 @@
+	{# les autres lignes du tableau #}
+	<tbody>
+        {# boucle sur les lignes #}
+        {% for entitie in entities %}
+            <tr>
+                {# boucle sur les articles d'une ligne #}
+		{% for entitie.article in entitie.articles %}
+                    <td width> {{ entitie.article[ {{loop.index}} ] }} </td>
+                {% endfor %}
+                <td><a href="{{ path({{entitie.modif}}, { 'id': entitie.id }) }}">Modifier</a></td>
+                <td><a href="{{ path({{entitie.suppr}}', { 'id': entitie.id }) }}">Supprimer</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>

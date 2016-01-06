@@ -24,3 +24,6 @@ sym16_simple_stock_racine:
         multiplicande:    ^[0-9]+$
         multiplicateur:   ^[0-9]+$
 
+sym16_simple_stock_lister:
+    path:     /lister
+    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:lister}
