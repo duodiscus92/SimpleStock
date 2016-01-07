@@ -27,3 +27,15 @@ sym16_simple_stock_racine:
 sym16_simple_stock_lister:
     path:     /lister
     defaults: { _controller: SYM16SimpleStockBundle:MonPremier:lister}
+
+sym16_simple_stock_ajouter:
+    path:     /ajouter
+    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:ajouter}
+
+sym16_simple_stock_modifier:
+    path:    /supprimer
+    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:supprimer}
+
+sym16_simple_stock_supprimer:
+    path:    /supprimer
+    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:supprimer}

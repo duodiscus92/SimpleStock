@@ -113,12 +113,49 @@ class MonPremierController extends Controller
 
 	// construction des autres lignes
         $path=array(
-		'mod'=>'sym16_simple_stock_puissance',	// le chemin qui traitera l'action modifier (ici c'est n'importe quoi)
-		'supr'=>'sym16_simple_stock_puissance');// le chemin qui traitera l'action supprimer (ici c'est n'importe quoi)
+		'mod'=>'sym16_simple_stock_modifier',	// le chemin qui traitera l'action modifier
+		'supr'=>'sym16_simple_stock_supprimer');// le chemin qui traitera l'action supprimer
 	
 	return $this->render(
 		'SYM16SimpleStockBundle:MonPremier:list.html.twig',
 		array('listColnames' => $listColnames, 'listEntities'=> $listEntities, 'path'=>$path)
         );
+    }
+
+    // ajouter un article dans l'entité
+    public function ajouterAction(Request $request){
+	// récuparation des valeurs
+	$libelle = $request->query->get('libelle');
+	$prixht = $request->query->get('prixht');
+	$tva = $request->query->get('tva');
+
+	// creation d'une instance de l'entité et  hydratation
+	$pf = new PetitesFournitures();
+	$pf->setLibelle($libelle);
+	$pf->setPrixht($prixht);
+	$pf->setTva($tva);
+
+	// récupe de l'entity manager
+	$em = $this->getDoctrine()->getManager();
+	// on persiste
+	$em->persist($pf);
+	$em->flush();
+	// affichage de la liste reactualisee
+	return $this->listerAction();
+    }
+
+    // supprimer un article
+    public function supprimerAction(Request $request) {
+	// récupe de l'id de l'article à supprimer
+        $id = $request->query->get('valeur');
+	// recupération de l'entity manager
+	$em = $this->getDoctrine()->getManager();
+        //récuparartion de l'entite d'id  $id
+        $pf = $em->getRepository("SYM16SimpleStockBundle:PetitesFournitures")->find($id);
+	// suppression de l'entité
+	$em->remove($pf);
+	$em->flush();
+	// affichage de la liste reactualisee
+	return $this->listerAction();
     }
 }
