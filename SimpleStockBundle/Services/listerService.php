@@ -5,11 +5,25 @@ use Symfony\Component\HttpFoundation\Response;
 class listerService
 {
     // liste une entité
+    private function AnyTypeToString($var)
+    {
+	//echo (gettype($var).'<br>');
+	if(is_integer($var))
+	    return (string)$var;
+	else if(is_bool($var))
+	    return ($var == 0 ? 'false' : 'true');
+	else if(is_object($var))
+	    return $var->format('Y-m-d H:i:s');
+	else if(is_null($var))
+	    return 'null';
+	else
+	    return $var;
+    }
 
     public function listerEntite($liste) {
 
 	// nom des entêtes de colonne
-	$listColnames = $liste['colnames'];
+	$listColnames  = $liste['listcolnames'];
 	// valeurs des entité à lister
 	$entities = $liste['entities'];
 	if(null == $entities){
@@ -20,19 +34,13 @@ class listerService
 	foreach ($entities as $entitie){
 		// chaque ligne est elle meme un tableau d'articles qu'on obtient avec les getters
 		$listArticle = array();
-		$fcts = $liste['fcts'];
-		foreach ($fcts as $key => $fct){
+		foreach ($listColnames as $key => $fieldname){
+		    $fieldname = 'get'.$fieldname;
 		    // traitement special de l'id
 		    if ($key == 'id')
-			$listArticle['id'] = $entitie->$fct();
-		    // traitement special de la clé étrangère
-		    else if ($key == 'ce'){
-			$fct = current($fcts['ce']);
-			$subfct = next($fcts['ce']);
-		    	array_push($listArticle, $entitie->$fct()->$subfct());
-		    }
+			$listArticle['id'] = $this->AnyTypeToString($entitie->$fieldname());
 		    else
-		    	array_push($listArticle, $entitie->$fct());
+		    	array_push($listArticle, $this->AnyTypeToString($entitie->$fieldname()));
 		}
 		// listeEntities est un tableau de tableau crée dynamiquement (on sait pas a priori le nombre de lignes)
 		array_push($listEntities, $listArticle);

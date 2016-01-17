@@ -29,6 +29,17 @@ class Utilisateur
 	return $this;
     }
 
+    public function getPrivilege()
+    {
+	return $this->getDroit()->getPrivilege();
+    }
+
+    public function __construct()
+    {
+	$this->date = new \Datetime();
+	$this->asb = $this->adp = $this->art = $this->acr = false;
+    }
+
     /**
      * @var integer
      *

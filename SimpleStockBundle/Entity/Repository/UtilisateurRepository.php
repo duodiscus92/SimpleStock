@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class UtilisateurRepository extends EntityRepository
 {
+
 	//renvoie le nombre total de lignes de l'entité (utilise DQL)
 	public function getNbUtilisateur()
 	{

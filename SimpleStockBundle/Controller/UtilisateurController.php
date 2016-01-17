@@ -19,17 +19,16 @@ class UtilisateurController extends Controller
 	// on récupère tout le contenu de la table
 	$repository = $em->getRepository('SYM16SimpleStockBundle:Utilisateur');
 	//preparaton des parametres
-	$colnames = array('ID', 'Nom', 'Prénom', 'Droit');
+	$listColnames = array('Id', 'Nom', 'Prenom', 'Asb', 'Privilege', 'Date');
 	// on récupère le contenu de la table
 	$entities = $repository->findAll();
-	$fcts= array('getId', 'getNom', 'getPrenom', 'ce' => array('getDroit', 'getPrivilege'));
         $path=array(
                 'mod'=>'sym16_simple_stock_utilisateur_modifier',       // le chemin qui traitera l'action modifier
                 'supr'=>'sym16_simple_stock_utilisateur_supprimer');    // le chemin qui traitera l'action supprimer
 	//  nombre total d'utilisateurs
 	$totalusers = $repository->getNbUtilisateur();
-	//on place tous les paramètres dans un tableau
-	$alister = array('colnames' => $colnames,  'entities' => $entities, 'fcts' => $fcts, 'path' => $path, 'totalusers' => $totalusers);
+	//on place tous les paramètres à lister dans un tableau
+	$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 'path' => $path, 'totalusers' => $totalusers);
 	// récupération du service
 	$service = $this->container->get('sym16_simple_stock.lister')->listerEntite($alister);
 	//lister
