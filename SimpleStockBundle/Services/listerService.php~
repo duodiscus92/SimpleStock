@@ -1,0 +1,11 @@
+<?php
+namespace  SYM16\SimpleStockBundle\Services
+
+class listerService
+{
+	// liste une entité
+
+	public function listerEntite($liste) {
+	}
+}
+

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Utilisateur
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\UtilisateurRepository")
+ * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\UtilisateurRepository")
  */
 class Utilisateur
 {

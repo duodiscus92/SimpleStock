@@ -5,22 +5,50 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use SYM16\SimpleStockBundle\Entity\Utilisateur;
 use SYM16\SimpleStockBundle\Entity\Droit;
 
 class UtilisateurController extends Controller
 {
 
+    //lister un tableau en faisant appel à un service
+    public function listerAction()
+    {
+	// on récupère l'entity manager
+	$em = $this->getDoctrine()->getManager();
+	// on récupère tout le contenu de la table
+	$repository = $em->getRepository('SYM16SimpleStockBundle:Utilisateur');
+	//preparaton des parametres
+	$colnames = array('ID', 'Nom', 'Prénom', 'Droit');
+	// on récupère le contenu de la table
+	$entities = $repository->findAll();
+	$fcts= array('getId', 'getNom', 'getPrenom', 'ce' => array('getDroit', 'getPrivilege'));
+        $path=array(
+                'mod'=>'sym16_simple_stock_utilisateur_modifier',       // le chemin qui traitera l'action modifier
+                'supr'=>'sym16_simple_stock_utilisateur_supprimer');    // le chemin qui traitera l'action supprimer
+	//  nombre total d'utilisateurs
+	$totalusers = $repository->getNbUtilisateur();
+	//on place tous les paramètres dans un tableau
+	$alister = array('colnames' => $colnames,  'entities' => $entities, 'fcts' => $fcts, 'path' => $path, 'totalusers' => $totalusers);
+	// récupération du service
+	$service = $this->container->get('sym16_simple_stock.lister')->listerEntite($alister);
+	//lister
+	return $this->render($service['listtwig'], $service['tab']);
+    }
+
+
     //lister un tableau (données provenenant d'une BDD)
-    public function listerAction() {
+    public function listerAction2() {
 	// contruction de la première ligne (ligne d'intitulé)
 	$listColnames = array('ID', 'Nom', 'Prénom', 'Droit');
 	//construction des autres lignes du tableay
 	// on récupère l'entity manager
 	$em = $this->getDoctrine()->getManager();
-	// on récupère touot le contenu de la table
-	$entities = $em->getRepository('SYM16SimpleStockBundle:Utilisateur')->findAll();
+	// on récupère tout le contenu de la table
+	$repository = $em->getRepository('SYM16SimpleStockBundle:Utilisateur');
+	$entities = $repository->findAll();
+	//$entities = $repository->getUtilisateurByStatut('GESTIONNAIRE');
+	//$entities = $repository->getNbUtilisateurByStatutWithQueryBuilder('GESTIONNAIRE');
 	if(null == $entities){
 		throw new NotFoundHttpException("La liste n'existe pas");
 	}
@@ -36,11 +64,15 @@ class UtilisateurController extends Controller
 	// construction des autres lignes
         $path=array(
 		'mod'=>'sym16_simple_stock_utilisateur_modifier',	// le chemin qui traitera l'action modifier
-		'supr'=>'sym16_simple_stock_utilisateur_supprimer');// le chemin qui traitera l'action supprimer
+		'supr'=>'sym16_simple_stock_utilisateur_supprimer');	// le chemin qui traitera l'action supprimer
 	
+	// construction	 d'information globale au entités (ex : nombre de lignes de la liste, total TTC
+	$totaluser = $repository->getNbUtilisateur();
+ 	//$totaluser = $repository->getNbUtilisateurWithQueryBuilder();
+	//$totaluser = $repository->getNbUtilisateurByIdWithQueryBuilder(3);
 	return $this->render(
 		'SYM16SimpleStockBundle:MonPremier:list.html.twig',
-		array('listColnames' => $listColnames, 'listEntities'=> $listEntities, 'path'=>$path)
+		array('listColnames' => $listColnames, 'listEntities' => $listEntities, 'path' => $path, 'totaluser' => $totaluser)
         );
     }
 
