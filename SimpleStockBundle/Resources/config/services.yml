@@ -5,5 +5,5 @@ services:
 #
     sym16_simple_stock.lister_tout:
 # la classe lister possèdera plusieurs prestations de listage
-        class: SYM16\SimpleStockBundle\Services\Lister
+        class: SYM16\SimpleStockBundle\Services\ListerCorrection
 #        arguments: [@service_id, "plain_value", %parameter%]
