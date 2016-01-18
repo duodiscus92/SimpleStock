@@ -2,9 +2,10 @@
 namespace  SYM16\SimpleStockBundle\Services;
 use Symfony\Component\HttpFoundation\Response;
 
-class listerService
+// regroupe tous les services de listage
+class Lister
 {
-    // liste une entité
+    // convertit tout type (ou presque) en chaine
     private function AnyTypeToString($var)
     {
 	//echo (gettype($var).'<br>');
@@ -20,6 +21,7 @@ class listerService
 	    return $var;
     }
 
+    // prestation : liste toute l'entité  passée en paramètre (pas de filtre)
     public function listerEntite($liste) {
 
 	// nom des entêtes de colonne
@@ -35,6 +37,7 @@ class listerService
 		// chaque ligne est elle meme un tableau d'articles qu'on obtient avec les getters
 		$listArticle = array();
 		foreach ($listColnames as $key => $fieldname){
+		    //on reconstruite les getters à partir des noms de colonnes
 		    $fieldname = 'get'.$fieldname;
 		    // traitement special de l'id
 		    if ($key == 'id')
@@ -52,7 +55,9 @@ class listerService
 	$totaluser = $liste['totalusers'];
 	// lister !
 	return array(
+		// vue à utiliser pour lister
 		'listtwig' => 'SYM16SimpleStockBundle:MonPremier:list.html.twig',
+		// ce qu'il faut lister
 		'tab' => array('listColnames' => $listColnames, 'listEntities' => $listEntities, 'path' => $path, 'totaluser' => $totaluser)
 	);
     }

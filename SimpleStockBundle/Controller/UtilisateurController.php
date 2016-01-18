@@ -29,8 +29,8 @@ class UtilisateurController extends Controller
 	$totalusers = $repository->getNbUtilisateur();
 	//on place tous les paramètres à lister dans un tableau
 	$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 'path' => $path, 'totalusers' => $totalusers);
-	// récupération du service
-	$service = $this->container->get('sym16_simple_stock.lister')->listerEntite($alister);
+	// récupération du service et de la prestation  "lister_tout"
+	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
 	//lister
 	return $this->render($service['listtwig'], $service['tab']);
     }

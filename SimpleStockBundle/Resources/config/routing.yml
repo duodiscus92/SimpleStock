@@ -42,7 +42,7 @@ sym16_simple_stock_utilisateur_modifier:
 
 sym16_simple_stock_lister:
     path:     /lister
-    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:lister}
+    defaults: { _controller: SYM16SimpleStockBundle:Utilisateur:lister}
 
 sym16_simple_stock_ajouter:
     path:     /ajouter
