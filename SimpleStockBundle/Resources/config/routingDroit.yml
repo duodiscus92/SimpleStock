@@ -1,0 +1,15 @@
+sym16_simple_stock_droit_lister:
+    path:     /viewdroit
+    defaults: { _controller: SYM16SimpleStockBundle:Droit:lister}
+
+sym16_simple_stock_droit_ajouter:
+    path:     /adddroit
+    defaults: { _controller: SYM16SimpleStockBundle:Droit:ajouter}
+
+sym16_simple_stock_droit_supprimer:
+    path:     /supprdoit
+    defaults: { _controller: SYM16SimpleStockBundle:Droit:supprimer}
+
+sym16_simple_stock_droit_modifier:
+    path:     /supprdoit
+    defaults: { _controller: SYM16SimpleStockBundle:Droit:supprimer}

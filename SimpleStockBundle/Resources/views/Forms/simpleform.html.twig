@@ -1,0 +1,13 @@
+{# template afficher un formulaire #}
+{% extends 'SYM16SimpleStockBundle::layout.html.twig' %}
+
+{% block BLOCA %}
+{#<h3>Ajouter un utilisateur<h3>#}
+<h3>{{titre}}<h3>
+<div class="well">
+    <form method = "post" {{ form_enctype(form) }}>
+	{{ form_widget(form) }}
+    	<input type="submit" class="btn btn-primary" />
+    </form>
+</div>
+{% endblock %}

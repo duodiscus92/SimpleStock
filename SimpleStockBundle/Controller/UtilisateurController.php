@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use SYM16\SimpleStockBundle\Entity\Utilisateur;
 use SYM16\SimpleStockBundle\Entity\Droit;
+use SYM16\SimpleStockBundle\Form\UtilisateurType;
+use SYM16\SimpleStockBundle\Form\DroitType;
 
 class UtilisateurController extends Controller
 {
@@ -70,13 +72,108 @@ class UtilisateurController extends Controller
  	//$totaluser = $repository->getNbUtilisateurWithQueryBuilder();
 	//$totaluser = $repository->getNbUtilisateurByIdWithQueryBuilder(3);
 	return $this->render(
-		'SYM16SimpleStockBundle:MonPremier:list.html.twig',
+		'SYM16SimpleStockBundle:Common:list.html.twig',
 		array('listColnames' => $listColnames, 'listEntities' => $listEntities, 'path' => $path, 'totaluser' => $totaluser)
         );
     }
 
-    // ajouter un article dans l'entité
+    // ajouter un article dans l'entité à partir d'un formulaire externalisé
     public function ajouterAction(Request $request){
+	// creation d'une instance de l'entité propriétaire et hydratation
+	$utilisateur = new Utilisateur();
+	// hydrater certain attributs pour avoir des valeurs par défaut
+	$utilisateur->setNom('Dupont');
+	$utilisateur->setPrenom('Jean');
+        // on rajoute en "dur" le privilège TEMPORAIRE
+	// on récupère l'entité inverse correspondante au droit
+	$em = $this->getDoctrine()->getManager();
+	$privilege = $em->getRepository('SYM16SimpleStockBundle:Droit')->
+		findOneByPrivilege('TEMPORAIRE');
+	$utilisateur->setDroit($privilege);
+	// creation du formulaire
+	$form = $this->createForm(new UtilisateurType, $utilisateur);
+	// test de la méthode
+	if($request->getMethod() == 'POST'){
+	// hydrater les variables $utilisateur
+	    $form->bind($request);
+	    // verifier la validité des valeurs d’entrée
+	    if($form->isValid()) {
+	        // enregistrer droit dans la BDD
+		$em = $this->getDoctrine()->getManager();
+		$em->persist($utilisateur);
+		$em->flush();
+		// affichage de la liste reactualisee
+		return $this->listerAction();
+	    }
+	}
+    	// On est arrivé par GET ou bien données d'entrées invalides
+	//afficher le formulaire et le passer à la vue
+    	return $this->render(
+		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
+		array('titre' => "Ajout d'un utilisateur (formulaire externalisé)", 'form' => $form->CreateView() )
+	);
+    }
+
+    // ajouter un article dans l'entité (avec formulaire)
+    public function ajouterAction2()
+    {
+
+    	// créer une instance de l’objet à hydrater
+    	$utilisateur = new Utilisateur;
+	// hydrater certain attributs pour avoir des valeurs par défaut
+	$utilisateur->setNom('Dupont');
+	$utilisateur->setPrenom('Jean');
+        // on rajoute en "dur" le privilège TEMPORAIRE
+	// on récupère l'entité inverse correspondante au droit
+	$em = $this->getDoctrine()->getManager();
+	$privilege = $em->getRepository('SYM16SimpleStockBundle:Droit')->
+		findOneByPrivilege('TEMPORAIRE');
+	$utilisateur->setDroit($privilege);
+    	// créer l’objet formulaire pour l’objet à hydrater
+    	$formbuilder = $this->createFormBuilder($utilisateur);
+    	// ajouter les attributs que l’on veut hydrater (pas l’id)
+    	$formbuilder
+	    ->add('nom', 	'text') 	// on est pas obligé d’hydrater
+	    ->add('prenom', 	'text')		// tous les attributs de l’objet
+	    ->add('asb', 	'checkbox', array('required' => false))
+	    ->add('date', 	'datetime')
+	    //->add('droit', 	new DroitType())
+	    //->add('droit', 'collection', array('type' => new DroitType(),
+		    //'allow_add' => true, 'allow_delete' =>true))
+	    //->add('droit', 'entity', array(
+	    //	'class' => 'SYM16SimpleStockBundle:Droit',
+	    // 	'property' => 'nom',
+	    //	'multiple' => true) )
+	;
+    	// générer le formulaire
+    	$form = $formbuilder->getForm();
+	// récupération de la requête
+	$request = $this->get('request');
+	// test de la méthode
+	if($request->getMethod() == 'POST'){
+	// on est donc arrivé en ce point par POST
+	// hydrater la variable $utilisateur
+		$form->bind($request);
+		// verifier la validité des valeurs d’entrée
+		if($form->isValid()) {
+		    // enregistrer utilisateur dans la BDD
+		    $em->persist($utilisateur);
+		    $em->flush();
+		    // affichage de la liste reactualisee
+		    return $this->listerAction();
+		}
+	}
+    	// On est arrivé par GET ou bien données d'entrées invalides
+	//afficher le formulaire et le passer à la vue
+    	return $this->render(
+		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
+		array('titre' => "Ajout d'un utilisateur", 'form' => $form->CreateView() )
+	);
+    }
+
+
+    // ajouter un article dans l'entité (sans formulaire, passage par GET)
+    public function ajouterAction1(Request $request){
 	// récuparation des valeurs passées par GET
 	$nom = $request->query->get('nom');
 	$prenom = $request->query->get('prenom');
@@ -114,4 +211,47 @@ class UtilisateurController extends Controller
 	// affichage de la liste reactualisee
 	return $this->listerAction();
     }
+    // modifier un article dans l'entité (avec formulaire)
+    public function modifierAction(Request $request)
+    {
+	// récupe de l'id de l'article à supprimer
+        $id = $request->query->get('valeur');
+	// recupération de l'entity manager
+	$em = $this->getDoctrine()->getManager();
+        //récuparartion de l'entite d'id  $id
+        $utilisateur = $em->getRepository("SYM16SimpleStockBundle:Utilisateur")->find($id);
+    	// créer l’objet formulaire pour l’objet à modifier
+    	$formbuilder = $this->createFormBuilder($utilisateur);
+    	// ajouter les attributs que l’on veut hydrater (pas l’id)
+    	$formbuilder 
+	    ->add('nom', 	'text') 	// on est pas obligé d’hydrater
+	    ->add('prenom', 	'text')		// tous les attributs de l’objet
+	    ->add('asb', 	'checkbox', array('required' => false))
+	    ->add('date', 	'datetime');
+    	// générer le formulaire
+    	$form = $formbuilder->getForm();
+	// récupération de la requête
+	$request = $this->get('request');
+	// test de la méthode
+	if($request->getMethod() == 'POST'){
+	// on est donc arrivé en ce point par POST
+	// hydrater la variable $utilisateur
+		$form->bind($request);
+		// verifier la validité des valeurs d’entrée
+		if($form->isValid()) {
+		    // enregistrer utilisateur dans la BDD
+		    $em->persist($utilisateur);
+		    $em->flush();
+		    // affichage de la liste reactualisee
+		    return $this->listerAction();
+		}
+	}
+    	// On est arrivé par GET ou bien données d'entrées invalides
+	//afficher le formulaire et le passer à la vue
+    	return $this->render(
+		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
+		array('titre' => "Modification d'un utilisateur", 'form' => $form->CreateView() )
+	);
+    }
+
 }

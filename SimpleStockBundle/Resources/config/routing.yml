@@ -1,3 +1,6 @@
+app:
+    resource: 'routingUtilisateur.yml'
+
 sym16_simple_stock_homepage:
     path:     /index/{name}
     defaults: { _controller: SYM16SimpleStockBundle:Default:index }
@@ -23,22 +26,6 @@ sym16_simple_stock_racine:
     requirements:
         multiplicande:    ^[0-9]+$
         multiplicateur:   ^[0-9]+$
-
-sym16_simple_stock_utilisateur_lister:
-    path:     /viewuser
-    defaults: { _controller: SYM16SimpleStockBundle:Utilisateur:lister}
-
-sym16_simple_stock_utilisateur_ajouter:
-    path:     /adduser
-    defaults: { _controller: SYM16SimpleStockBundle:Utilisateur:ajouter}
-
-sym16_simple_stock_utilisateur_supprimer:
-    path:     /suppruser
-    defaults: { _controller: SYM16SimpleStockBundle:Utilisateur:supprimer}
-
-sym16_simple_stock_utilisateur_modifier:
-    path:     /suppruser
-    defaults: { _controller: SYM16SimpleStockBundle:Utilisateur:supprimer}
 
 sym16_simple_stock_lister:
     path:     /lister
