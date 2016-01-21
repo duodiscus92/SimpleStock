@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use SYM16\SimpleStockBundle\Entity\Utilisateur;
 use SYM16\SimpleStockBundle\Entity\Droit;
 use SYM16\SimpleStockBundle\Form\UtilisateurType;
+use SYM16\SimpleStockBundle\Form\UtilisateurModifierType;
 use SYM16\SimpleStockBundle\Form\DroitType;
 
 class UtilisateurController extends Controller
@@ -211,8 +212,42 @@ class UtilisateurController extends Controller
 	// affichage de la liste reactualisee
 	return $this->listerAction();
     }
-    // modifier un article dans l'entité (avec formulaire)
+
+    // modifier un article dans l'entité (avec formulaire externalisé)
     public function modifierAction(Request $request)
+    {
+	// récupe de l'id de l'article à supprimer
+        $id = $request->query->get('valeur');
+	// recupération de l'entity manager
+	$em = $this->getDoctrine()->getManager();
+        //récuparartion de l'entite d'id  $id
+        $utilisateur = $em->getRepository("SYM16SimpleStockBundle:Utilisateur")->find($id);
+	// creation du formulaire
+	$form = $this->createForm(new UtilisateurModifierType, $utilisateur);
+	// test de la méthode
+	if($request->getMethod() == 'POST'){
+	// on est donc arrivé en ce point par POST
+	// hydrater la variable $utilisateur
+		$form->bind($request);
+		// verifier la validité des valeurs d’entrée
+		if($form->isValid()) {
+		    // enregistrer utilisateur dans la BDD
+		    $em->persist($utilisateur);
+		    $em->flush();
+		    // affichage de la liste reactualisee
+		    return $this->listerAction();
+		}
+	}
+    	// On est arrivé par GET ou bien données d'entrées invalides
+	//afficher le formulaire et le passer à la vue
+    	return $this->render(
+		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
+		array('titre' => "Modification d'un utilisateur (avec formulaire externalisé)", 'form' => $form->CreateView() )
+	);
+    }
+
+    // modifier un article dans l'entité (avec formulaire)
+    public function modifierAction2(Request $request)
     {
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');

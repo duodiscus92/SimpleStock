@@ -7,9 +7,9 @@ sym16_simple_stock_droit_ajouter:
     defaults: { _controller: SYM16SimpleStockBundle:Droit:ajouter}
 
 sym16_simple_stock_droit_supprimer:
-    path:     /supprdoit
+    path:     /supprdroit
     defaults: { _controller: SYM16SimpleStockBundle:Droit:supprimer}
 
 sym16_simple_stock_droit_modifier:
-    path:     /supprdoit
-    defaults: { _controller: SYM16SimpleStockBundle:Droit:supprimer}
+    path:     /moddroit
+    defaults: { _controller: SYM16SimpleStockBundle:Droit:modifier}
