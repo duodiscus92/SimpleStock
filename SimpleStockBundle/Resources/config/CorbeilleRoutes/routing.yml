@@ -1,3 +1,6 @@
+app:
+    resource: 'routingUtilisateur.yml'
+
 sym16_simple_stock_homepage:
     path:     /index/{name}
     defaults: { _controller: SYM16SimpleStockBundle:Default:index }
@@ -26,7 +29,7 @@ sym16_simple_stock_racine:
 
 sym16_simple_stock_lister:
     path:     /lister
-    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:lister}
+    defaults: { _controller: SYM16SimpleStockBundle:Utilisateur:lister}
 
 sym16_simple_stock_ajouter:
     path:     /ajouter
@@ -39,17 +42,3 @@ sym16_simple_stock_modifier:
 sym16_simple_stock_supprimer:
     path:    /supprimer
     defaults: { _controller: SYM16SimpleStockBundle:MonPremier:supprimer}
-
-sym16_simple_stock_utilisateur_lister:
-    path:     /viewuser
-    defaults: { _controller: SYM16SimpleStockBundle:Utilisateur:lister}
-
-
-
-sym16_simple_stock_utilisateur_ajouter:
-    path:     /adduser
-    defaults: { _controller: SYM16SimpleStockBundle:Utilisateur:ajouter}
-
-sym16_simple_stock_utilisateur_supprimer:
-    path:     /suppruser
-    defaults: { _controller: SYM16SimpleStockBundle:Utilisateur:supprimer}

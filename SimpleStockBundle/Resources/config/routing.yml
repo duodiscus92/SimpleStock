@@ -1,44 +1,4 @@
 app:
-    resource: 'routingUtilisateur.yml'
-
-sym16_simple_stock_homepage:
-    path:     /index/{name}
-    defaults: { _controller: SYM16SimpleStockBundle:Default:index }
-
-sym16_simple_stock_ilike:
-    path:     /iLike/{un_verbe_a_l_infinitif}
-    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:iLike}
-    
-sym16_simple_stock_produit:
-    path:     /{multiplicande}/{multiplicateur}
-    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:produit}
-    requirements:
-        multiplicande:    ^[0-9a-fA-f]*$
-        multiplicateur:   ^[0-9a-fA-f]*$
-
-sym16_simple_stock_puissance:
-    path:     /puissance
-    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:puissance}
-
-sym16_simple_stock_racine:
-    path:     /racine/{valeur}/{radical}
-    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:racine}
-    requirements:
-        multiplicande:    ^[0-9]+$
-        multiplicateur:   ^[0-9]+$
-
-sym16_simple_stock_lister:
-    path:     /lister
-    defaults: { _controller: SYM16SimpleStockBundle:Utilisateur:lister}
-
-sym16_simple_stock_ajouter:
-    path:     /ajouter
-    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:ajouter}
-
-sym16_simple_stock_modifier:
-    path:    /supprimer
-    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:supprimer}
-
-sym16_simple_stock_supprimer:
-    path:    /supprimer
-    defaults: { _controller: SYM16SimpleStockBundle:MonPremier:supprimer}
+    resource: '@SYM16SimpleStockBundle/Controller/'
+    type:     annotation
+    prefix:   /SimpleStock

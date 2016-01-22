@@ -1,0 +1,18 @@
+{# template pour le menu principal #}
+{% extends 'SYM16SimpleStockBundle::layout.html.twig' %}
+{#<html>
+  <body>
+    <h2>Hello utilisateur {{ name }}!</h2>#}
+    {#<h2>Menu principal</h2>#}
+    {% block BLOCA %}
+    <h2>Actions relatives aux utilisateurs et à leur droits:</h2>
+	<li><a href="{{ path('sym16_simple_stock_utilisateur_lister') }}">
+		Lister les utilisateurs enregistrés</a></li>
+        <ul>
+        	{% for message in app.session.flashbag.get('infoliste') %}
+	    		<li>Message n° {{loop.revindex}}: {{message}}</li>
+        	{% endfor %}
+    	</ul>
+    {% endblock %}
+{#  </body>
+</html>#}

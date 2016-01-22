@@ -1,0 +1,31 @@
+sym16_simple_stock_droit_lister:
+    path:     /viewdroit
+    defaults: { _controller: SYM16SimpleStockBundle:Droit:lister}
+
+sym16_simple_stock_droit_ajouter:
+    path:     /adddroit
+    defaults: { _controller: SYM16SimpleStockBundle:Droit:ajouter}
+
+sym16_simple_stock_droit_supprimer:
+    path:     /supprdroit
+    defaults: { _controller: SYM16SimpleStockBundle:Droit:supprimer}
+
+sym16_simple_stock_droit_modifier:
+    path:     /moddroit
+    defaults: { _controller: SYM16SimpleStockBundle:Droit:modifier}
+
+sym16_simple_stock_souscategorie_lister:
+    path:     /viewscat
+    defaults: { _controller: SYM16SimpleStockBundle:Souscategorie:lister}
+
+sym16_simple_stock_souscategorie_ajouter:
+    path:     /addscat
+    defaults: { _controller: SYM16SimpleStockBundle:Souscategorie:ajouter}
+
+sym16_simple_stock_souscategorie_supprimer:
+    path:     /supprscat
+    defaults: { _controller: SYM16SimpleStockBundle:Souscategorie:supprimer}
+
+sym16_simple_stock_souscategorie_modifier:
+    path:     /modscat
+    defaults: { _controller: SYM16SimpleStockBundle:Souscategorie:modifier}

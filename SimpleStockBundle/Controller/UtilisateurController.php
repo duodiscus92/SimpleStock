@@ -2,6 +2,7 @@
 // src/SYM16/SimpleStockBundle/Controller/UtilisateurController.php
 namespace SYM16\SimpleStockBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -11,10 +12,20 @@ use SYM16\SimpleStockBundle\Form\UtilisateurType;
 use SYM16\SimpleStockBundle\Form\UtilisateurModifierType;
 use SYM16\SimpleStockBundle\Form\DroitType;
 
+/**
+ *
+ * Classe Utilisateur
+ *
+ * @Route("/utilisateur")
+ */
 class UtilisateurController extends Controller
 {
 
-    //lister un tableau en faisant appel à un service
+    /**
+     * lister un tableau en faisant appel à un service
+     *
+     * @Route("/view", name="sym16_simple_stock_utilisateur_lister")
+     */
     public function listerAction()
     {
 	// on récupère l'entity manager
@@ -78,7 +89,11 @@ class UtilisateurController extends Controller
         );
     }
 
-    // ajouter un article dans l'entité à partir d'un formulaire externalisé
+    /**
+     *  ajouter un article dans l'entité à partir d'un formulaire externalisé
+     *
+     * @Route("/add", name="sym16_simple_stock_utilisateur_ajouter")
+     */
     public function ajouterAction(Request $request){
 	// creation d'une instance de l'entité propriétaire et hydratation
 	$utilisateur = new Utilisateur();
@@ -198,7 +213,11 @@ class UtilisateurController extends Controller
 	return $this->listerAction();
     }
 
-    // supprimer un article
+    /**
+     *  supprimer un article
+     *
+     * @Route("/del", name="sym16_simple_stock_utilisateur_supprimer")
+     */
     public function supprimerAction(Request $request) {
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');
@@ -213,7 +232,11 @@ class UtilisateurController extends Controller
 	return $this->listerAction();
     }
 
-    // modifier un article dans l'entité (avec formulaire externalisé)
+    /**
+     *   modifier un article dans l'entité (avec formulaire externalisé
+     *
+     * @Route("/mod", name="sym16_simple_stock_utilisateur_modifier")
+     */
     public function modifierAction(Request $request)
     {
 	// récupe de l'id de l'article à supprimer
