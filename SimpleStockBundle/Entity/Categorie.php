@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Categorie
  *
  * @ORM\Table(name="Categorie", uniqueConstraints={@ORM\UniqueConstraint(name="libelle", columns={"libelle"})}, indexes={@ORM\Index(name="souscategorie_id", columns={"souscategorie_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\CategorieRepository")
  */
 class Categorie
 {
@@ -96,8 +96,8 @@ class Categorie
         return $this->souscategorie;
     }
 
-    public function getLibelleSouscategorie()
+    public function getLibelleScat()
     {
-	return $this->getSouscategorie()->getLibelle()
+	return $this->getSouscategorie()->getLibelle();
     }
 }

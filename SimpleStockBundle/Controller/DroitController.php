@@ -2,6 +2,7 @@
 // src/SYM16/SimpleStockBundle/Controller/DroitController.php
 namespace SYM16\SimpleStockBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -9,10 +10,20 @@ use SYM16\SimpleStockBundle\Entity\Droit;
 use SYM16\SimpleStockBundle\Entity\Utilisateur;
 use SYM16\SimpleStockBundle\Form\DroitType;
 
+/**
+ *
+ * Classe Droit
+ *
+ * @Route("/droit")
+ */
 class DroitController extends Controller
 {
 
-    //lister un tableau en faisant appel à un service
+    /**
+     * lister un tableau en faisant appel à un service
+     *
+     * @Route("/view", name="sym16_simple_stock_droit_lister")
+     */
     public function listerAction()
     {
 	// on récupère l'entity manager
@@ -20,7 +31,10 @@ class DroitController extends Controller
 	// on récupère tout le contenu de la table
 	$repository = $em->getRepository('SYM16SimpleStockBundle:Droit');
 	//preparaton des parametres
-	$listColnames = array('Id', 'Privilege');
+	$listColnames = array(
+				'id' => 'Id', 
+				'Statut' => 'Privilege'
+				);
 	// on récupère le contenu de la table
 	$entities = $repository->findAll();
         $path=array(
@@ -36,7 +50,12 @@ class DroitController extends Controller
 	return $this->render($service['listtwig'], $service['tab']);
     }
 
-    // ajouter un article dans l'entité à partir d'un formulaire externalisé
+    /**
+     *
+     * ajouter un article dans l'entité à partir d'un formulaire externalisé
+     *
+     * @Route("/add", name="sym16_simple_stock_droit_ajouter")
+     */
     public function ajouterAction(Request $request){
 	// creation d'une instance de l'entité propriétaire et hydratation
 	$droit = new Droit();
@@ -84,7 +103,12 @@ class DroitController extends Controller
 	return $this->listerAction();
     }
 
-    // modifier un article dans l'entité (avec formulaire externalisé)
+    /**
+     *
+     * modifier un article dans l'entité (avec formulaire externalisé)
+     *
+     * @Route("/mod", name="sym16_simple_stock_droit_modifier")
+     */
     public function modifierAction(Request $request)
     {
 	// récupe de l'id de l'article à supprimer
@@ -117,7 +141,12 @@ class DroitController extends Controller
 	);
     }
 
-    // supprimer un article avec traitement de l'erreur si l'article est utilisé
+    /**
+     *
+     * supprimer un article avec traitement de l'erreur si l'article est utilisé
+     *
+     * @Route("/del", name="sym16_simple_stock_droit_supprimer")
+     */
     public function supprimerAction(Request $request) {
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');
@@ -142,6 +171,7 @@ class DroitController extends Controller
 	// affichage de la liste reactualisee
 	return $this->listerAction();
     }
+
     // supprimer un article
     public function supprimerAction1(Request $request) {
 	// récupe de l'id de l'article à supprimer

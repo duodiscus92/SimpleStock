@@ -1,0 +1,40 @@
+{% javascripts '@TestGlobalBundle/Resources/public/js/jquery-1.11.0.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        var url = "{{ path('reference_ajax') }}";
+        var entrepotElement = '#sym16_simplestockbundle_add_entrepot';
+        var emplacementElement = '#sym16_simplestockbundle_add_emplacement';
+        $(entrepotElement).on('change', function(){
+            var entrepot_id = $(this).val();
+            
+            $.ajax({ type: "POST",
+                url: url,
+                data: {'entrepot_id':entrepot_id},
+                dataType: 'JSON',
+                timeout: 30000,
+                success: function (data) {
+                    
+                    //réinitialise la liste des joueurs
+                    $(emplacementElement).html('<option value> -- Tous -- </option>');
+                    //met à jour la liste des emplacements
+                    $.each(data, function(index){
+                            var id = data[index].id;
+                            var name = data[index].nom;
+                            $(emplacementElement).append('<option value="'+id+'">'+nom+'</option>');
+                    });
+                },
+                error: function(){
+                    alert('Erreur, la connexion au serveur a été interrompue');
+                }
+            });
+        });
+    });
+    </script> 
+{% endjavascripts %} 
+
+{{ form_start(form) }} 
+{{ form_widget(form.entrepot) }} 
+{{ form_widget(form.emplacement) }} 
+{{ form_widget(form.valider) }}
+{{ form_end(form) }}

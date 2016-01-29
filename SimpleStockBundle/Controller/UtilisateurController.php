@@ -33,7 +33,14 @@ class UtilisateurController extends Controller
 	// on récupère tout le contenu de la table
 	$repository = $em->getRepository('SYM16SimpleStockBundle:Utilisateur');
 	//preparaton des parametres
-	$listColnames = array('Id', 'Nom', 'Prenom', 'Asb', 'Privilege', 'Date');
+	$listColnames = array(
+				'id' => 'Id',
+				'Nom' => 'Nom',
+				'Prénom' => 'Prenom', 
+				'Asb' => 'Asb', 
+				'Privilège' => 'Privilege', 
+				'Création' => 'Date'
+			 	);
 	// on récupère le contenu de la table
 	$entities = $repository->findAll();
         $path=array(

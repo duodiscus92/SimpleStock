@@ -5,7 +5,10 @@
 {% extends '::stocklayout.html.twig' %}
       {% block HEADER %}
     <h2>Bienvenue sur Simple Stock dans le stock : {{stockname}}</h2>
-    <h3>Utilisateur : {{ stockuser }} - Votre statut est :{{stockuserstatut}}</h3>
+    {# utilisation des variables déclarées dans app/config/config.yml #}
+    {# <h3>Utilisateur : {{ stockuser }} - Votre statut est :{{stockuserstatut}}</h3> #}
+    {# utilisation de variables de sessions déclarées dans AcceuilController.php #}
+    <h3>Utilisateur : {{ app.session.get('stockuser') }} - Votre statut est :{{stockuserstatut}}</h3>
       {% endblock %}
     {% block BLOCA %}
     {% endblock %}
