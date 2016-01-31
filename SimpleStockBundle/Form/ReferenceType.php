@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Doctrine\ORM\EntityRepository;
+use SYM16\SimpleStockBundle\Form\EmplacementType;
 
 class ReferenceType extends AbstractType
 {
@@ -20,7 +21,8 @@ class ReferenceType extends AbstractType
         $builder
             ->add('ref', 		'text')
             ->add('nom', 		'text')
-            ->add('entrepot', 'entity', array(
+            // la liste déroulante entrepot
+	    ->add('entrepot', 'entity', array(
 		'required' => false,
 		'class' => 'SYM16SimpleStockBundle:Entrepot',
 		'query_builder' => function(EntityRepository $er){
@@ -28,8 +30,9 @@ class ReferenceType extends AbstractType
 		},
 		'property' => 'nom',
 		'label' => 'Entrepot',
-		'empty_value' => "-- Vide --",
+		'empty_value' => "-- Selectionnez un entrepot --",
             ))
+	    // la liste déroulante emplacement
             ->add('emplacement', 'entity', array(
 		'required' => false,
 		'class' => 'SYM16SimpleStockBundle:Emplacement',
@@ -38,20 +41,23 @@ class ReferenceType extends AbstractType
 		},
 		'property' => 'nom',
 		'label' => 'Emplacement',
-		'empty_value' => "-- Vide --",
+		'empty_value' => "-- Selectionnez un emplacement --",
             ))
 	    ->add('udv', 		'integer')
             ->add('seuil', 		'integer')
 	    ->add('createur',		'text') 
 	    ->add('creation',		'datetime')
 	    ->add('modification', 	'datetime')
-	;
-
-	$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
+            ->add('valider', 'submit', array(
+                'label' => 'Valider'
+                ))
+	    ;
+	//$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
     }
     
 
     public function onPreSubmit(FormEvent $event){
+        echo "<script>alert(\"On passe dans onPreSubmit()du formulaire\")</script>";
 	$form = $event->getForm();
 	$data = $event->getData();
 	$entrepotId = $data['entrepot'];

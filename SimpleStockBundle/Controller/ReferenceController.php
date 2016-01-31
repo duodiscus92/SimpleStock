@@ -91,10 +91,13 @@ class ReferenceController extends Controller
 	}
     	// On est arrivé par GET ou bien données d'entrées invalides
 	//afficher le formulaire et le passer à la vue
-    	return $this->render(
+    	// sans l'utilsation de l'annotation Template()
+	/*return $this->render(
 		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
 		array('titre' => "Ajout d'une reference", 'form' => $form->CreateView() )
-	);
+	);*/
+    	// avec l'utilsation de l'annotation Template()
+    	return array('titre' => "Ajout d'une reference", 'form' => $form->CreateView() );
     }
 
     /**
@@ -156,29 +159,43 @@ class ReferenceController extends Controller
     }
 
     /**
-     * @Route("/reference-ajax", name="reference_ajax")}
+     * D'après le code de Julien Cornu (merci !)
+     * @Route("/reference-ajax", name="reference_ajax")
      */
     public function referenceAjaxAction(Request $request){
-        $entrepotId = $request->request->get('entrepot_id');
-        $em = $this->getDoctrine()->getManager();
+	// A des fins pédago on montre qu'on peut récupérer aussi bien pat GET que par POST
+	if($request->getMethod() == 'POST')
+	//récupération de l'id entrepot transmise par le script Ajax par POST
+            $entrepotId = $request->request->get('entrepot_id');
+	//récupération de l'id entrepot transmise par le script Ajax par GET
+        else
+	    $entrepotId = $request->query->get('entrepot_id');
+	//récupération de l'entity manager
+	$em = $this->getDoctrine()->getManager();
+	// création d'un objet rsm qui va recevoir les colonnes qui nous intéressent
         $rsm = new ResultSetMapping();
+	// on indique qu'on veut récupérer la colonne id
         $rsm->addScalarResult('id', 'id');
-        $rsm->addScalarResult('nom', 'nom');
-        $sql = "SELECT * FROM emplacement
+	// on indique qu'on veut récupérer la colonne Nom (libellé de la table mySql)
+        $rsm->addScalarResult('Nom', 'Nom');
+	// construction de la requête SQL
+        $sql = "SELECT * FROM Emplacement
                 WHERE 1 = 1 ";
+	// si entrepotId  est défini on continue la construction pat concaténation
         if($entrepotId != '')
-            $sql .= " AND emplacement.entrepot_id = :entrepot_id ";
+            $sql .= " AND Emplacement.entrepot_id = :entrepot_id ";
+	// on prépare la requête
         $query = $em->createNativeQuery($sql, $rsm);
+	// si entrepotId est défini on  passe entrepot_id à la requête sqp
         if($entrepotId != '')
             $query->setParameter('entrepot_id', $entrepotId);
+	// on récupère le résultat : les emplacements liés à cet entrepot
         $emplacements = $query->getResult();
+	// on met le résultat dans un tableau
         $emplacementsList = array();
-        foreach ($emplacements as $emplacement) {
-            $e = array();
-            $e['id'] = $emplacement['id'];
-            $e['nom'] = $emplacement['nom'];
-            $emplacementsList[] = $e;
-        }
-        return new JsonResponse($emplacementsList);
+        foreach ($emplacements as $emplacement)
+            array_push($emplacementsList, array('id' => $emplacement['id'], 'nom' => $emplacement['Nom']));
+	// on renvoie le réponse au client  après encodage JSON
+        return   new JsonResponse($emplacementsList);
     }
 }

@@ -5,19 +5,19 @@
     <h2>Hello utilisateur {{ name }}!</h2>#}
     {#<h2>Menu principal</h2>#}
     {% block BLOCA %}
-    <h3>Utilisateurs et statuts</h3>
+    <h2>Utilisateurs et statuts</h2>
 	<li><a href="{{ path('sym16_simple_stock_droit_lister') }}">
 		Lister les différents statuts</a></li>
 	<li><a href="{{ path('sym16_simple_stock_utilisateur_lister') }}">
 		Lister les utilisateurs enregistrés et leur statut</a></li>
-    <h3>Lieux de stockage et catégories</h3>
+    <h2>Lieux de stockage et aux catégories</h2>
 	<li><a href="{{ path('sym16_simple_stock_entrepot_lister') }}">
 		Lister les entrepots</a></li>
 	<li><a href="{{ path('sym16_simple_stock_emplacement_lister') }}">
 		Lister les emplacements</a></li>
-    <h3>Références</h3>
+    <h2>References</h2>
 	<li><a href="{{ path('sym16_simple_stock_reference_lister') }}">
-		Lister les références</a></li>
+		Lister les references</a></li>
         <ul>
         	{% for message in app.session.flashbag.get('infoliste') %}
 	    		<li>Message n° {{loop.revindex}}: {{message}}</li>
