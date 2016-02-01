@@ -53,31 +53,6 @@ class ReferenceType extends AbstractType
             //    'label' => 'Valider'
             //    ))
 	    ;
-	//$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
-    }
-    
-
-    public function onPreSubmit(FormEvent $event){
-        echo "<script>alert(\"On passe dans onPreSubmit()du formulaire\")</script>";
-	$form = $event->getForm();
-	$data = $event->getData();
-	$entrepotId = $data['entrepot'];
-	if($entrepotId != null){
-	    $form->remove('emplacement');
-	    $form->add('emplacement', 'entity', array(
-		'class' => 'SYM16SimpleStockBundle:Emplacement',
-		'query_builder' => function(EntityRepository $er) use ($entrepotId) {
-			return $er->createQueryBuilder('emplacement')
-			    ->join('emplacement.entrepot', 'entrepot', 'WITH', 'entrepot.id = :entrepot_id')
-			    ->orderBy('emplacement.nom','ASC')
-			    ->setParameter('entrepot_id', $entrepotId);
-		},
-		'property' => 'nom',
-		'required' => false,
-		'label' => 'Emplacement',
-		'empty_value' => "-- Vide --",
-            ));
-	}
     }
 
     /**
