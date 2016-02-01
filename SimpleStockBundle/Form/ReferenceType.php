@@ -48,9 +48,10 @@ class ReferenceType extends AbstractType
 	    ->add('createur',		'text') 
 	    ->add('creation',		'datetime')
 	    ->add('modification', 	'datetime')
-            ->add('valider', 'submit', array(
-                'label' => 'Valider'
-                ))
+	    // si on met le bouton ici il ne prend pas le style bootstrap
+            //->add('valider', 'submit', array(
+            //    'label' => 'Valider'
+            //    ))
 	    ;
 	//$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
     }
