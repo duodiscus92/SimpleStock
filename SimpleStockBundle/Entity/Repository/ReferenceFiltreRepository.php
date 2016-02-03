@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class ReferenceFiltreRepository extends EntityRepository
 {
 	// renvoie le nombre de références selon un filtre
-	public function getNbReferenceByFilter($id)
+	/*public function getNbReferenceByFilter($id)
 	{
 		// on crée un query builder
 		$querybuilder = $this->_em->CreateQueryBuilder(filter);
@@ -23,7 +23,7 @@ class ReferenceFiltreRepository extends EntityRepository
 		$query = $querybuilder->getQuery();
 		// on l'exécute et on renvoie sa valeur	
 		return $query->getSingleScalarResult();
-	}
+	}*/
 
 	// renvoie une table de référence selon un filtre
 	public function getReferenceByFilter($filter)
@@ -32,12 +32,26 @@ class ReferenceFiltreRepository extends EntityRepository
 		$querybuilder = $this->_em->CreateQueryBuilder();
 		// on construit le requete en fonction du filtre
 		$querybuilder->select('r')->from('SYM16SimpleStockBundle:Reference', 'r');
-		$querybuilder->where('d.privilege = :statut')->setParameter('statut', $statut);
+		$querybuilder->where ('r.entrepot = :entrepot')->setParameter('entrepot', $entrepot);
+		$querybuilder->and   ('r.createur = :createur')->setParameter('createur', $createur);
+		$querybuilder->andnot('r.entrepot = :entrepot')->setParameter('entrepot', $entrepot);
+		$querybuilder->andnot('r.createur = :createur')->setParameter('createur', $createur);
 		// on récuère la query à partir du quesrybuilder
 		$query = $querybuilder->getQuery();
 		// on l'exécute et on renvoie sa valeur	
 		return $query->getResult();
 	}
+
+	// renvoie une entité utilisateur ne contenant que les utilisateurs ayant statut donné
+	/*public function getUtilisateurByStatut($statut)
+	{
+		$query = $this ->_em->createQuery('
+			SELECT u, d
+			FROM SYM16SimpleStockBundle:Utilisateur u
+			JOIN u.droit d WHERE d.privilege = :statut');
+		$query->setParameter('statut', $statut);
+		return $query->getResult();
+	}*/
 
 
 
