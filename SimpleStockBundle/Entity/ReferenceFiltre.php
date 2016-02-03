@@ -8,28 +8,28 @@ use Doctrine\ORM\Mapping as ORM;
  * ReferenceFiltre
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\ReferenceFiltreRepository")
+ * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\ReferenceFiltreRepository")
  */
 class ReferenceFiltre
 {
-    const FILTRE_TOUS = 1;
-    const FILTRE_INCLURE = 2;
-    const FILTRE_EXCLURE = 3;
+    const FILTRE_TOUS = 't';
+    const FILTRE_UNIQUEMENT = 'u';
+    const FILTRE_SAUF = 's';
 
     public function __construct()
     {
 	$this->entrepotfiltre =
 	$this->categoriefiltre =
 	$this->createurfiltre =
-	$this->refvidefiltre = FILTRE_TOUS;
+	$this->refvide = self::FILTRE_TOUS;
     }
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="refvidefitre", type="smallint")
+     * @ORM\Column(name="refvide", type="smallint")
      */
-    private $refvidefitre;
+    private $refvide;
 
     /**
      * @var string

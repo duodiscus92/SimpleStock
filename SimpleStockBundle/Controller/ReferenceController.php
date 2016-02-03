@@ -13,7 +13,9 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 use SYM16\SimpleStockBundle\Entity\Reference;
 use SYM16\SimpleStockBundle\Form\ReferenceType;
+use SYM16\SimpleStockBundle\Entity\ReferenceFiltre;
 use SYM16\SimpleStockBundle\Form\ReferenceModifierType;
+use SYM16\SimpleStockBundle\Form\ReferenceFiltreType;
 
 /**
  *
@@ -29,8 +31,41 @@ class ReferenceController extends Controller
      *
      * @Route("/view", name="sym16_simple_stock_reference_lister")
      */
-    public function listerAction()
+    public function listerAction(Request $request)
     {
+	// creation d'une instance de la classe de filtrage
+	$filtre = new ReferenceFiltre();
+	// creation du formulaire
+	$form = $this->createForm(new ReferenceFiltreType, $filtre);
+	// test de la méthode
+	if($request->getMethod() == 'GET'){
+	//afficher le formulaire et le passer à la vue
+    	    return $this->render(
+		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
+		array('titre' => "Filtre d'affichage des références", 'form' => $form->CreateView() )
+	    );
+	}
+	// hydrater les variables ReferenceFiltre
+	$form->bind($request);
+	// verifier la validité des valeurs d’entrée
+	$uniquement = array(); $sauf = array(); $tout = array();
+	if($form->isValid()) {
+	    if( ($entrepot =  $filtre->getEntrepot()) != "-- Selectionnez un entrepot --")
+	    	if($filtre->getEntrepotfiltre() == 'u')
+	    	    $uniquement['entrepot'] = $entrepot;
+	    	else if($filtre->getEntrepotfiltre() == 's')
+		    $sauf['entrepot'] = $entrepot;
+		else
+		    $tout['entrepot'] = $entrepot;
+
+	    if( ($createur =  $filtre->getCreateur()) != "-- Selectionnez un créateur --")
+	    	if($filtre->getCreateurfiltre() == 'u')
+	    	    $uniquement['createur'] = $createur;
+	    	elseif($filtre->getCreateurfiltre() == 's')
+		    $sauf['createur'] = $createur;
+		else
+		    $tout['createur'] = $createur;
+	}
 	// on récupère l'entity manager
 	$em = $this->getDoctrine()->getManager();
 	// on récupère tout le contenu de la table
@@ -50,6 +85,9 @@ class ReferenceController extends Controller
 				);
 	// on récupère le contenu de la table
 	$entities = $repository->findAll();
+	// Obtenir les références filtrées
+	//$entities=$repository->getReferenceByFilter(array('t' => $tout,  'u' => $uniquement, 's' => $sauf));
+	//$entities = $repository->findBy($criteres);
         $path=array(
                 'mod'=>'sym16_simple_stock_reference_modifier',       // le chemin qui traitera l'action modifier
                 'supr'=>'sym16_simple_stock_reference_supprimer');    // le chemin qui traitera l'action supprimer

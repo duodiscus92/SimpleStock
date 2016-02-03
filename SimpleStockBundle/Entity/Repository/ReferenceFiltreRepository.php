@@ -1,6 +1,6 @@
 <?php
 
-namespace SYM16\SimpleStockBundle\Entity;
+namespace SYM16\SimpleStockBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -12,4 +12,33 @@ use Doctrine\ORM\EntityRepository;
  */
 class ReferenceFiltreRepository extends EntityRepository
 {
+	// renvoie le nombre de références selon un filtre
+	public function getNbReferenceByFilter($id)
+	{
+		// on crée un query builder
+		$querybuilder = $this->_em->CreateQueryBuilder(filter);
+		$querybuilder->select('count(r)')->from('SYM16SimpleStockBundle:Reference', 'r');
+		$querybuilder->where('u.droit = :id')->setParameter('id', $id);
+		// on récuère la query à partir du quesrybuilder
+		$query = $querybuilder->getQuery();
+		// on l'exécute et on renvoie sa valeur	
+		return $query->getSingleScalarResult();
+	}
+
+	// renvoie une table de référence selon un filtre
+	public function getReferenceByFilter($filter)
+	{
+		// on crée un query builder
+		$querybuilder = $this->_em->CreateQueryBuilder();
+		// on construit le requete en fonction du filtre
+		$querybuilder->select('r')->from('SYM16SimpleStockBundle:Reference', 'r');
+		$querybuilder->where('d.privilege = :statut')->setParameter('statut', $statut);
+		// on récuère la query à partir du quesrybuilder
+		$query = $querybuilder->getQuery();
+		// on l'exécute et on renvoie sa valeur	
+		return $query->getResult();
+	}
+
+
+
 }
