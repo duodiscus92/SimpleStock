@@ -26,7 +26,7 @@ class ReferenceFiltreRepository extends EntityRepository
 	}*/
 
 	// renvoie une table de référence selon un filtre
-	public function getReferenceByFilter($filter)
+	public function getReferenceByFilterStdBy($filtre)
 	{
 		// on crée un query builder
 		$querybuilder = $this->_em->CreateQueryBuilder();
@@ -34,7 +34,9 @@ class ReferenceFiltreRepository extends EntityRepository
 		$querybuilder->select('r')->from('SYM16SimpleStockBundle:Reference', 'r');
 		$querybuilder->where ('r.entrepot = :entrepot')->setParameter('entrepot', $entrepot);
 		$querybuilder->and   ('r.createur = :createur')->setParameter('createur', $createur);
+		// ça doit pas exister
 		$querybuilder->andnot('r.entrepot = :entrepot')->setParameter('entrepot', $entrepot);
+		// ça non plus
 		$querybuilder->andnot('r.createur = :createur')->setParameter('createur', $createur);
 		// on récuère la query à partir du quesrybuilder
 		$query = $querybuilder->getQuery();
@@ -42,16 +44,23 @@ class ReferenceFiltreRepository extends EntityRepository
 		return $query->getResult();
 	}
 
-	// renvoie une entité utilisateur ne contenant que les utilisateurs ayant statut donné
-	/*public function getUtilisateurByStatut($statut)
+	// renvoie une table de référence selon un filtre en DQL
+	public function getUtilisateurByStatut($filtre)
 	{
 		$query = $this ->_em->createQuery('
-			SELECT u, d
-			FROM SYM16SimpleStockBundle:Utilisateur u
-			JOIN u.droit d WHERE d.privilege = :statut');
-		$query->setParameter('statut', $statut);
+		    SELECT u
+		    FROM SYM16SimpleStockBundle:Reference u
+		    WHERE u.entrepot = :inclureEntrepot
+		    AND u.createur = :inclureCreateur
+		    AND NOT u.entrepot = :exclureEntrepot
+		    AND NOT u.createur = :exclureCreateur
+		    ');
+		$query->setParameter('inclureEntrepot', $filtre);
+		$query->setParameter('inclureCreateur', $filtre);
+		$query->setParameter('exclureEntrepot', $filtre);
+		$query->setParameter('exclureCreateur', $filtre);
 		return $query->getResult();
-	}*/
+	}
 
 
 
