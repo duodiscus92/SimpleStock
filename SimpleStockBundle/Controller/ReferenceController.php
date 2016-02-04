@@ -14,6 +14,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use SYM16\SimpleStockBundle\Entity\Reference;
 use SYM16\SimpleStockBundle\Form\ReferenceType;
 use SYM16\SimpleStockBundle\Entity\ReferenceFiltre;
+use SYM16\SimpleStockBundle\Entity\Repository\ReferenceFiltreRepository;
 use SYM16\SimpleStockBundle\Form\ReferenceModifierType;
 use SYM16\SimpleStockBundle\Form\ReferenceFiltreType;
 
@@ -31,41 +32,9 @@ class ReferenceController extends Controller
      *
      * @Route("/view", name="sym16_simple_stock_reference_lister")
      */
-    public function listerAction(Request $request)
+    public function listerAction()
     {
-	// creation d'une instance de la classe de filtrage
-	$filtre = new ReferenceFiltre();
-	// creation du formulaire
-	$form = $this->createForm(new ReferenceFiltreType, $filtre);
-	// test de la méthode
-	if($request->getMethod() == 'GET'){
-	//afficher le formulaire et le passer à la vue
-    	    return $this->render(
-		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
-		array('titre' => "Filtre d'affichage des références", 'form' => $form->CreateView() )
-	    );
-	}
-	// hydrater les variables ReferenceFiltre
-	$form->bind($request);
-	// verifier la validité des valeurs d’entrée
-	$uniquement = array(); $sauf = array(); $tout = array();
-	if($form->isValid()) {
-	    if( ($entrepot =  $filtre->getEntrepot()) != "-- Selectionnez un entrepot --")
-	    	if($filtre->getEntrepotfiltre() == 'u')
-	    	    $uniquement['entrepot'] = $entrepot;
-	    	else if($filtre->getEntrepotfiltre() == 's')
-		    $sauf['entrepot'] = $entrepot;
-		else
-		    $tout['entrepot'] = $entrepot;
 
-	    if( ($createur =  $filtre->getCreateur()) != "-- Selectionnez un créateur --")
-	    	if($filtre->getCreateurfiltre() == 'u')
-	    	    $uniquement['createur'] = $createur;
-	    	elseif($filtre->getCreateurfiltre() == 's')
-		    $sauf['createur'] = $createur;
-		else
-		    $tout['createur'] = $createur;
-	}
 	// on récupère l'entity manager
 	$em = $this->getDoctrine()->getManager();
 	// on récupère tout le contenu de la table
@@ -85,13 +54,11 @@ class ReferenceController extends Controller
 				);
 	// on récupère le contenu de la table
 	$entities = $repository->findAll();
-	// Obtenir les références filtrées
-	//$entities=$repository->getReferenceByFilter(array('t' => $tout,  'u' => $uniquement, 's' => $sauf));
-	//$entities = $repository->findBy($criteres);
         $path=array(
                 'mod'=>'sym16_simple_stock_reference_modifier',       // le chemin qui traitera l'action modifier
                 'supr'=>'sym16_simple_stock_reference_supprimer');    // le chemin qui traitera l'action supprimer
 	//  nombre total d'References
+	$repository = $em->getRepository('SYM16SimpleStockBundle:Reference');
 	$totalusers = $repository->getNbReference();
 	//on place tous les paramètres à lister dans un tableau
 	$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 'path' => $path, 'totalusers' => $totalusers);
@@ -99,6 +66,81 @@ class ReferenceController extends Controller
 	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
 	//lister
 	return $this->render($service['listtwig'], $service['tab']);
+    }
+
+    /**
+     * filtrer un tableau en faisant appel à un service
+     *
+     * @Route("/filter", name="sym16_simple_stock_reference_filtrer")
+     */
+    public function filtrerAction(Request $request)
+    {
+	// creation d'une instance de la classe de filtrage
+	$filtre = new ReferenceFiltre();
+	// creation du formulaire
+	$form = $this->createForm(new ReferenceFiltreType, $filtre);
+	// test de la méthode
+	if($request->getMethod() == 'POST'){
+	    // hydrater les variables ReferenceFiltre
+	    $form->bind($request);
+	    // verifier la validité des valeurs d’entrée
+	    $uniquement = array(); $sauf = array(); 
+	    if($form->isValid()) {
+		$uniquement['entrepot'] =  $sauf['entrepot'] =  $uniquement['createur'] = $sauf['createur'] = NULL;
+		// construction du filtre entrepot
+		if($filtre->getEntrepot() != NULL){
+		    $entrepot =  $filtre->getEntrepot()->getNom();
+		    if($filtre->getEntrepotfiltre() == 'u')
+			$uniquement['entrepot'] = $entrepot;
+		    else if($filtre->getEntrepotfiltre() == 's')
+			$sauf['entrepot'] = $entrepot;
+		}
+		// construction du filtre createur
+		if( $filtre->getCreateur() != NULL){
+		    $createur =  $filtre->getCreateur()->getLogin();
+		    if($filtre->getCreateurfiltre() == 'u')
+		    	$uniquement['createur'] = $createur;
+		    else if($filtre->getCreateurfiltre() == 's')
+			$sauf['createur'] = $createur;
+		}
+		// on récupère l'entity manager
+		$em = $this->getDoctrine()->getManager();
+		// on récupère tout le contenu de la table
+		$repository = $em->getRepository('SYM16SimpleStockBundle:ReferenceFiltre');
+		//preparaton des parametres
+		$listColnames = array	(
+					'id' => 'Id',
+					'Réf' =>'Ref', 
+					'Libellé' => 'Nom',
+					'UDV' => 'Udv',
+					'Seuil' => 'Seuil', 
+					'Créateur' => 'Createur', 
+					'Entrepot' => 'NomEntrepot',
+					'Emplacement' => 'NomEmplacement',
+					//'Création' =>'Creation', 
+					//'Modification' => 'Modification'
+					);
+		// Obtenir les références filtrées
+		$entities=$repository->findByFilter(array('u' => $uniquement, 's' => $sauf) );
+		// préparer les chemins modifier et effacer
+		$path=array(
+		    'mod'=>'sym16_simple_stock_reference_modifier',       // le chemin qui traitera l'action modifier
+		    'supr'=>'sym16_simple_stock_reference_supprimer');    // le chemin qui traitera l'action supprimer
+		//  nombre total d'References
+		$totalusers = $repository->countByFilter(array('u' => $uniquement, 's' => $sauf));
+		//on place tous les paramètres à lister dans un tableau
+		$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 'path' => $path, 'totalusers' => $totalusers);
+		// récupération du service et de la prestation  "lister_tout"
+		$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
+		//lister
+		return $this->render($service['listtwig'], $service['tab']);
+	    }
+	}
+	//afficher le formulaire et le passer à la vue
+    	    return $this->render(
+		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
+		array('titre' => "Filtre d'affichage des références", 'form' => $form->CreateView() )
+	    );
     }
 
     /**

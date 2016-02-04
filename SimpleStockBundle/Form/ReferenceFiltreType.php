@@ -42,7 +42,7 @@ class ReferenceFiltreType extends AbstractType
             //->add('categoriefiltre')
 	    // Radio boutons 
             ->add('createurfiltre', 	'choice', array(
-	    	'choices' => 		array('t'=> 'Tous les créateurs', 'u' => 'Uniquement le créteur sélectionné', 's' => 'Sauf le créateur selectionné'),
+	    	'choices' => 		array('t'=> 'Tous les créateurs', 'u' => 'Uniquement le créateur sélectionné', 's' => 'Sauf le créateur selectionné'),
 	    	'expanded' => 		true, // radio boutons ou case à cocher
 		'multiple' =>		false,	// radio boutons
 		'label' =>		'Filtrer selon le créateur sélectionné ci-dessous'

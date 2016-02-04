@@ -24,6 +24,16 @@ class ReferenceFiltre
 	$this->refvide = self::FILTRE_TOUS;
     }
 
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
     /**
      * @var integer
      *
@@ -73,6 +83,17 @@ class ReferenceFiltre
      */
     private $createurfiltre;
 
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set refvide

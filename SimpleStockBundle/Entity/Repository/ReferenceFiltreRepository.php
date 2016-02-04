@@ -12,56 +12,73 @@ use Doctrine\ORM\EntityRepository;
  */
 class ReferenceFiltreRepository extends EntityRepository
 {
-	// renvoie le nombre de références selon un filtre
-	/*public function getNbReferenceByFilter($id)
-	{
-		// on crée un query builder
-		$querybuilder = $this->_em->CreateQueryBuilder(filter);
-		$querybuilder->select('count(r)')->from('SYM16SimpleStockBundle:Reference', 'r');
-		$querybuilder->where('u.droit = :id')->setParameter('id', $id);
-		// on récuère la query à partir du quesrybuilder
-		$query = $querybuilder->getQuery();
-		// on l'exécute et on renvoie sa valeur	
-		return $query->getSingleScalarResult();
-	}*/
-
-	// renvoie une table de référence selon un filtre
-	public function getReferenceByFilterStdBy($filtre)
+	// filter selon une liste de critères
+	public function findByFilter($filtre)
 	{
 		// on crée un query builder
 		$querybuilder = $this->_em->CreateQueryBuilder();
-		// on construit le requete en fonction du filtre
 		$querybuilder->select('r')->from('SYM16SimpleStockBundle:Reference', 'r');
-		$querybuilder->where ('r.entrepot = :entrepot')->setParameter('entrepot', $entrepot);
-		$querybuilder->and   ('r.createur = :createur')->setParameter('createur', $createur);
-		// ça doit pas exister
-		$querybuilder->andnot('r.entrepot = :entrepot')->setParameter('entrepot', $entrepot);
-		// ça non plus
-		$querybuilder->andnot('r.createur = :createur')->setParameter('createur', $createur);
-		// on récuère la query à partir du quesrybuilder
+		$querybuilder->leftJoin('r.entrepot', 'e');
+		// traitement du uniquement
+		if( ($ef = $filtre['u']['entrepot']) == NULL)
+		    $querybuilder->where('e.nom IS NOT NULL');
+		else 
+		    $querybuilder->where('e.nom = :inclureEntrepot')->setParameter('inclureEntrepot', $ef);
+
+		if( ($ef = $filtre['u']['createur']) == NULL)
+		    $querybuilder->andWhere('r.createur IS NOT NULL');
+		else
+		    $querybuilder->andWhere('r.createur = :inclureCreateur')->setParameter('inclureCreateur', $ef);
+
+		//traitement du sauf
+		if( ($ef = $filtre['s']['entrepot']) == NULL)
+		    $querybuilder->andWhere('e.nom IS NOT NULL');
+		else 
+		    $querybuilder->andWhere('e.nom <> :inclureEntrepot')->setParameter('inclureEntrepot', $ef);
+
+		if( ($ef = $filtre['s']['createur']) == NULL)
+		    $querybuilder->andWhere('r.createur IS NOT NULL');
+		else
+		    $querybuilder->andWhere('r.createur <> :inclureCreateur')->setParameter('inclureCreateur', $ef);
+
+		// on récupère la query à partir du querybuilder
 		$query = $querybuilder->getQuery();
-		// on l'exécute et on renvoie sa valeur	
+		// on l'exécute et on renvoie sa valeur
 		return $query->getResult();
 	}
 
-	// renvoie une table de référence selon un filtre en DQL
-	public function getUtilisateurByStatut($filtre)
+	// compter le nb d'article selon un filtre
+	public function countByFilter($filtre)
 	{
-		$query = $this ->_em->createQuery('
-		    SELECT u
-		    FROM SYM16SimpleStockBundle:Reference u
-		    WHERE u.entrepot = :inclureEntrepot
-		    AND u.createur = :inclureCreateur
-		    AND NOT u.entrepot = :exclureEntrepot
-		    AND NOT u.createur = :exclureCreateur
-		    ');
-		$query->setParameter('inclureEntrepot', $filtre);
-		$query->setParameter('inclureCreateur', $filtre);
-		$query->setParameter('exclureEntrepot', $filtre);
-		$query->setParameter('exclureCreateur', $filtre);
-		return $query->getResult();
+		// on crée un query builder
+		$querybuilder = $this->_em->CreateQueryBuilder();
+		$querybuilder->select('COUNT(r)')->from('SYM16SimpleStockBundle:Reference', 'r');
+		$querybuilder->leftJoin('r.entrepot', 'e');
+		// traitement du uniquement
+		if( ($ef = $filtre['u']['entrepot']) == NULL)
+		    $querybuilder->where('e.nom IS NOT NULL');
+		else 
+		    $querybuilder->where('e.nom = :inclureEntrepot')->setParameter('inclureEntrepot', $ef);
+
+		if( ($ef = $filtre['u']['createur']) == NULL)
+		    $querybuilder->andWhere('r.createur IS NOT NULL');
+		else
+		    $querybuilder->andWhere('r.createur = :inclureCreateur')->setParameter('inclureCreateur', $ef);
+
+		//traitement du sauf
+		if( ($ef = $filtre['s']['entrepot']) == NULL)
+		    $querybuilder->andWhere('e.nom IS NOT NULL');
+		else 
+		    $querybuilder->andWhere('e.nom <> :inclureEntrepot')->setParameter('inclureEntrepot', $ef);
+
+		if( ($ef = $filtre['s']['createur']) == NULL)
+		    $querybuilder->andWhere('r.createur IS NOT NULL');
+		else
+		    $querybuilder->andWhere('r.createur <> :inclureCreateur')->setParameter('inclureCreateur', $ef);
+
+		// on récupère la query à partir du querybuilder
+		$query = $querybuilder->getQuery();
+		// on l'exécute et on renvoie sa valeur
+		return $query->getSingleScalarResult();
 	}
-
-
-
 }
