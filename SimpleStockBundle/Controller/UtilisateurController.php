@@ -43,6 +43,8 @@ class UtilisateurController extends Controller
 			 	);
 	// on récupère le contenu de la table
 	$entities = $repository->findAll();
+	if ($entities == NULL)
+	    return $this->render('SYM16SimpleStockBundle:Common:nolist.html.twig');
         $path=array(
                 'mod'=>'sym16_simple_stock_utilisateur_modifier',       // le chemin qui traitera l'action modifier
                 'supr'=>'sym16_simple_stock_utilisateur_supprimer');    // le chemin qui traitera l'action supprimer
