@@ -122,6 +122,8 @@ class ReferenceController extends Controller
 					);
 		// Obtenir les références filtrées
 		$entities=$repository->findByFilter(array('u' => $uniquement, 's' => $sauf) );
+		if ($entities == NULL)
+		    return $this->render('SYM16SimpleStockBundle:Common:nolist.html.twig');
 		// préparer les chemins modifier et effacer
 		$path=array(
 		    'mod'=>'sym16_simple_stock_reference_modifier',       // le chemin qui traitera l'action modifier
@@ -133,7 +135,10 @@ class ReferenceController extends Controller
 		// récupération du service et de la prestation  "lister_tout"
 		$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
 		//lister
-		return $this->render($service['listtwig'], $service['tab']);
+		//if ($service == NULL)
+		    //return $this->render('SYM16SimpleStockBundle:Common:nolist.html.twig');
+		//else
+		    return $this->render($service['listtwig'], $service['tab']);
 	    }
 	}
 	//afficher le formulaire et le passer à la vue

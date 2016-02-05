@@ -34,7 +34,7 @@ class ListerCorrection
 	// valeurs des entité à lister
 	$entities = $liste['entities'];
 	if(null == $entities){
-		throw new NotFoundHttpException("La liste n'existe pas");
+	    throw new NotFoundHttpException("La liste demandée est vide");
 	}
 	$listEntities = array();
 	//boucle sur les lignes de la table
@@ -68,4 +68,3 @@ class ListerCorrection
 	);
     }
 }
-
