@@ -203,6 +203,9 @@ class ReferenceController extends Controller
 	// suppression de l'entité
 	$em->remove($cat);
 	$em->flush();
+	// message flash
+	$this->get('session')->getFlashBag()->add('info', 'Référence bien supprimée');
+	//$this->get('session')->getFlashBag()->add('info', 'Presser F5 pour supprimer ce message');
 	// affichage de la liste reactualisee
 	return $this->listerAction();
     }

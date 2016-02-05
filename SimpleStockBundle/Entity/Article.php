@@ -3,57 +3,48 @@
 namespace SYM16\SimpleStockBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Emplacement
+ * Article
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\EmplacementRepository")
- * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity(
- * fields={"nom"},
- * message="Ce nom  d'emplacement a déjà été utilisé"
- * )
+ * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\ArticleRepository")
  */
-
-class Emplacement
+class Article
 {
+    // valeurs par défaut
     public function __construct()
     {
 	$this->creation = new \Datetime();
 	$this->modification = $this->creation;
+	$this->tva = 20.00;
     }
 
     /**
-     * @ORM\PreUpdate
-    */
-    public function updateDate()
-    {
-	$this->setModification(new \Datetime() );
-    }
-
-    /**
-    * @ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Entrepot", inversedBy="emplacement")
+    * @ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Reference")
     * @ORM\JoinColumn(nullable=false)
     */
-    private $entrepot;
+    private $reference;
 
-    public function getEntrepot()
+    public function getReference()
     {
-	return $this->entrepot;
+	return $this->reference;
     }
 
-    public function setEntrepot(Entrepot $entrepot)
+    public function setReference(Reference $reference)
     {
-	$this->entrepot = $entrepot;
+	$this->reference = $reference;
 	return $this;
     }
 
-    public function getNomEntrepot()
+    public function getNomReference()
     {
-	return $this->getEntrepot()->getNom();
+	return $this->getReference()->getRef();
+    }
+
+    public function getLibelleReference()
+    {
+	return $this->getReference()->getNom();
     }
 
     /**
@@ -68,34 +59,42 @@ class Emplacement
     /**
      * @var string
      *
-     * @ORM\Column(name="Nom", type="string", length=255, unique=true)
-     * @Assert\Length(
-     * min=4,
-     * max=50,
-     * minMessage="Nom d'emplacement doit faire au moins {{ limit }} caractères",
-     * maxMessage="Nom d'emplacement doit faire au plus {{ limit }} caractères"
-     * )
+     * @ORM\Column(name="prixht", type="decimal")
      */
-    private $nom;
+    private $prixht;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Createur", type="string", length=255)
+     * @ORM\Column(name="tva", type="decimal")
+     */
+    private $tva;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="quantite", type="smallint")
+     */
+    private $quantite;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="createur", type="string", length=255)
      */
     private $createur;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="Creation", type="datetime")
+     * @ORM\Column(name="creation", type="datetime")
      */
     private $creation;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="Modification", type="datetime")
+     * @ORM\Column(name="modification", type="datetime")
      */
     private $modification;
 
@@ -111,33 +110,79 @@ class Emplacement
     }
 
     /**
-     * Set nom
+     * Set prixht
      *
-     * @param string $nom
-     * @return Emplacement
+     * @param string $prixht
+     * @return Article
      */
-    public function setNom($nom)
+    public function setPrixht($prixht)
     {
-        $this->nom = $nom;
+        $this->prixht = $prixht;
 
         return $this;
     }
 
     /**
-     * Get nom
+     * Get prixht
      *
      * @return string 
      */
-    public function getNom()
+    public function getPrixht()
     {
-        return $this->nom;
+        return $this->prixht;
+    }
+
+    /**
+     * Set tva
+     *
+     * @param string $tva
+     * @return Article
+     */
+    public function setTva($tva)
+    {
+        $this->tva = $tva;
+
+        return $this;
+    }
+
+    /**
+     * Get tva
+     *
+     * @return string 
+     */
+    public function getTva()
+    {
+        return $this->tva;
+    }
+
+    /**
+     * Set quantite
+     *
+     * @param integer $quantite
+     * @return Article
+     */
+    public function setQuantite($quantite)
+    {
+        $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    /**
+     * Get quantite
+     *
+     * @return integer 
+     */
+    public function getQuantite()
+    {
+        return $this->quantite;
     }
 
     /**
      * Set createur
      *
      * @param string $createur
-     * @return Emplacement
+     * @return Article
      */
     public function setCreateur($createur)
     {
@@ -160,7 +205,7 @@ class Emplacement
      * Set creation
      *
      * @param \DateTime $creation
-     * @return Emplacement
+     * @return Article
      */
     public function setCreation($creation)
     {
@@ -183,7 +228,7 @@ class Emplacement
      * Set modification
      *
      * @param \DateTime $modification
-     * @return Emplacement
+     * @return Article
      */
     public function setModification($modification)
     {
