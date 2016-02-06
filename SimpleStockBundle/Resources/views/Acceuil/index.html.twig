@@ -5,6 +5,11 @@
     <h2>Hello utilisateur {{ name }}!</h2>#}
     {#<h2>Menu principal</h2>#}
     {% block BLOCA %}
+    <h3>Articles</h3>
+	<li><a href="{{ path('sym16_simple_stock_article_lister') }}">
+		Lister les articles</a></li>
+	<li><a href="{{ path('sym16_simple_stock_article_ajouter') }}">
+		Ajouter un article</a></li>
     <h3>Utilisateurs et statuts</h3>
 	<li><a href="{{ path('sym16_simple_stock_droit_lister') }}">
 		Lister les différents statuts</a></li>

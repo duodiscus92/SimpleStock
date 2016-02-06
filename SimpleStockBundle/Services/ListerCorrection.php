@@ -64,7 +64,8 @@ class ListerCorrection
 		'listtwig' => 'SYM16SimpleStockBundle:Common:list.html.twig',
 		// ce qu'il faut lister
 		//'tab' => array('listColnames' => $listColnames, 'listEntities' => $listEntities, 'path' => $path, 'totaluser' => $totaluser)
-		'tab' => array('listColnames' => $entetes, 'listEntities' => $listEntities, 'path' => $path, 'totaluser' => $totaluser)
+		'tab' => array('listColnames' => $entetes, 'listEntities' => $listEntities, 
+				'path' => $path, 'totaluser' => $totaluser, 'listname' => $liste['listname'])
 	);
     }
 }

@@ -49,7 +49,8 @@ class EntrepotController extends Controller
 	//  nombre total d'entrepots
 	$totalEntrepots = $repository->getNbEntrepot();
 	//on place tous les paramètres à lister dans un tableau
-	$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 'path' => $path, 'totalusers' => $totalEntrepots);
+	$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 
+			'path' => $path, 'totalusers' => $totalEntrepots, 'listname' => "Liste des entrepots");
 	// récupération du service et de la prestation  "lister_tout"
 	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
 	//lister

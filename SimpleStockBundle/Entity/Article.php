@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Article
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\ArticleRepository")
+ * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\ArticleRepository")
  */
 class Article
 {
@@ -37,12 +37,12 @@ class Article
 	return $this;
     }
 
-    public function getNomReference()
+    public function getRefRef()
     {
 	return $this->getReference()->getRef();
     }
 
-    public function getLibelleReference()
+    public function getNomRef()
     {
 	return $this->getReference()->getNom();
     }

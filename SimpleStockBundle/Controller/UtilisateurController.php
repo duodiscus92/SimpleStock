@@ -51,7 +51,8 @@ class UtilisateurController extends Controller
 	//  nombre total d'utilisateurs
 	$totalusers = $repository->getNbUtilisateur();
 	//on place tous les paramètres à lister dans un tableau
-	$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 'path' => $path, 'totalusers' => $totalusers);
+	$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 
+			'path' => $path, 'totalusers' => $totalusers, 'listname' => "Liste des utilisateurs");
 	// récupération du service et de la prestation  "lister_tout"
 	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
 	//lister

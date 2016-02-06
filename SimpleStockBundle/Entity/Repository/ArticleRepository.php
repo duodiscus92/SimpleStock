@@ -1,6 +1,6 @@
 <?php
 
-namespace SYM16\SimpleStockBundle\Entity;
+namespace SYM16\SimpleStockBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class ArticleRepository extends EntityRepository
 {
+	// Nombre total d'articles
+	public function getNbArticle()
+	{
+		// on crée un query builder
+		$querybuilder = $this->_em->CreateQueryBuilder();
+		$querybuilder->select('count(r)')->from('SYM16SimpleStockBundle:Article', 'r');
+		// on récuère la query à partir du quesrybuilder
+		$query = $querybuilder->getQuery();
+		// on l'exécute et on renvoie sa valeur	
+		return $query->getSingleScalarResult();
+	}
 }

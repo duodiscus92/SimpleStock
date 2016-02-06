@@ -1,5 +1,5 @@
 <?php
-//src/SYM16/SimpleStockBundle/Controller/ReferenceController.php
+//src/SYM16/SimpleStockBundle/Controller/ArticleController.php
 namespace SYM16\SimpleStockBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,26 +11,26 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\Query\ResultSetMapping;
 
-use SYM16\SimpleStockBundle\Entity\Reference;
-use SYM16\SimpleStockBundle\Form\ReferenceType;
-use SYM16\SimpleStockBundle\Entity\ReferenceFiltre;
-use SYM16\SimpleStockBundle\Entity\Repository\ReferenceFiltreRepository;
-use SYM16\SimpleStockBundle\Form\ReferenceModifierType;
-use SYM16\SimpleStockBundle\Form\ReferenceFiltreType;
+use SYM16\SimpleStockBundle\Entity\Article;
+use SYM16\SimpleStockBundle\Form\ArticleType;
+//use SYM16\SimpleStockBundle\Entity\ArticleFiltre;
+//use SYM16\SimpleStockBundle\Entity\Repository\ArticleFiltreRepository;
+use SYM16\SimpleStockBundle\Form\ArticleModifierType;
+use SYM16\SimpleStockBundle\Form\ArticleFiltreType;
 
 /**
  *
- * Classe Reference
+ * Classe Article
  *
- * @Route("/reference")
+ * @Route("/article")
  */
-class ReferenceController extends Controller
+class ArticleController extends Controller
 {
 
     /**
      * lister un tableau en faisant appel à un service
      *
-     * @Route("/view", name="sym16_simple_stock_reference_lister")
+     * @Route("/view", name="sym16_simple_stock_article_lister")
      */
     public function listerAction()
     {
@@ -38,53 +38,56 @@ class ReferenceController extends Controller
 	// on récupère l'entity manager
 	$em = $this->getDoctrine()->getManager();
 	// on récupère tout le contenu de la table
-	$repository = $em->getRepository('SYM16SimpleStockBundle:Reference');
+	$repository = $em->getRepository('SYM16SimpleStockBundle:Article');
 	//preparaton des parametres
 	$listColnames = array	(
 				'id' => 'Id',
-				'Réf' =>'Ref', 
-				'Libellé' => 'Nom',
-				'UDV' => 'Udv',
-				'Seuil' => 'Seuil', 
+				'Réf' => 'RefRef',
+				'Nom' =>  'NomRef', 
+				'PrixHT' => 'Prixht',
+				'TVA' => 'Tva',
+				//'Libellé' => 'Nom',
+				//'UDV' => 'Udv',
+				//'Seuil' => 'Seuil', 
 				'Créateur' => 'Createur', 
-				'Entrepot' => 'NomEntrepot',
-				'Emplacement' => 'NomEmplacement',
-				//'Création' =>'Creation', 
-				//'Modification' => 'Modification'
+				//'Entrepot' => 'NomEntrepot',
+				//'Emplacement' => 'NomEmplacement',
+				'Création' =>'Creation', 
+				'Modification' => 'Modification'
 				);
 	// on récupère le contenu de la table
 	$entities = $repository->findAll();
 	if ($entities == NULL)
 	    return $this->render('SYM16SimpleStockBundle:Common:nolist.html.twig');
         $path=array(
-                'mod'=>'sym16_simple_stock_reference_modifier',       // le chemin qui traitera l'action modifier
-                'supr'=>'sym16_simple_stock_reference_supprimer');    // le chemin qui traitera l'action supprimer
-	//  nombre total d'References
-	$repository = $em->getRepository('SYM16SimpleStockBundle:Reference');
-	$totalusers = $repository->getNbReference();
+                'mod'=>'sym16_simple_stock_article_modifier',       // le chemin qui traitera l'action modifier
+                'supr'=>'sym16_simple_stock_article_supprimer');    // le chemin qui traitera l'action supprimer
+	//  nombre total d'Articles
+	$repository = $em->getRepository('SYM16SimpleStockBundle:Article');
+	$totalusers = $repository->getNbArticle();
 	//on place tous les paramètres à lister dans un tableau
 	$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 
-			'path' => $path, 'totalusers' => $totalusers, 'listname' =>  "Liste des références");
+			'path' => $path, 'totalusers' => $totalusers, 'listname' => "Liste des articles");
 	// récupération du service et de la prestation  "lister_tout"
 	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
 	//lister
 	return $this->render($service['listtwig'], $service['tab']);
     }
 
-    /**
+    /*
      * filtrer un tableau en faisant appel à un service
      *
-     * @Route("/filter", name="sym16_simple_stock_reference_filtrer")
+     * @Route("/filter", name="sym16_simple_stock_article_filtrer")
      */
-    public function filtrerAction(Request $request)
+    /*public function filtrerAction(Request $request)
     {
 	// creation d'une instance de la classe de filtrage
-	$filtre = new ReferenceFiltre();
+	$filtre = new ArticleFiltre();
 	// creation du formulaire
-	$form = $this->createForm(new ReferenceFiltreType, $filtre);
+	$form = $this->createForm(new ArticleFiltreType, $filtre);
 	// test de la méthode
 	if($request->getMethod() == 'POST'){
-	    // hydrater les variables ReferenceFiltre
+	    // hydrater les variables ArticleFiltre
 	    $form->bind($request);
 	    // verifier la validité des valeurs d’entrée
 	    $uniquement = array(); $sauf = array(); 
@@ -109,7 +112,7 @@ class ReferenceController extends Controller
 		// on récupère l'entity manager
 		$em = $this->getDoctrine()->getManager();
 		// on récupère tout le contenu de la table
-		$repository = $em->getRepository('SYM16SimpleStockBundle:ReferenceFiltre');
+		$repository = $em->getRepository('SYM16SimpleStockBundle:ArticleFiltre');
 		//preparaton des parametres
 		$listColnames = array	(
 					'id' => 'Id',
@@ -129,13 +132,12 @@ class ReferenceController extends Controller
 		    return $this->render('SYM16SimpleStockBundle:Common:nolist.html.twig');
 		// préparer les chemins modifier et effacer
 		$path=array(
-		    'mod'=>'sym16_simple_stock_reference_modifier',       // le chemin qui traitera l'action modifier
-		    'supr'=>'sym16_simple_stock_reference_supprimer');    // le chemin qui traitera l'action supprimer
-		//  nombre total d'References
+		    'mod'=>'sym16_simple_stock_article_modifier',       // le chemin qui traitera l'action modifier
+		    'supr'=>'sym16_simple_stock_article_supprimer');    // le chemin qui traitera l'action supprimer
+		//  nombre total d'Articles
 		$totalusers = $repository->countByFilter(array('u' => $uniquement, 's' => $sauf));
 		//on place tous les paramètres à lister dans un tableau
-		$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 
-				'path' => $path, 'totalusers' => $totalusers, 'listname' => "Liste des références filtrées");
+		$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 'path' => $path, 'totalusers' => $totalusers);
 		// récupération du service et de la prestation  "lister_tout"
 		$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
 		//lister
@@ -148,31 +150,30 @@ class ReferenceController extends Controller
 	//afficher le formulaire et le passer à la vue
     	    return $this->render(
 		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
-		array('titre' => "Filtre d'affichage des références", 'form' => $form->CreateView() )
+		array('titre' => "Filtre d'affichage des articles", 'form' => $form->CreateView() )
 	    );
-    }
+    }*/
 
     /**
      *
      * ajouter un article dans l'entité à partir d'un formulaire externalisé
      *
-     * @Route("/add", name="sym16_simple_stock_reference_ajouter")
-     * @Template()
+     * @Route("/add", name="sym16_simple_stock_article_ajouter")
      */
     public function ajouterAction(Request $request){
 	// creation d'une instance de l'entité propriétaire et hydratation
-	$Reference = new Reference();
+	$Article = new Article();
 	// creation du formulaire
-	$form = $this->createForm(new ReferenceType, $Reference);
+	$form = $this->createForm(new ArticleType, $Article);
 	// test de la méthode
 	if($request->getMethod() == 'POST'){
-	// hydrater les variables $Reference
+	// hydrater les variables $Article
 	    $form->bind($request);
 	    // verifier la validité des valeurs d’entrée
 	    if($form->isValid()) {
-	        // enregistrer SReference dans la BDD
+	        // enregistrer SArticle dans la BDD
 		$em = $this->getDoctrine()->getManager();
-		$em->persist($Reference);
+		$em->persist($Article);
 		$em->flush();
 		// affichage de la liste reactualisee
 		return $this->listerAction();
@@ -181,19 +182,19 @@ class ReferenceController extends Controller
     	// On est arrivé par GET ou bien données d'entrées invalides
 	//afficher le formulaire et le passer à la vue
     	// sans l'utilsation de l'annotation Template()
-	/*return $this->render(
+	return $this->render(
 		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
-		array('titre' => "Ajout d'une reference", 'form' => $form->CreateView() )
-	);*/
+		array('titre' => "Ajout d'un article", 'form' => $form->CreateView() )
+	);
     	// avec l'utilsation de l'annotation Template()
-    	return array('titre' => "Ajout d'une reference", 'form' => $form->CreateView() );
+    	//return array('titre' => "Ajout d'un article", 'form' => $form->CreateView() );
     }
 
     /**
      *
      * supprimer un article
      *
-     * @Route("/suppr", name="sym16_simple_stock_reference_supprimer")
+     * @Route("/suppr", name="sym16_simple_stock_article_supprimer")
      */
     public function supprimerAction(Request $request) {
 	// récupe de l'id de l'article à supprimer
@@ -201,7 +202,7 @@ class ReferenceController extends Controller
 	// recupération de l'entity manager
 	$em = $this->getDoctrine()->getManager();
         //récuparartion de l'entite d'id  $id
-        $cat = $em->getRepository("SYM16SimpleStockBundle:Reference")->find($id);
+        $cat = $em->getRepository("SYM16SimpleStockBundle:Article")->find($id);
 	// suppression de l'entité
 	$em->remove($cat);
 	$em->flush();
@@ -216,7 +217,7 @@ class ReferenceController extends Controller
      *
      * modifier un article dans l'entité (avec formulaire externalisé)
      *
-     * @Route("/mod", name="sym16_simple_stock_reference_modifier")
+     * @Route("/mod", name="sym16_simple_stock_article_modifier")
      */
     public function modifierAction(Request $request)
     {
@@ -225,18 +226,18 @@ class ReferenceController extends Controller
 	// recupération de l'entity manager
 	$em = $this->getDoctrine()->getManager();
         //récuparartion de l'entite d'id  $id
-        $Reference = $em->getRepository("SYM16SimpleStockBundle:Reference")->find($id);
+        $Article = $em->getRepository("SYM16SimpleStockBundle:Article")->find($id);
 	// creation du formulaire
-	$form = $this->createForm(new ReferenceModifierType, $Reference);
+	$form = $this->createForm(new ArticleModifierType, $Article);
 	// test de la méthode
 	if($request->getMethod() == 'POST'){
 	// on est donc arrivé en ce point par POST
-	// hydrater la variable $Reference
+	// hydrater la variable $Article
 		$form->bind($request);
 		// verifier la validité des valeurs d’entrée
 		if($form->isValid()) {
-		    // enregistrer Reference dans la BDD
-		    $em->persist($Reference);
+		    // enregistrer Article dans la BDD
+		    $em->persist($Article);
 		    $em->flush();
 		    // affichage de la liste reactualisee
 		    return $this->listerAction();
@@ -246,15 +247,15 @@ class ReferenceController extends Controller
 	//afficher le formulaire et le passer à la vue
     	return $this->render(
 		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
-		array('titre' => "Modification d'une reference", 'form' => $form->CreateView() )
+		array('titre' => "Modification d'un article", 'form' => $form->CreateView() )
 	);
     }
 
     /**
      * D'après le code de Julien Cornu (merci !)
-     * @Route("/reference-ajax", name="reference_ajax")
+     * @Route("/article-ajax", name="article_ajax")
      */
-    public function referenceAjaxAction(Request $request){
+    public function articleAjaxAction(Request $request){
 	// A des fins pédago on montre qu'on peut récupérer aussi bien pat GET que par POST
 	if($request->getMethod() == 'POST')
 	//récupération de l'id entrepot transmise par le script Ajax par POST
