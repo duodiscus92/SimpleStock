@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class ReferenceRepository extends EntityRepository
 {
 	// Nombre total de références
-	public function getNbReference()
+	public function getNbItems()
 	{
 		// on crée un query builder
 		$querybuilder = $this->_em->CreateQueryBuilder();
@@ -22,5 +22,12 @@ class ReferenceRepository extends EntityRepository
 		$query = $querybuilder->getQuery();
 		// on l'exécute et on renvoie sa valeur	
 		return $query->getSingleScalarResult();
+	}
+	
+	//pour assuurer la compatibilité ascendante
+	//cette fonction est obsolète
+	public function getNbReference()
+	{
+		return $this->getNbItems();
 	}
 }

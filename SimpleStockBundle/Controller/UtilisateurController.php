@@ -60,6 +60,11 @@ class UtilisateurController extends Controller
     }
 
 
+    /**
+     * lister un tableau en faisant appel à un service
+     *
+     * @Route("/view2", name="sym16_simple_stock_utilisateur_lister2")
+     */
     //lister un tableau (données provenenant d'une BDD)
     public function listerAction2() {
 	// contruction de la première ligne (ligne d'intitulé)

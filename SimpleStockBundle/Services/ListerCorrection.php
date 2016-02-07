@@ -46,7 +46,7 @@ class ListerCorrection
 		    $fieldname = 'get'.$fieldname;
 		    // traitement special de l'id
 		    if ($key == 'id')
-				$listArticle['id'] = $this->AnyTypeToString($entitie->$fieldname());
+			$listArticle['id'] = $this->AnyTypeToString($entitie->$fieldname());
 		    else
 		    	array_push($listArticle, $this->AnyTypeToString($entitie->$fieldname()));
 		}
