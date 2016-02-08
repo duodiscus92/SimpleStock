@@ -128,6 +128,24 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 
     /**
      *
+     * modifier un article dans l'entité (avec formulaire externalisé)
+     *
+     * @Route("/mod", name="sym16_simple_stock_reference_modifier")
+     * @Template()
+     */
+     /* Template("SYM16SimpleStockBundle:Forms:simpleform.html.twig")*/
+    public function modifierAction(Request $request)
+    {
+	// préciser le formulaire à créer
+	$this->setFormNameAndObject("Modification d'une reference", new ReferenceModifierType);
+	// preciser le repository et ce qu'on veut lister après modification
+	$this->aLister();
+	// appel de la fonction mère
+	return parent::modifierAction($request);
+    }
+
+    /**
+     *
      * supprimer un article
      *
      * @Route("/suppr", name="sym16_simple_stock_reference_supprimer")
@@ -139,23 +157,6 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	$this->setMesgFlash('Référence bien supprimée');
 	// appel de la fonction mère
 	return parent::supprimerAction($request);
-    }
-
-    /**
-     *
-     * modifier un article dans l'entité (avec formulaire externalisé)
-     *
-     * @Route("/mod", name="sym16_simple_stock_reference_modifier")
-     * @Template("SYM16SimpleStockBundle:Forms:simpleform.html.twig")
-     */
-    public function modifierAction(Request $request)
-    {
-	// préciser le formulaire à créer
-	$this->setFormNameAndObject("Modification d'une reference", new ReferenceModifierType);
-	// preciser le repository et ce qu'on veut lister après modification
-	$this->aLister();
-	// appel de la fonction mère
-	return parent::modifierAction($request);
     }
 
     /**

@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class ArticleRepository extends EntityRepository
 {
 	// Nombre total d'articles
-	public function getNbArticle()
+	public function getNbItems()
 	{
 		// on crée un query builder
 		$querybuilder = $this->_em->CreateQueryBuilder();
@@ -23,4 +23,12 @@ class ArticleRepository extends EntityRepository
 		// on l'exécute et on renvoie sa valeur	
 		return $query->getSingleScalarResult();
 	}
+
+	//pour assuurer la compatibilité ascendante
+	//cette fonction est obsolète
+	public function getNbArticle()
+	{
+		return $this->getNbItems();
+	}
+
 }

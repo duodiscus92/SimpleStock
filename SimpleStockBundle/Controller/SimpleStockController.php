@@ -150,24 +150,6 @@ class SimpleStockController extends Controller
     	return array('titre' => $this->formname, 'form' => $form->CreateView() );
     }
 
-    //supprime une entité
-    public function supprimerAction(Request $request) {
-	// récupe de l'id de l'article à supprimer
-        $id = $request->query->get('valeur');
-	// recupération de l'entity manager
-	$em = $this->getDoctrine()->getManager();
-        //récuparartion de l'entite d'id  $id
-        $entity = $em->getRepository($this->repositoryPath)->find($id);
-	// suppression de l'entité
-	$em->remove($entity);
-	$em->flush();
-	// message flash
-	$this->get('session')->getFlashBag()->add('info', $this->mesgflash);
-	$this->get('session')->getFlashBag()->add('info', 'Presser F5 pour supprimer ce message');
-	// affichage de la liste reactualisee
-	return $this->listerAction();
-    }
-
     public function modifierAction(Request $request)
     {
 	// récupe de l'id de l'article à supprimer
@@ -193,12 +175,25 @@ class SimpleStockController extends Controller
 		}
 	}
     	// On est arrivé par GET ou bien données d'entrées invalides
-	//afficher le formulaire et le passer à la vue
-    	/*return $this->render(
-		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
-		array('titre' => "Modification d'une reference", 'form' => $form->CreateView() )
-	);*/
     	// avec l'utilisation de l'annotation Template()
     	return array('titre' => $this->formname, 'form' => $form->CreateView() );
+    }
+
+    //supprime une entité
+    public function supprimerAction(Request $request) {
+	// récupe de l'id de l'article à supprimer
+        $id = $request->query->get('valeur');
+	// recupération de l'entity manager
+	$em = $this->getDoctrine()->getManager();
+        //récuparartion de l'entite d'id  $id
+        $entity = $em->getRepository($this->repositoryPath)->find($id);
+	// suppression de l'entité
+	$em->remove($entity);
+	$em->flush();
+	// message flash
+	$this->get('session')->getFlashBag()->add('info', $this->mesgflash);
+	$this->get('session')->getFlashBag()->add('info', 'Presser F5 pour supprimer ce message');
+	// affichage de la liste reactualisee
+	return $this->listerAction();
     }
 }
