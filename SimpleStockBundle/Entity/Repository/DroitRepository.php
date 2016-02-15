@@ -13,12 +13,19 @@ use Doctrine\ORM\EntityRepository;
 class DroitRepository extends EntityRepository
 {
 	//renvoie le nombre total de lignes de l'entité (utilise DQL)
-	public function getNbDroit()
+	public function getNbItems()
 	{
 		$query = $this ->_em->createQuery('
 			SELECT COUNT(d)
 			FROM SYM16SimpleStockBundle:Droit d');
 		return $query->getSingleScalarResult();
+	}
+
+	//pour assuurer la compatibilité ascendante
+	//cette fonction est obsolète
+	public function getNbArticle()
+	{
+		return $this->getNbItems();
 	}
 
 }

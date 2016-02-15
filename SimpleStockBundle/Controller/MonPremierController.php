@@ -2,6 +2,7 @@
 // src/SYM16/SimpleStockBundle/Controller/MonPremierController.php
 namespace SYM16\SimpleStockBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,6 +18,12 @@ use SYM16\SimpleStockBundle\Entity\PetitesFournitures;
     }
 }*/
 
+/**
+ *
+ * Classe MonPremier
+ *
+ * @Route("/monpremier")
+ */
 class MonPremierController extends Controller
 {
     //J'aime ....
@@ -71,8 +78,13 @@ class MonPremierController extends Controller
 	    ('sym16_simple_stock_homepage', array('name' =>'Jacques'));
 */
     }
-    //lister un tableau (constuit en dur dans cette fonction, en vérité proviendra d'une BDD)
-/*    public function listerAction() {
+
+    /**
+     * lister un tableau (valeurs en dur)
+     *
+     * @Route("/lister", name="sym16_simple_stock__lister")
+     */
+    public function listerAction() {
 	// contruction de la première ligne (ligne d'intitulé)
 	$listColnames = array('ID', 'Libellé', 'Prix HT', 'Prix TTC');
 	// construction des autres lignes
@@ -88,10 +100,10 @@ class MonPremierController extends Controller
 		'SYM16SimpleStockBundle:MonPremier:list.html.twig',
 		array('listColnames' => $listColnames, 'listEntities'=> $listEntities, 'path'=>$path)
         );
-    }*/
+    }
 
     //lister un tableau (données provenenant d'une BDD)
-    public function listerAction() {
+    /*public function listerAction() {
 	// contruction de la première ligne (ligne d'intitulé)
 	$listColnames = array('ID', 'Libellé', 'Prix HT', 'Prix TTC');
 	//construction des autres lignes du tableay
@@ -120,7 +132,7 @@ class MonPremierController extends Controller
 		'SYM16SimpleStockBundle:MonPremier:list.html.twig',
 		array('listColnames' => $listColnames, 'listEntities'=> $listEntities, 'path'=>$path)
         );
-    }
+    }*/
 
     // ajouter un article dans l'entité
     public function ajouterAction(Request $request){

@@ -13,6 +13,8 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 class SimpleStockController extends Controller
 {
+
+
     private $repositoryPath;
     private $listColnames=array('id' => 'Id');
     private $modsupr;
@@ -181,6 +183,8 @@ class SimpleStockController extends Controller
 
     //supprime une entité
     public function supprimerAction(Request $request) {
+	// demande  de confirmation
+	// ----???????????????????????----
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');
 	// recupération de l'entity manager
