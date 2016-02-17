@@ -26,6 +26,6 @@ class FamilleModifierType extends FamilleType
      */
     public function getName()
     {
-        return 'sym16_simplestockbundle_famillermodifier';
+        return 'sym16_simplestockbundle_famillemodifier';
     }
 }

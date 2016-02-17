@@ -10,22 +10,173 @@
     {# utilisation de variables de sessions déclarées dans AcceuilController.php #}
     <h3>Utilisateur : {{ app.session.get('stockuser') }} - Votre statut est :{{stockuserstatut}}</h3>
       {% endblock %}
-    {% block BLOCA %}
-    {% endblock %}
     {% block FOOTER %}
     <footer>
     <dl>
     <ht><b>Mentions légales</b></dt>
     <dd>Propulsé par : Symfony, Linux, Apache, PHP, MySQL</dd>
-    <dd>Projet réalisé par les étudiants de {{university}}, Cursus : {{cursus}}, Cours : {{lecture}}, Prof :  {{prof}}</dd>
+    <dd>Simple Stock est un projet à vocation pédagogique</dd>
+    <dd>Copyright d'JET Conseil - Formation - Projets</dd>
+    {#<dd>Projet réalisé par les étudiants de {{university}}, Cursus : {{cursus}}, Cours : {{lecture}}, Prof :  {{prof}}</dd>#}
     </dl>
     </footer>
     {% endblock%}
     {% block MENU0 %}
-	<li class="active"><a href="{{path('sym16_simple_stock_homepage',{'name':stockuser}) }}">Home</a></li>
-	<li><a href="#">Menu 1</a></li>
-	<li><a href="#">Menu 2</a></li>
-	<li><a href="#">Menu 3</a></li>
-    {% endblock %}
-{#  </body>
+    <nav class="navbar navbar-primary" role="navigation">
+    	<div class="container-fluid">
+    	    <div class="navbar-header">
+      		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
+        	    <span class="sr-only">Toggle navigation</span>
+        	    <span class="icon-bar"></span>
+        	    <span class="icon-bar"></span>
+        	    <span class="icon-bar"></span>
+      		</button>
+      		{#<a class="navbar-brand" href="#">Brand</a>#}
+    	    </div>            
+	    <div class="collapse navbar-collapse navbar-ex2-collapse">
+            	<ul class="nav navbar-nav">
+               	    <li class="active"><a href="{{path('sym16_simple_stock_homepage',{'name':stockuser}) }}"">Accueil</a></li>
+                    <li class="dropdown dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            		Articles et Références<b class="caret"></b>
+          		</a>
+          		<ul class="dropdown-menu dropdown-menu-primary">
+            		    <li class="dropdown-header">Articles</li>
+            		    <li><a href="{{ path('sym16_simple_stock_article_lister') }}">Voir les articles</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_article_ajouter') }}">Déposer un article dans le stock</a></li>
+            		    <li><a href="#">Prélever des articles dans le stock</a></li>
+            		    <li class="divider"></li>
+            		    <li class="dropdown-header">Références</li>
+            		    <li><a href="{{ path('sym16_simple_stock_reference_lister') }}">Voir les références</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_reference_filtrer') }}">Voir les références filtrées</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_reference_ajouter') }}">Ajouter une référence</a></li>
+          		</ul>
+		    </li>
+                    <li class="dropdown dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            		Catégories<b class="caret"></b>
+          		</a>
+          		<ul class="dropdown-menu dropdown-menu-primary">
+            		    <li class="dropdown-header">Familles</li>
+            		    <li><a href="{{ path('sym16_simple_stock_famille_lister') }}">Voir les familles</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_famille_ajouter') }}">Ajouter une famille</a></li>
+            		    <li class="divider"></li>
+            		    <li class="dropdown-header">Composants</li>
+            		    <li><a href="{{ path('sym16_simple_stock_composant_lister') }}">Voir les composants</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_composant_ajouter') }}">Ajouter un composant</a></li>
+          		</ul>
+       		    </li>
+                    <li class="dropdown dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            		Lieux de stockage<b class="caret"></b>
+          		</a>
+          		<ul class="dropdown-menu dropdown-menu-primary">
+            		    <li class="dropdown-header">Entrepôts</li>
+            		    <li><a href="{{ path('sym16_simple_stock_entrepot_lister') }}">Voir les entrepôts</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_entrepot_ajouter') }}">Ajouter un entrepôt</a></li>
+            		    <li class="divider"></li>
+            		    <li class="dropdown-header">Emplacements</li>
+            		    <li><a href="{{ path('sym16_simple_stock_emplacement_lister') }}">Voir les emplacements</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_emplacement_ajouter') }}">Ajouter un emplacement </a></li>
+          		</ul>
+       		    </li>
+                    <li class="dropdown dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            		Se connecter<b class="caret"></b>
+          		</a>
+          		<ul class="dropdown-menu dropdown-menu-primary">
+            		    <li class="dropdown-header">Stock</li>
+            		    <li><a href="#">Choisir un stock</a></li>
+            		    <li class="divider"></li>
+            		    <li class="dropdown-header">Session</li>
+            		    <li><a href="#">Se connecter</a></li>
+            		    <li><a href="#">Se déconnecter</a></li>
+          		</ul>
+       		    </li>
+                    <li class="dropdown dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            		Gestion<b class="caret"></b>
+          		</a>
+          		<ul class="dropdown-menu dropdown-menu-primary">
+            		    <li class="dropdown-header">Utilisateurs</li>
+            		    <li><a href="{{ path('sym16_simple_stock_utilisateur_lister') }}">Voir les utilisateurs et leur statut</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_utilisateur_ajouter') }}">Ajouter un utilisateur</a></li>
+            		    <li class="divider"></li>
+            		    <li class="dropdown-header">Statuts</li>
+            		    <li><a href="{{ path('sym16_simple_stock_droit_lister') }}">Voir les statuts</a></li>
+          		</ul>
+       		    </li>
+		</ul>
+	    </div>
+	</div>
+    </nav>
+{% endblock %}
+{% block BLOCA %}
+    <div class="row">
+	<div class="col-sm-6 col-md-4">
+   	    <div class="thumbnail">
+	    	{#<img src="..." alt="...">#}
+	    	<div class="caption">
+       		    <h3>Déposer dans le stock et créer des références</h3>
+			Seuls les utilisateurs possédant le 
+			statut GESTIONNAIRE (ou supérieur) 
+			peuvent déposer/retirer dans le stock
+			ou  créer/supprimer des références.<p>
+        	    <p><b>Déposer dans le stock :</b>
+			On dépose dans le stock des articles
+			référencés. Pour cela il faut avoir au préalable
+			créé des références.
+			<p><b>Créer des références : </b>
+			Quand on crée une référence
+			il faut préciser la catégorie à laquelle 
+			elle appartient et son lieu de stockage. Voir les
+			rubriques "Catégories et lieux de stockage".
+		    </p>
+        	    <p><a href="#" class="btn btn-primary" role="button">Plus d'info ...</a> {#<a href="#" class="btn btn-default" role="button">Button</a>#}</p>
+	    	</div>
+	    </div>
+	</div>
+	<div class="col-sm-6 col-md-4">
+   	    <div class="thumbnail">
+	    	{#<img src="..." alt="...">#}
+	    	<div class="caption">
+       		    <h3>Catégories</h3>
+			Seuls les utilisateurs possédant le statut
+			ADMINISTRATEUR (ou supérieur) 
+			peuvent créer ou supprimer
+			des catégories.<p>
+        	    <p><b>Catégories :</b>
+			Les références sont classées dans des familles.
+			Les familles (exemple : OUTILLAGE) sont elles-mêmes décomposées
+			en composants (exemples : PERCEUSE, PONCEUSE). Il faut donc
+			d'abord créer des familles et ensuite des composants, chaque composant
+			étant rattaché à une famille.<br><br><br><br>
+		    </p>
+        	    <p><a href="#" class="btn btn-primary" role="button">Plus d'info ...</a> {#<a href="#" class="btn btn-default" role="button">Button</a>#}</p>
+	    	</div>
+	    </div>
+	</div>
+	<div class="col-sm-6 col-md-4">
+   	    <div class="thumbnail">
+	    	{#<img src="..." alt="...">#}
+	    	<div class="caption">
+       		    <h3>Lieux de stockage</h3>
+			Seuls les utilisateurs possédant le statut
+			ADMINISTRATEUR (ou supérieur) 
+			peuvent crééer ou supprimer
+			des lieux de stockage.<p>
+        	    <p><b>Lieux de stockage :</b>
+			Les références sont rangées dans 
+			dans des entrepôts (exemples : BATIMENT B, HANGAR SUD). 
+			Les entrepôts sont eux-mêmes  décomposés en emplacements (exemples : ARMOIRE N°3, RACK 32-3).
+			Il faut donc d'abord créer des entrepots et ensuite des
+			emplacements chaque emplacement étant rattaché à un entrepot.<br><br><br><br> 
+		    </p>
+        	    <p><a href="#" class="btn btn-primary" role="button">Plus d'info ...</a> {#<a href="#" class="btn btn-default" role="button">Button</a>#}</p>
+	    	</div>
+	    </div>
+	</div>
+    </div>
+{% endblock %} 
+{# </body> 
 </html>#}

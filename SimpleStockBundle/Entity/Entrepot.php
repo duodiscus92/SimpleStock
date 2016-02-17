@@ -17,7 +17,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * message="Ce nom  d'entrepot a déjà été utilisé"
  * )
  */
-
 class Entrepot
 {
     public function __construct()

@@ -43,6 +43,28 @@ class ReferenceType extends AbstractType
 		'label' => 'Emplacement',
 		'empty_value' => "-- Selectionnez un emplacement --",
             ))
+            // la liste déroulante famille
+	    /*->add('famille', 'entity', array(
+		'required' => false,
+		'class' => 'SYM16SimpleStockBundle:Famille',
+		'query_builder' => function(EntityRepository $er){
+			return $er->createQueryBuilder('famille')->orderBy('famille.nom','ASC');
+		},
+		'property' => 'nom',
+		'label' => 'Famille',
+		'empty_value' => "-- Selectionnez une famille --",
+            ))*/
+	    // la liste déroulante composant
+            /*->add('composant', 'entity', array(
+		'required' => false,
+		'class' => 'SYM16SimpleStockBundle:Composant',
+		'query_builder' => function(EntityRepository $er){
+			return $er->createQueryBuilder('composant')->orderBy('composant.nom','ASC');
+		},
+		'property' => 'nom',
+		'label' => 'Composant',
+		'empty_value' => "-- Selectionnez un composant --",
+            ))*/
 	    ->add('udv', 		'integer')
             ->add('seuil', 		'integer')
 	    ->add('createur',		'text') 

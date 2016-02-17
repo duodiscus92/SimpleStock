@@ -4,7 +4,7 @@
   <body>
     <h2>Hello utilisateur {{ name }}!</h2>#}
     {#<h2>Menu principal</h2>#}
-    {% block BLOCA %}
+    {#{% block BLOCA %}
     <h3>Articles</h3>
 	<li><a href="{{ path('sym16_simple_stock_article_lister') }}">
 		Lister les articles</a></li>
@@ -18,6 +18,10 @@
 	<li><a href="{{ path('sym16_simple_stock_utilisateur_ajouter') }}">
 		Enregistrer un nouvel utilisateur</a></li>
     <h3>Familles et composants</h3>
+	<li><a href="{{ path('sym16_simple_stock_famille_lister') }}">
+		Lister les familles</a></li>
+	<li><a href="{{ path('sym16_simple_stock_famille_ajouter') }}">
+		Ajouter une famille</a></li>
 	<li><a href="{{ path('sym16_simple_stock_composant_lister') }}">
 		Lister les composants</a></li>
 	<li><a href="{{ path('sym16_simple_stock_composant_ajouter') }}">
@@ -43,6 +47,6 @@
 	    		<li>Message n° {{loop.revindex}}: {{message}}</li>
         	{% endfor %}
     	</ul>
-    {% endblock %}
+    {% endblock %}#}
 {#  </body>
 </html>#}
