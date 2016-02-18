@@ -6,10 +6,14 @@
     $(document).ready(function(){
 	// on construite l'url à partir de l'identifiant de la route route
         var url = "{{ path('reference_ajax') }}";
+        var urlfamille = "{{ path('reference_ajax1') }}";
 	// via le DOM on récupère les sélection courantes dans les listes Entrpot et Emplacement
         var entrepotElement = '#sym16_simplestockbundle_reference_entrepot';
         var emplacementElement = '#sym16_simplestockbundle_reference_emplacement';
-	// dès que l'internaute change la selection de la liste Emplacement
+	// via le DOM on récupère les sélection courantes dans les listes Famille et Composant
+        var familleElement = '#sym16_simplestockbundle_reference_famille';
+        var composantElement = '#sym16_simplestockbundle_reference_composant';
+	// dès que l'internaute change la selection de la liste Entrepot
 	// ça crée un événement permettant activer le code qui suit
 	$(entrepotElement).on('change', function(){
 	    // on récupère l'id entrepot qui a été sélectionnée
@@ -34,7 +38,36 @@
                 },
 		// traitement si ça a pas fonctionné
                 error: function(){
-                    alert('Erreur, la connexion au serveur a été interrompue');
+                    alert('Erreur entrepot, la connexion au serveur a été interrompue');
+                }
+            });
+        });
+	// dès que l'internaute change la selection de la liste Famille
+	// ça crée un événement permettant activer le code qui suit
+	$(familleElement).on('change', function(){
+	    // on récupère l'id de la famille qui a été sélectionnée
+            var famille_id = $(this).val();
+            $.ajax({ 
+		// on constuit l'objet XMLHttpRequest 
+		type: "POST", // passage de paramètres par méthode POST (on peut aussi utiliser GET)
+                url: urlfamille,     // url de la fonction qui tratera côté serveur la requête
+                data: {'famille_id':famille_id}, // paramètres passé par la méthode POST ou GET
+                dataType: 'JSON', //codage attendu pour la réponse du serveur (ici c'est encodé en JSON)
+                timeout: 30000,
+		// traitement si ça a fonctionné
+                success: function (data) {
+                    //réinitialise la liste des composants
+                    $(composantElement).html('<option value> -- Selectionnez un composant -- </option>');
+                    //met à jour la liste des composants
+                    $.each(data, function(index){
+                            var id = data[index].id;
+                            var nom = data[index].nom;
+                            $(composantElement).append('<option value="'+id+'">'+nom+'</option>');
+                    });
+                },
+		// traitement si ça a pas fonctionné
+                error: function(){
+                    alert('Erreur famille, la connexion au serveur a été interrompue');
                 }
             });
         });

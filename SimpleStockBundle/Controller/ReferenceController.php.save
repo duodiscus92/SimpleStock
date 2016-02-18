@@ -37,10 +37,9 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	    ->addColname('Libellé',	'Nom')
 	    ->addColname('UDV',		'Udv')
 	    ->addColname('Seuil',	'Seuil') 
-	    //->addColname('Créateur',	'Createur') 
-	    ->addColname('Famille',	'NomFamille')
+	    ->addColname('Créateur',	'Createur') 
 	    ->addColname('Entrepot',	'NomEntrepot')
-	    //->addColname('Emplacement',	'NomEmplacement')
+	    ->addColname('Emplacement',	'NomEmplacement')
 	;
 
 	$this->setModSupr(array(
@@ -186,7 +185,6 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	// si entrepotId  est défini on continue la construction pat concaténation
         if($entrepotId != '')
             $sql .= " AND Emplacement.entrepot_id = :entrepot_id ";
-	//echo "<script>alert($sql)</script>";
 	// on prépare la requête
         $query = $em->createNativeQuery($sql, $rsm);
 	// si entrepotId est défini on  passe entrepot_id à la requête sqp
@@ -204,9 +202,9 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 
     /**
      * D'après le code de Julien Cornu (merci !)
-     * @Route("/reference-ajax1", name="reference_ajax1")
+     * @Route("/reference-ajax2", name="reference_ajax2")
      */
-    public function referenceAjax1Action(Request $request){
+    public function referenceAjaxAction2(Request $request){
 	// A des fins pédago on montre qu'on peut récupérer aussi bien pat GET que par POST
 	if($request->getMethod() == 'POST')
 	//récupération de l'id famille transmise par le script Ajax par POST
@@ -228,7 +226,6 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	// si familleId  est défini on continue la construction pat concaténation
         if($familleId != '')
             $sql .= " AND Composant.famille_id = :famille_id ";
-	//echo "<script>alert($sql)</script>";
 	// on prépare la requête
         $query = $em->createNativeQuery($sql, $rsm);
 	// si familleId est défini on  passe famille_id à la requête sqp

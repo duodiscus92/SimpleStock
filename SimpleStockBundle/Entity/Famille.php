@@ -104,6 +104,19 @@ class Famille
 
 
     /**
+     * 
+     *
+     * @Assert\True(message="Le créateur et le nom de Famille ne peuvent pas être identiques")
+     */
+    public function isNomNeCreateur()
+    {
+	if($this->nom == $this->createur)
+	    return false;
+        else
+	    return true;
+    }
+
+    /**
      * Get id
      *
      * @return integer 

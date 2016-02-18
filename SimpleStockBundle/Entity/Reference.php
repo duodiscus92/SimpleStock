@@ -83,6 +83,50 @@ class Reference
     }
 
     /**
+    * @ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Famille")
+    * @ORM\JoinColumn(nullable=false)
+    */
+    private $famille;
+
+    public function getFamille()
+    {
+	return $this->famille;
+    }
+
+    public function setFamille(Famille $famille)
+    {
+	$this->famille = $famille;
+	return $this;
+    }
+
+    public function getNomFamille()
+    {
+	return $this->getFamille()->getNom();
+    }
+
+    /**
+    * @ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Composant")
+    * @ORM\JoinColumn(nullable=false)
+    */
+    private $composant;
+
+    public function getComposant()
+    {
+	return $this->composant;
+    }
+
+    public function setComposant(Composant $composant)
+    {
+	$this->composant = $composant;
+	return $this;
+    }
+
+    public function getNomComposant()
+    {
+	return $this->getComposant()->getNom();
+    }
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")

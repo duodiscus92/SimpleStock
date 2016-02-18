@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class EntrepotRepository extends EntityRepository
 {
 	// Nombre total d'entrerpots
-	public function getNbEntrepot()
+	public function getNbItems()
 	{
 		// on crée un query builder
 		$querybuilder = $this->_em->CreateQueryBuilder();
@@ -24,4 +24,10 @@ class EntrepotRepository extends EntityRepository
 		return $query->getSingleScalarResult();
 	}
 
+	//pour assuurer la compatibilité ascendante
+	//cette fonction est obsolète
+	public function getNbentrepot()
+	{
+		return $this->getNbItems();
+	}
 }

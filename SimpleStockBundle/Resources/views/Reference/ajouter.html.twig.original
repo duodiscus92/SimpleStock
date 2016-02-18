@@ -1,4 +1,5 @@
-{##}
+{% extends 'SYM16SimpleStockBundle::layout.html.twig' %}
+{% block BLOCA %}
 {% javascripts '@SYM16SimpleStockBundle/Resources/public/js/jquery-1.12.0.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     <script type="text/javascript">
@@ -40,31 +41,15 @@
     });
     </script> 
 {% endjavascripts %} 
-{##}
 
-{##}
-<body>
-{{ form_start(form) }} 
-{{ form_widget(form.entrepot) }}
-{{ form_widget(form.emplacement) }}
-{{ form_widget(form.valider) }}
-{{ form_end(form) }}
-</body>
-{##}                  
-
-{#
-{% extends 'SYM16SimpleStockBundle::layout.html.twig' %}
-{% block BLOCA %}
 <h3>{{titre}}<h3>
 <div class="well">
     <form method = "post" {{ form_enctype(form) }}>
-	{{ form_start(form) }} 
 	{{ form_widget(form) }}
-	{{ form_widget(form.entrepot) }}
-	{{ form_widget(form.emplacement) }}
-	{{ form_end(form) }}
+	{# ci-dessous à décommenter si on met le bouton dans ReferenceType.php #}
+	{#{{ form_widget(form.valider) }}#}
+	{# si-dessous à commenter si on met le bouton dans ReferenceType.php #}
     	<input type="submit" class="btn btn-primary" />
     </form>
 </div>
 {% endblock %}
-#}

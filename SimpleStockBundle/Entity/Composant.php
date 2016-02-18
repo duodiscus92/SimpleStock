@@ -68,7 +68,7 @@ class Composant
     /**
      * @var string
      *
-     * @ORM\Column(name="nom", type="string", length=255, unique=true)
+     * @ORM\Column(name="Nom", type="string", length=255, unique=true)
      * @Assert\Length(
      * min=4,
      * max=50,

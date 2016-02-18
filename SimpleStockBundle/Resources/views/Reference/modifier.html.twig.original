@@ -1,3 +1,5 @@
+{% extends 'SYM16SimpleStockBundle::layout.html.twig' %}
+{% block BLOCA %}
 {% javascripts '@SYM16SimpleStockBundle/Resources/public/js/jquery-1.12.0.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     <script type="text/javascript">
@@ -5,8 +7,8 @@
 	// on construite l'url à partir de l'identifiant de la route route
         var url = "{{ path('reference_ajax') }}";
 	// via le DOM on récupère les sélection courantes dans les listes Entrpot et Emplacement
-        var entrepotElement = '#sym16_simplestockbundle_reference_entrepot';
-        var emplacementElement = '#sym16_simplestockbundle_reference_emplacement';
+        var entrepotElement = '#sym16_simplestockbundle_referencemodifier_entrepot';
+        var emplacementElement = '#sym16_simplestockbundle_referencemodifier_emplacement';
 	// dès que l'internaute change la selection de la liste Emplacement
 	// ça crée un événement permettant activer le code qui suit
 	$(entrepotElement).on('change', function(){
@@ -39,3 +41,15 @@
     });
     </script> 
 {% endjavascripts %} 
+
+<h3>{{titre}}<h3>
+<div class="well">
+    <form method = "post" {{ form_enctype(form) }}>
+	{{ form_widget(form) }}
+	{# ci-dessous à décommenter si on met le bouton dans ReferenceType.php #}
+	{#{{ form_widget(form.valider) }}#}
+	{# si-dessous à commenter si on met le bouton dans ReferenceType.php #}
+    	<input type="submit" class="btn btn-primary" />
+    </form>
+</div>
+{% endblock %}
