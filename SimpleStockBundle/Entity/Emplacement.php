@@ -18,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * )
  */
 
-class Emplacement
+class Emplacement extends EntityTools
 {
     public function __construct()
     {
@@ -118,7 +118,7 @@ class Emplacement
      */
     public function setNom($nom)
     {
-        $this->nom = $nom;
+        $this->nom = strtoupper($this->wd_remove_accents($nom));
 
         return $this;
     }

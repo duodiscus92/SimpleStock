@@ -17,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * message="Ce nom  de Famille a déjà été utilisé"
  * )
  */
-class Famille
+class Famille extends EntityTools
 {
     public function __construct()
     {
@@ -134,7 +134,7 @@ class Famille
      */
     public function setNom($nom)
     {
-        $this->nom = $nom;
+        $this->nom = strtoupper($this->wd_remove_accents($nom));
 
         return $this;
     }

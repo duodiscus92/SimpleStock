@@ -47,6 +47,26 @@ class Article
 	return $this->getReference()->getNom();
     }
 
+    public function getNomFamille()
+    {
+	return $this->getReference()->getNomFamille();
+    }
+
+    public function getNomComposant()
+    {
+	return $this->getReference()->getNomComposant();
+    }
+
+    public function getNomEntrepot()
+    {
+	return $this->getReference()->getNomEntrepot();
+    }
+
+    public function getNomEmplacement()
+    {
+	return $this->getReference()->getNomEmplacement();
+    }
+
     /**
      * @var integer
      *

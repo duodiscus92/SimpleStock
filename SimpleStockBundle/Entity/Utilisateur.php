@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\UtilisateurRepository")
  */
-class Utilisateur
+class Utilisateur extends EntityTools
 {
     /**
     * @ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Droit")
@@ -162,7 +162,7 @@ class Utilisateur
      */
     public function setNom($nom)
     {
-        $this->nom = $nom;
+        $this->nom = strtoupper($this->wd_remove_accents($nom));
 
         return $this;
     }
@@ -185,7 +185,7 @@ class Utilisateur
      */
     public function setPrenom($prenom)
     {
-        $this->prenom = $prenom;
+        $this->prenom = strtoupper($this->wd_remove_accents($prenom));
 
         return $this;
     }

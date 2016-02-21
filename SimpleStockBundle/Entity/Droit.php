@@ -3,14 +3,21 @@
 namespace SYM16\SimpleStockBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Droit
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\DroitRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ * fields={"privilege"},
+ * message="Ce privilege a déjà été utilisé",
+ * )
  */
-class Droit
+class Droit extends EntityTools
 {
     /**
      * @var integer
@@ -24,7 +31,7 @@ class Droit
     /**
      * @var string
      *
-     * @ORM\Column(name="privilege", type="string", length=255)
+     * @ORM\Column(name="privilege", type="string", length=255, unique=true)
      */
     private $privilege;
 
@@ -47,7 +54,7 @@ class Droit
      */
     public function setPrivilege($privilege)
     {
-        $this->privilege = $privilege;
+        $this->privilege = strtoupper($this->wd_remove_accents($privilege));
 
         return $this;
     }

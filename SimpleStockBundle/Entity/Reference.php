@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * message="Cette référence a déjà été utilisée",
  * )
  */
-class Reference
+class Reference extends EntityTools
 {
     // valeurs par défaut
     public function __construct()
@@ -203,7 +203,7 @@ class Reference
      */
     public function setRef($ref)
     {
-        $this->ref = $ref;
+        $this->ref = strtoupper($this->wd_remove_accents($ref));
 
         return $this;
     }
@@ -226,7 +226,7 @@ class Reference
      */
     public function setNom($nom)
     {
-        $this->nom = $nom;
+        $this->nom = strtoupper($this->wd_remove_accents($nom));
 
         return $this;
     }

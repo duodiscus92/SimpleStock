@@ -36,7 +36,10 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	    ->addColname('Nom',		'NomRef')
 	    ->addColname('PrixHT',	'Prixht')
 	    ->addColname('TVA',		'Tva')
-	    ->addColname('Créateur',	'Createur') 
+	    //->addColname('Créateur',	'Createur')
+	    //->addColname('Famille',	'Famille')
+	    ->addColname('Entrepot',	'NomEntrepot') 
+	    ->addColname('Emplacement', 'NomEmplacement')
 	;
 
 	$this->setModSupr(array(
