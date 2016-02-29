@@ -3,12 +3,19 @@
 namespace SYM16\SimpleStockBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Utilisateur
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\UtilisateurRepository")
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ * fields={"login"},
+ * message="Cet identifiant (login) a déjà été utilisé",
+ * )
  */
 class Utilisateur extends EntityTools
 {
@@ -53,7 +60,7 @@ class Utilisateur extends EntityTools
     /**
      * @var string
      *
-     * @ORM\Column(name="login", type="string", length=255)
+     * @ORM\Column(name="login", type="string", length=255, unique=true)
      */
     private $login;
 

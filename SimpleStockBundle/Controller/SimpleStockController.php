@@ -26,10 +26,53 @@ class SimpleStockController extends Controller
     private $filtre;
     private $listcriteria=array();
 
+    // récupère la première clé étrangère qui pointe sur une id
+    private function getForeignKey($id)
+    {
+	//récupération de l'entity manager
+	$em = $this->getDoctrine()->getManager();
+	//création d'un objet rsm qui va recevoir les colonnes qui nous intéressent
+        $rsm = new ResultSetMapping();
+	// on indique qu'on veut récupérer la colonne TABLE_NAME (la table propriétaire)
+        $rsm->addScalarResult('TABLE_NAME', 'proprio');
+	// on indique qu'on veut récupérer la colonne COLUMN_NAME (le nom de la clé_étrangère)
+        $rsm->addScalarResult('COLUMN_NAME', 'keyname');
+	// construction de la requête SQL
+	$entityname = $this->getEntityName();
+        $sql = "SELECT TABLE_NAME,COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE  REFERENCED_TABLE_NAME = '".$entityname."'";
+	// on prépare la requête
+        $query = $em->createNativeQuery($sql, $rsm);
+	// on récupère le résultat : liste d'entité propriétaires et clé etrangère pointant sur cette entité
+        $proprios = $query->getResult();
+	// on balaye la liste pour trouver s'il y a une clé étrangère qui concerne cette id 
+	unset($rsm);
+        foreach ($proprios as $proprio){
+	    //requete pour trouver la premiere clé etrangère qui pointe sur notre id
+            $rsm = new ResultSetMapping();
+            $rsm->addScalarResult('id', 'id');
+	    $sql = "SELECT id FROM ".$proprio['proprio']." WHERE ".$proprio['keyname']." = ".$id." LIMIT 1;";
+            $query = $em->createNativeQuery($sql, $rsm);
+	    $foreignkeys = $query->getResult();
+	    // de nouveau faut balayer même si on sait que la table n'a qu'une ligne a cause du LIMIT 1
+	    foreach($foreignkeys as  $foreignkey)
+	    	if($foreignkey != NULL)
+	    	    //une clé etrangere pointant sur cette id a été trouvée
+                    return array('proprio' => $proprio['proprio'], 'id' => $foreignkey['id']);
+	    unset($rsm);
+	}
+	// on arrive ici c'est qu'aucune clé étrangere pointe sur cet id
+	return NULL;
+    }
+
     protected function setRepositoryPath($path)
     {
 	$this->repositoryPath = $path;
 	return $this;
+    }
+
+    protected function getEntityName()
+    {
+	return substr($this->repositoryPath, strpos($this->repositoryPath, ':')+1);
     }
 
     protected function addColname($tag, $item)
@@ -183,14 +226,21 @@ class SimpleStockController extends Controller
 
     //supprime une entité
     public function supprimerAction(Request $request) {
-	// demande  de confirmation
-	// ----???????????????????????----
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');
 	// recupération de l'entity manager
 	$em = $this->getDoctrine()->getManager();
-        //récuparartion de l'entite d'id  $id
+        //récupérartion de l'entite d'id  $id
         $entity = $em->getRepository($this->repositoryPath)->find($id);
+	// vérifier si une entité est propriétaire de cette entité d'id=$id
+	$foreignkey = $this->getForeignKey($id);
+	if($foreignkey!= NULL){
+ 	    $nom = $entity->getNom();
+	    $entiteproprio = $foreignkey['proprio'];
+	    $idproprio = $foreignkey['id'];
+	    echo "<script>alert(\"Suppresion refusée : $nom est utilisé par le/la/l\' $entiteproprio  d\'ID = $idproprio\")</script>";
+	    return $this->listerAction();
+	}
 	// suppression de l'entité
 	$em->remove($entity);
 	$em->flush();

@@ -46,7 +46,6 @@ class FamilleController extends /*Controller*/ SimpleStockController
     }
 
 
-
     /**
      * lister un tableau en faisant appel à un service
      *
@@ -103,27 +102,9 @@ class FamilleController extends /*Controller*/ SimpleStockController
      * @Route("/del", name="sym16_simple_stock_famille_supprimer")
      */
     public function supprimerAction(Request $request) {
-	// récupe de l'id de l'famille à supprimer
-        $id = $request->query->get('valeur');
-	// recupération de l'entity manager
-	$em = $this->getDoctrine()->getManager();
-        //récuparartion de l'entite d'id  $id
-        $Famille = $em->getRepository("SYM16SimpleStockBundle:Famille")->find($id);
-	//récupération du nom de la famille
-	$nom = $Famille->getNom();
-	// avant toute tentive de supprimer  vérifier qu'aucun Composant n'est rattaché à cet famille
-        $Composants = $em->getRepository("SYM16SimpleStockBundle:Composant")->findAll();
-	foreach($Composants as  $Composant){
-	    if($Composant->getNomFamille() == $nom){
-            //throw new \Exception(
-	        echo "<script>alert(\"Suppresion refusée : au moins un Composant est lié à la famille $nom\")</script>";
-		return $this->listerAction();
-	    }
-	}
-	// suppression de l'entité
-	$em->remove($Famille);
-	$em->flush();
-	// affichage de la liste reactualisee
-	return $this->listerAction();
+	// precsier le repository et ce qu'on veut lister après suppression
+	$this->aLister();
+	// appel de la fonction mère
+	return parent::supprimerAction($request);
     }
 }
