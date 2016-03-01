@@ -50,14 +50,15 @@ class SimpleStockController extends Controller
 	    //requete pour trouver la premiere clé etrangère qui pointe sur notre id
             $rsm = new ResultSetMapping();
             $rsm->addScalarResult('id', 'id');
-	    $sql = "SELECT id FROM ".$proprio['proprio']." WHERE ".$proprio['keyname']." = ".$id." LIMIT 1;";
+            //$rsm->addScalarResult('Nom', 'nom');
+	    $sql = "SELECT id /*, Nom*/ FROM ".$proprio['proprio']." WHERE ".$proprio['keyname']." = ".$id." LIMIT 1;";
             $query = $em->createNativeQuery($sql, $rsm);
 	    $foreignkeys = $query->getResult();
 	    // de nouveau faut balayer même si on sait que la table n'a qu'une ligne a cause du LIMIT 1
 	    foreach($foreignkeys as  $foreignkey)
 	    	if($foreignkey != NULL)
 	    	    //une clé etrangere pointant sur cette id a été trouvée
-                    return array('proprio' => $proprio['proprio'], 'id' => $foreignkey['id']);
+                    return array('proprio' => $proprio['proprio'], 'id' => $foreignkey['id']/*, 'nom' => $foreignkey['nom']*/);
 	    unset($rsm);
 	}
 	// on arrive ici c'est qu'aucune clé étrangere pointe sur cet id
@@ -238,8 +239,10 @@ class SimpleStockController extends Controller
  	    $nom = $entity->getNom();
 	    $entiteproprio = $foreignkey['proprio'];
 	    $idproprio = $foreignkey['id'];
-	    echo "<script>alert(\"Suppresion refusée : $nom est utilisé par le/la/l\' $entiteproprio  d\'ID = $idproprio\")</script>";
-	    return $this->listerAction();
+	    //$nomproprio = $foreignkey['nom'];
+	    // afficher un boite d'alerte
+	    return $this->render('SYM16SimpleStockBundle:Common:alertsuppr.html.twig', 
+		array('path' => $this->modsupr, 'nom' => $nom, 'entite' => $entiteproprio, 'id' => $idproprio/*, 'nomproprio' => $nomproprio*/));
 	}
 	// suppression de l'entité
 	$em->remove($entity);

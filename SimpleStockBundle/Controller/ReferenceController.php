@@ -34,7 +34,7 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	$this->setRepositoryPath('SYM16SimpleStockBundle:Reference');
 	$this
 	    ->addColname('Réf',		'Ref')
-	    ->addColname('Libellé',	'Nom')
+	    ->addColname('Nom',		'Nom')
 	    ->addColname('UDV',		'Udv')
 	    ->addColname('Seuil',	'Seuil') 
 	    //->addColname('Créateur',	'Createur') 
@@ -45,7 +45,8 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 
 	$this->setModSupr(array(
             'mod' => 'sym16_simple_stock_reference_modifier',
-            'supr'=> 'sym16_simple_stock_reference_supprimer')
+            'supr'=> 'sym16_simple_stock_reference_supprimer',
+            'list'=> 'sym16_simple_stock_reference_lister')
 	);
 
 	$this->setListName("Liste des références");

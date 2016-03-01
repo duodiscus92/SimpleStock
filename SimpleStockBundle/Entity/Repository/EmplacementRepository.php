@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class EmplacementRepository extends EntityRepository
 {
 	// même que précédent mais avec Query Builder
-	public function getNbEmplacement()
+	public function getNbItems()
 	{
 		// on crée un query builder
 		$querybuilder = $this->_em->CreateQueryBuilder();
@@ -51,4 +51,11 @@ class EmplacementRepository extends EntityRepository
 		// on l'exécute et on renvoie sa valeur	
 		return $query->getResult();
 	}
+	//pour assuurer la compatibilité ascendante
+	//cette fonction est obsolète
+	public function getNbEmplacement()
+	{
+		return $this->getNbItems();
+	}
+
 }

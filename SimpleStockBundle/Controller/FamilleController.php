@@ -39,7 +39,8 @@ class FamilleController extends /*Controller*/ SimpleStockController
 
 	$this->setModSupr(array(
             'mod' => 'sym16_simple_stock_famille_modifier',
-            'supr'=> 'sym16_simple_stock_famille_supprimer')
+            'supr'=> 'sym16_simple_stock_famille_supprimer',
+	    'list'=> 'sym16_simple_stock_famille_lister')
 	);
 
 	$this->setListName("Liste des familles");

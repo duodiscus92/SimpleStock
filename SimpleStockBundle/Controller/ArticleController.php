@@ -44,7 +44,8 @@ class ArticleController extends /*Controller*/ SimpleStockController
 
 	$this->setModSupr(array(
             'mod' => 'sym16_simple_stock_article_modifier',
-            'supr'=> 'sym16_simple_stock_article_supprimer')
+            'supr'=> 'sym16_simple_stock_article_supprimer',
+            'list'=> 'sym16_simple_stock_article_lister')
 	);
 
 	$this->setListName("Liste des articles");
