@@ -9,6 +9,7 @@
     {# <h3>Utilisateur : {{ stockuser }} - Votre statut est :{{stockuserstatut}}</h3> #}
     {# utilisation de variables de sessions déclarées dans AcceuilController.php #}
     <h3>Utilisateur : {{ app.session.get('stockuser') }} - Votre statut est :{{stockuserstatut}}</h3>
+    {#<h3>Utilisateur : {{ app.user}} - Votre statut est :{{stockuserstatut}}</h3>#}
       {% endblock %}
     {% block FOOTER %}
     <footer>

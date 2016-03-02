@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 
 class SimpleStockController extends Controller
 {
@@ -102,6 +104,8 @@ class SimpleStockController extends Controller
     protected function setEntityObject($object)
     {
 	$this->entityobject = $object;
+	//initialisation du createur (l'utilisateur courant)
+	$this->entityobject->setCreateur($this->get('session')->get('stockuser'));
     }
 
     protected function setMesgFlash($mesg)
