@@ -17,10 +17,18 @@ class AcceuilController extends Controller
 {
     /**
     *
-    * @Route("/{name}", name="sym16_simple_stock_homepage")
+    * @Route("/", name="sym16_simple_stock_homepage")
     */ 
-    public function indexAction($name)
+    public function indexAction(/*$name*/)
     {
+	//$name = 'jehrlich';
+	// récupération de l'utilisateur courant
+	$user = $this->getUser();
+	// test si l'utilisateur est anonyme
+	if(null === $user)
+	    $name = 'anonyme';
+	else
+	    $name = $user->getUsername();
 	// récuprération du service session
 	$session = $this->get('session');
 	// initiatisation des variables de sessions

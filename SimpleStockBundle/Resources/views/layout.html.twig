@@ -43,14 +43,26 @@
           		</a>
           		<ul class="dropdown-menu dropdown-menu-primary">
             		    <li class="dropdown-header">Articles</li>
+			    {% if is_granted('ROLE_EXAMINATEUR') %}
             		    <li><a href="{{ path('sym16_simple_stock_article_lister') }}">Voir les articles</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_article_ajouter') }}">Déposer un article dans le stock</a></li>
-            		    <li><a href="#">Prélever des articles dans le stock</a></li>
+            		    <li><a href="#">Prélever des articles dans le stock (en construction)</a></li>
+			    {% else %}
+			    <li><a href="#"><font color="grey">Voir les articles</font></a></li>
+			    <li><a href="#"><font color="grey">Déposer un article dans le stock</font></a></li>
+			    <li><a href="#"><font color="grey">Prélever des articles dans le stock (en construction)</font></a></li>
+			    {% endif %}
             		    <li class="divider"></li>
             		    <li class="dropdown-header">Références</li>
+			    {% if is_granted('ROLE_EXAMINATEUR') %}
             		    <li><a href="{{ path('sym16_simple_stock_reference_lister') }}">Voir les références</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_reference_filtrer') }}">Voir les références filtrées</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_reference_ajouter') }}">Ajouter une référence</a></li>
+			    {% else %}
+			    <li><a href="#"><font color="grey">Voir les références</font></a></li>
+			    <li><a href="#"><font color="grey">Voir les références filtrées</font></a></li>
+			    <li><a href="#"><font color="grey">Ajouter une référence</font></a></li>
+			    {% endif %}
           		</ul>
 		    </li>
                     <li class="dropdown dropdown">
@@ -90,8 +102,8 @@
             		    <li><a href="#">Choisir un stock</a></li>
             		    <li class="divider"></li>
             		    <li class="dropdown-header">Session</li>
-            		    <li><a href="#">Se connecter</a></li>
-            		    <li><a href="#">Se déconnecter</a></li>
+            		    <li><a href="{{ path('login') }}">Se connecter</a></li>
+            		    <li><a href="{{ path('logout') }}">Se déconnecter</a></li>
             		    <li class="divider"></li>
             		    <li class="dropdown-header">Pas encore inscrit ?</li>
             		    <li><a href="#">S'inscrire</a></li>

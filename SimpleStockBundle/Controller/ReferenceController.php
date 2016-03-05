@@ -59,6 +59,10 @@ class ReferenceController extends /*Controller*/ SimpleStockController
      */
     public function listerAction()
     {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// precise le repository et ce qu'on veut lister
 	 $this->aLister();
 	// appel de la fonction mère
@@ -72,6 +76,10 @@ class ReferenceController extends /*Controller*/ SimpleStockController
      */
     public function filtrerAction(Request $request)
     {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// creation d'une instance de la classe de filtrage
 	$filtre = new ReferenceFiltre();
 	// creation du formulaire de saisie des parapètres du filtre
@@ -118,6 +126,10 @@ class ReferenceController extends /*Controller*/ SimpleStockController
      */
     public function ajouterAction(Request $request){
 
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_GESTIONNAIRE'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'GESTIONNAIRE', 'homepath' => "sym16_simple_stock_homepage"));
 	// creation d'une instance de l'entité propriétaire a hydrater
 	$this->setEntityObject(new Reference);
 	// creation du formulaire
@@ -138,6 +150,10 @@ class ReferenceController extends /*Controller*/ SimpleStockController
      /* Template("SYM16SimpleStockBundle:Forms:simpleform.html.twig")*/
     public function modifierAction(Request $request)
     {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_GESTIONNAIRE'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'GESTIONNAIRE', 'homepath' => "sym16_simple_stock_homepage"));
 	// préciser le formulaire à créer
 	$this->setFormNameAndObject("Modification d'une reference", new ReferenceModifierType);
 	// preciser le repository et ce qu'on veut lister après modification
@@ -153,6 +169,10 @@ class ReferenceController extends /*Controller*/ SimpleStockController
      * @Route("/suppr", name="sym16_simple_stock_reference_supprimer")
      */
     public function supprimerAction(Request $request) {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_GESTIONNAIRE'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'GESTIONNAIRE', 'homepath' => "sym16_simple_stock_homepage"));
 	// precsier le repository et ce qu'on veut lister après suppression
 	$this->aLister();
 	// message flash

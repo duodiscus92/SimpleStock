@@ -48,6 +48,10 @@ class EmplacementController extends /*Controller*/ SimpleStockController
      */
     public function listerAction()
     {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// precise le repository et ce qu'on veut lister
 	 $this->aLister();
 	// appel de la fonction mère
@@ -63,6 +67,10 @@ class EmplacementController extends /*Controller*/ SimpleStockController
      */
     public function ajouterAction(Request $request)
     {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_ADMINISTRATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'ADMINISTRATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// creation d'une instance de l'entité propriétaire a hydrater
 	$this->setEntityObject(new Emplacement);
 	// creation du formulaire
@@ -80,6 +88,10 @@ class EmplacementController extends /*Controller*/ SimpleStockController
      * @Route("/suppr", name="sym16_simple_stock_emplacement_supprimer")
      */
     public function supprimerAction(Request $request) {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_ADMINISTRATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'ADMINISTRATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// precsier le repository et ce qu'on veut lister après suppression
 	$this->aLister();
 	// message flash
@@ -97,6 +109,10 @@ class EmplacementController extends /*Controller*/ SimpleStockController
      */
     public function modifierAction(Request $request)
     {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_ADMINISTRATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'ADMINISTRATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// préciser le formulaire à créer
 	$this->setFormNameAndObject("Modification d'un emplacement", new EmplacementType);
 	// preciser le repository et ce qu'on veut lister après modification
