@@ -30,8 +30,12 @@
         {% for entitie in listEntities %}
             <tr>
                 {# boucle sur les articles d'une ligne #}
-		{% for article in entitie %}
-                    <td> {{ article }} </td>
+		{% for key, article in entitie %}
+		    {% if key  == 'id' %}
+                        <td><a href="{{ path(path.prop,{'valeur':entitie.id, 'exposant':entitie.id }) }}">{{article}}</a>
+                    {% else %}
+                        <td> {{ article }} </td>
+                    {% endif %}
                 {% endfor %}
 	        <td><a href="{{ path(path.mod,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-pencil"></span></a>
 	        <a class="confirmModalLink" href="{{ path(path.supr,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-trash"></span></a></td>

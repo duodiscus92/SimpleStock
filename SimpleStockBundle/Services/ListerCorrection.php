@@ -45,10 +45,11 @@ class ListerCorrection
 		    //on reconstruite les getters à partir des noms de colonnes
 		    $fieldname = 'get'.$fieldname;
 		    // traitement special de l'id
-		    if ($key == 'id')
-			$listArticle['id'] = $this->AnyTypeToString($entitie->$fieldname());
-		    else
-		    	array_push($listArticle, $this->AnyTypeToString($entitie->$fieldname()));
+		    //if ($key == 'id')
+			//$listArticle['id'] = $this->AnyTypeToString($entitie->$fieldname());
+			$listArticle[$key] = $this->AnyTypeToString($entitie->$fieldname());
+		    //else
+		    	//array_push($listArticle, $this->AnyTypeToString($entitie->$fieldname()));
 		}
 		// listeEntities est un tableau de tableau crée dynamiquement (on sait pas a priori le nombre de lignes)
 		array_push($listEntities, $listArticle);

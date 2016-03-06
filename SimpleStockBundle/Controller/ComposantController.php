@@ -35,10 +35,22 @@ class ComposantController extends /*Controller*/ SimpleStockController
 
 	$this->setModSupr(array(
             'mod' => 'sym16_simple_stock_composant_modifier',
-            'supr'=> 'sym16_simple_stock_composant_supprimer')
+            'supr'=> 'sym16_simple_stock_composant_supprimer',
+	    'list'=> 'sym16_simple_stock_composant_lister',
+	    'prop'=> 'sym16_simple_stock_composant_propriete')
 	);
 
 	$this->setListName("Liste des composants");
+
+	//pour l'affichage des propriétés d'une entité
+	$this->setPropertyName("Détail du Composant :");
+	$this
+	    ->addProperty('Nom du Composant',		array('Nom', 		"%s"))
+	    ->addProperty('Rattaché à la Famille',	array('NomFamille',	"%s"))
+	    ->addProperty('Créateur du Composant',	array('Createur', 	"%s"))
+	    ->addProperty('Date de création',		array('Creation', 	NULL))
+	    ->addProperty('Date de modification',	array('Modification',	NULL))
+	;
     }
 
 
@@ -57,6 +69,23 @@ class ComposantController extends /*Controller*/ SimpleStockController
 	 $this->aLister();
 	// appel de la fonction mère
 	return parent::listerAction();
+    }
+
+    /**
+     * affcicher le proprité d'un item 
+     *
+     * @Route("/property", name="sym16_simple_stock_composant_propriete")
+     */
+    public function proprieteAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// precise le repository ainsi que les propriétés à afficher
+	 $this->aLister();
+	// appel de la fonction mère
+	return parent::proprieteAction($request);
     }
 
     /**

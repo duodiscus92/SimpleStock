@@ -28,8 +28,9 @@ class FamilleController extends /*Controller*/ SimpleStockController
     //permet de paramétrer ce qu'on veut lister
     private function aLister()
     {
+	//pour l'accès au repositroy de l'entité dont on va s'occuper
 	$this->setRepositoryPath('SYM16SimpleStockBundle:Famille');
-	//$this->setLinkedRepositoryPath('SYM16SimpleStockBundle:Composant');
+	// sélection des colonnes à afficher
 	$this
 	    ->addColname('Famille',	'Nom')
 	    ->addColname('Créateur',	'Createur') 
@@ -37,13 +38,24 @@ class FamilleController extends /*Controller*/ SimpleStockController
 	    ->addColname('Modification','Modification') 
 	;
 
+	//chemins (URL) pour les actions modifier, supprimer et lister
 	$this->setModSupr(array(
             'mod' => 'sym16_simple_stock_famille_modifier',
             'supr'=> 'sym16_simple_stock_famille_supprimer',
-	    'list'=> 'sym16_simple_stock_famille_lister')
+	    'list'=> 'sym16_simple_stock_famille_lister',
+	    'prop'=> 'sym16_simple_stock_famille_propriete')
 	);
 
 	$this->setListName("Liste des familles");
+
+	//pour l'affichage des propriétés d'une entité
+	$this->setPropertyName("Détail de la Famille :");
+	$this
+	    ->addProperty('Nom de la Famille',		array('Nom', 		"%s"))
+	    ->addProperty('Créateur de la Famille',	array('Createur', 	"%s"))
+	    ->addProperty('Date de création',		array('Creation', 	NULL))
+	    ->addProperty('Date de modification',	array('Modification',	NULL))
+	;
     }
 
 
@@ -62,6 +74,23 @@ class FamilleController extends /*Controller*/ SimpleStockController
 	 $this->aLister();
 	// appel de la fonction mère
 	return parent::listerAction();
+    }
+
+    /**
+     * affcicher le proprité d'un item 
+     *
+     * @Route("/property", name="sym16_simple_stock_famille_propriete")
+     */
+    public function proprieteAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// precise le repository ainsi que les propriétés à afficher
+	 $this->aLister();
+	// appel de la fonction mère
+	return parent::proprieteAction($request);
     }
 
     /**

@@ -35,10 +35,20 @@ class EntrepotController extends /*Controller*/ SimpleStockController
 	$this->setModSupr(array(
             'mod' => 'sym16_simple_stock_entrepot_modifier',
             'supr'=> 'sym16_simple_stock_entrepot_supprimer',
-	    'list'=> 'sym16_simple_stock_entrepot_lister')
+	    'list'=> 'sym16_simple_stock_entrepot_lister',
+	    'prop'=> 'sym16_simple_stock_entrepot_propriete')
 	);
 
 	$this->setListName("Liste des entrepots");
+
+	//pour l'affichage des propriétés d'une entité
+	$this->setPropertyName("Détail de l'Entrepot :");
+	$this
+	    ->addProperty('Nom de l\'Entrepot',		array('Nom', 		"%s"))
+	    ->addProperty('Créateur de l\'Entrepot',	array('Createur', 	"%s"))
+	    ->addProperty('Date de création',		array('Creation', 	NULL))
+	    ->addProperty('Date de modification',	array('Modification',	NULL))
+	;
     }
 
 
@@ -57,6 +67,23 @@ class EntrepotController extends /*Controller*/ SimpleStockController
 	 $this->aLister();
 	// appel de la fonction mère
 	return parent::listerAction();
+    }
+
+    /**
+     * affcicher le proprité d'un item 
+     *
+     * @Route("/property", name="sym16_simple_stock_entrepot_propriete")
+     */
+    public function proprieteAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// precise le repository ainsi que les propriétés à afficher
+	 $this->aLister();
+	// appel de la fonction mère
+	return parent::proprieteAction($request);
     }
 
     /**

@@ -28,7 +28,6 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	    //->addColname('Nom',		'Nom')
 	    //->addColName('Prénom',	'Prenom')
 	    //->addColName('Asb',		'Asb')
-	    //->addColName('Privilège',	'Privilege')
 	    ->addColName('Login',	'Username')
 	    ->addColName('Mdp',		'Password')
 	    ->addColName('Statut',	'Statut')
@@ -38,10 +37,25 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 
 	$this->setModSupr(array(
             'mod' => 'sym16_simple_stock_utilisateur_modifier',
-            'supr'=> 'sym16_simple_stock_utilisateur_supprimer')
+            'supr'=> 'sym16_simple_stock_utilisateur_supprimer',
+	    'list'=> 'sym16_simple_stock_utilisateur_lister',
+	    'prop'=> 'sym16_simple_stock_utilisateur_propriete')
 	);
 
 	$this->setListName("Liste des utilisateurs");
+
+	//pour l'affichage des propriétés d'une entité
+	$this->setPropertyName("Détail de l'Utilisateur :");
+	$this
+	    //->addProperty('Nom de l\'Utilisateur',	array('Nom', 		"%s"))
+	    //->addProperty('Prénom de l\'Utilisateur',	array('Prénom',		"%s"))
+	    ->addProperty('Identifiant de connexion',	array('Username',	"%s"))
+	    ->addProperty('Mot de passe',		array('Password', 	"%s"))
+	    ->addProperty('Statut',			array('Statut',	 	"%s"))
+	     ->addProperty('Créateur du l\'Utilisateur',array('Createur',       "%s"))
+	    ->addProperty('Date de création',		array('Creation', 	NULL))
+	    ->addProperty('Date de modification',	array('Modification',	NULL))
+	;
     }
 
     /**
@@ -61,41 +75,21 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	return parent::listerAction();
     }
 
-    public function listerAction1()
+    /**
+     * affcicher le proprité d'un item 
+     *
+     * @Route("/property", name="sym16_simple_stock_utilisateur_propriete")
+     */
+    public function proprieteAction(Request $request)
     {
 	// contrôle d'accès
 	if(!$this->get('security.context')->isGranted('ROLE_ADMINISTRATEUR'))
 	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
-		array('statut' => 'ADMINISTRATEUR', 'homepath' => "sym16_simple_stock_homepage"));
-	// on récupère l'entity manager
-	$em = $this->getDoctrine()->getManager();
-	// on récupère tout le contenu de la table
-	$repository = $em->getRepository('SYM16SimpleStockBundle:Utilisateur');
-	//preparaton des parametres
-	$listColnames = array(
-				'id' => 'Id',
-				'Nom' => 'Nom',
-				'Prénom' => 'Prenom', 
-				'Asb' => 'Asb', 
-				'Privilège' => 'Privilege', 
-				'Création' => 'Date'
-			 	);
-	// on récupère le contenu de la table
-	$entities = $repository->findAll();
-	if ($entities == NULL)
-	    return $this->render('SYM16SimpleStockBundle:Common:nolist.html.twig');
-        $path=array(
-                'mod'=>'sym16_simple_stock_utilisateur_modifier',       // le chemin qui traitera l'action modifier
-                'supr'=>'sym16_simple_stock_utilisateur_supprimer');    // le chemin qui traitera l'action supprimer
-	//  nombre total d'utilisateurs
-	$totalusers = $repository->getNbUtilisateur();
-	//on place tous les paramètres à lister dans un tableau
-	$alister = array('listcolnames' => $listColnames, 'entities' => $entities, 
-			'path' => $path, 'totalusers' => $totalusers, 'listname' => "Liste des utilisateurs");
-	// récupération du service et de la prestation  "lister_tout"
-	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
-	//lister
-	return $this->render($service['listtwig'], $service['tab']);
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// precise le repository ainsi que les propriétés à afficher
+	 $this->aLister();
+	// appel de la fonction mère
+	return parent::proprieteAction($request);
     }
 
     /**
@@ -120,46 +114,6 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
     	return parent::ajouterAction($request);
     }
 
-    public function ajouterAction1(Request $request){
-	// contrôle d'accès
-	if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
-	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
-		array('statut' => 'SUPER UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));
-	// creation d'une instance de l'entité propriétaire et hydratation
-	$utilisateur = new Utilisateur();
-	// hydrater certain attributs pour avoir des valeurs par défaut
-	$utilisateur->setNom('Dupont');
-	$utilisateur->setPrenom('Jean');
-        // on rajoute en "dur" le privilège TEMPORAIRE
-	// on récupère l'entité inverse correspondante au droit
-	$em = $this->getDoctrine()->getManager();
-	$privilege = $em->getRepository('SYM16SimpleStockBundle:Droit')->
-		findOneByPrivilege('TEMPORAIRE');
-	$utilisateur->setDroit($privilege);
-	// creation du formulaire
-	$form = $this->createForm(new UtilisateurType, $utilisateur);
-	// test de la méthode
-	if($request->getMethod() == 'POST'){
-	// hydrater les variables $utilisateur
-	    $form->bind($request);
-	    // verifier la validité des valeurs d’entrée
-	    if($form->isValid()) {
-	        // enregistrer droit dans la BDD
-		$em = $this->getDoctrine()->getManager();
-		$em->persist($utilisateur);
-		$em->flush();
-		// affichage de la liste reactualisee
-		return $this->listerAction();
-	    }
-	}
-    	// On est arrivé par GET ou bien données d'entrées invalides
-	//afficher le formulaire et le passer à la vue
-    	return $this->render(
-		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
-		array('titre' => "Ajout d'un utilisateur (formulaire externalisé)", 'form' => $form->CreateView() )
-	);
-    }
-
     /**
      *  supprimer un article
      *
@@ -176,24 +130,6 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	//$this->setMesgFlash('Composant bien supprimé');
 	// appel de la fonction mère
 	return parent::supprimerAction($request);
-    }
-
-    public function supprimerAction1(Request $request) {
-	// contrôle d'accès
-	if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
-	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
-		array('statut' => 'SUPER UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));
-	// récupe de l'id de l'article à supprimer
-        $id = $request->query->get('valeur');
-	// recupération de l'entity manager
-	$em = $this->getDoctrine()->getManager();
-        //récuparartion de l'entite d'id  $id
-        $user = $em->getRepository("SYM16SimpleStockBundle:Utilisateur")->find($id);
-	// suppression de l'entité
-	$em->remove($user);
-	$em->flush();
-	// affichage de la liste reactualisee
-	return $this->listerAction();
     }
 
     /**
@@ -214,41 +150,5 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	$this->aLister();
 	// appel de la fonction mère
 	return parent::modifierAction($request);
-    }
-
-    public function modifierAction1(Request $request)
-    {
-	// contrôle d'accès
-	if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
-	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
-		array('statut' => 'SUPER UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));
-	// récupe de l'id de l'article à supprimer
-        $id = $request->query->get('valeur');
-	// recupération de l'entity manager
-	$em = $this->getDoctrine()->getManager();
-        //récuparartion de l'entite d'id  $id
-        $utilisateur = $em->getRepository("SYM16SimpleStockBundle:Utilisateur")->find($id);
-	// creation du formulaire
-	$form = $this->createForm(new UtilisateurModifierType, $utilisateur);
-	// test de la méthode
-	if($request->getMethod() == 'POST'){
-	// on est donc arrivé en ce point par POST
-	// hydrater la variable $utilisateur
-		$form->bind($request);
-		// verifier la validité des valeurs d’entrée
-		if($form->isValid()) {
-		    // enregistrer utilisateur dans la BDD
-		    $em->persist($utilisateur);
-		    $em->flush();
-		    // affichage de la liste reactualisee
-		    return $this->listerAction();
-		}
-	}
-    	// On est arrivé par GET ou bien données d'entrées invalides
-	//afficher le formulaire et le passer à la vue
-    	return $this->render(
-		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
-		array('titre' => "Modification d'un utilisateur (avec formulaire externalisé)", 'form' => $form->CreateView() )
-	);
     }
 }

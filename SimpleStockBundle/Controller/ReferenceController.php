@@ -46,10 +46,27 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	$this->setModSupr(array(
             'mod' => 'sym16_simple_stock_reference_modifier',
             'supr'=> 'sym16_simple_stock_reference_supprimer',
-            'list'=> 'sym16_simple_stock_reference_lister')
+            'list'=> 'sym16_simple_stock_reference_lister',
+	    'prop'=> 'sym16_simple_stock_reference_propriete')
 	);
 
 	$this->setListName("Liste des références");
+
+	//pour l'affichage des propriétés d'une reference
+	$this->setPropertyName("Détails de la Référence :");
+	$this
+	    ->addProperty('Référence',			array('Ref',		"%s"))
+	    ->addProperty('Libellé',			array('Nom',	 	"%s"))
+	    ->addProperty('Unité de vente (UDV)',	array('UDV', 		"%5d"))
+	    ->addProperty('Seuil d\'alerte stock bas',	array('Seuil',		"%5d"))
+	    ->addProperty('Famille',			array('NomFamille',	"%s"))
+	    ->addProperty('Composant',			array('NomComposant',	"%s"))
+	    ->addProperty("Stocké dans l'entrepot",	array('NomEntrepot',	"%s"))
+	    ->addProperty("Rangé à l'emplacement",	array('NomEmplacement',	"%s"))
+	    ->addProperty("Créateur de la référence",	array('Createur', 	"%s"))
+	    ->addProperty('Date et heure de création',		array('Creation', 	NULL))
+	    ->addProperty('Date et heure de modification',	array('Modification',	NULL))
+	;
     }
 
     /**
@@ -67,6 +84,23 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	 $this->aLister();
 	// appel de la fonction mère
 	return parent::listerAction();
+    }
+
+    /**
+     * afficher les propriétés d'un item
+     *
+     * @Route("/property", name="sym16_simple_stock_reference_propriete")
+     */
+    public function proprieteAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// precise le repository ainsi que les propriétés à afficher
+	 $this->aLister();
+	// appel de la fonction mère
+	return parent::proprieteAction($request);
     }
 
     /**

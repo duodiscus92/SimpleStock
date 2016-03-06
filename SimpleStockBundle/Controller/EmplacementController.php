@@ -34,10 +34,22 @@ class EmplacementController extends /*Controller*/ SimpleStockController
 
 	$this->setModSupr(array(
             'mod' => 'sym16_simple_stock_emplacement_modifier',
-            'supr'=> 'sym16_simple_stock_emplacement_supprimer')
+            'supr'=> 'sym16_simple_stock_emplacement_supprimer',
+	    'list'=> 'sym16_simple_stock_emplacement_lister',
+	    'prop'=> 'sym16_simple_stock_emplacement_propriete')
 	);
 
 	$this->setListName("Liste des emplacements");
+
+	//pour l'affichage des propriétés d'une entité
+	$this->setPropertyName("Détail de l'Emplacement :");
+	$this
+	    ->addProperty('Nom de l\'Emplacement',	array('Nom', 		"%s"))
+	    ->addProperty('Rattaché à l\'Entrepot',	array('Nomentrepot',	"%s"))
+	    ->addProperty('Créateur du l\'Emplacement',	array('Createur', 	"%s"))
+	    ->addProperty('Date de création',		array('Creation', 	NULL))
+	    ->addProperty('Date de modification',	array('Modification',	NULL))
+	;
     }
 
 
@@ -56,6 +68,23 @@ class EmplacementController extends /*Controller*/ SimpleStockController
 	 $this->aLister();
 	// appel de la fonction mère
 	return parent::listerAction();
+    }
+
+    /**
+     * affcicher le proprité d'un item 
+     *
+     * @Route("/property", name="sym16_simple_stock_emplacement_propriete")
+     */
+    public function proprieteAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// precise le repository ainsi que les propriétés à afficher
+	 $this->aLister();
+	// appel de la fonction mère
+	return parent::proprieteAction($request);
     }
 
     /**

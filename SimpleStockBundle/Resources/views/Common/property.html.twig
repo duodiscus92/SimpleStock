@@ -1,0 +1,30 @@
+{# template pour afficher les propriété d'un élément d'un table #}
+{% extends 'SYM16SimpleStockBundle::layout.html.twig' %}
+
+{% block BLOCA %}
+{% javascripts '@SYM16SimpleStockBundle/Resources/public/js/jquery-1.12.0.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+    <h3>{{propertyname}}</h3>
+    <table class="table table-striped">
+	{# première ligne du tableau : intitulé des colonnes #}
+        <thead>
+	    <tr>
+                <th>Caractéristique</th>
+                <th>Valeur</th>
+            </tr>
+        </thead>
+	{# les autres lignes du tableau : intitulé et valeur #}
+	<tbody>
+        {# boucle sur les propriétés#}
+        {% for key,valeur in valeurs %}
+            <tr>
+                <td> {{ key }} </td>
+                <td> {{ valeur }} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+

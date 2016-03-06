@@ -25,14 +25,20 @@ class AcceuilController extends Controller
 	// récupération de l'utilisateur courant
 	$user = $this->getUser();
 	// test si l'utilisateur est anonyme
-	if(null === $user)
+	if(null === $user){
 	    $name = 'anonyme';
-	else
+	    $statut = 'VISITEUR';
+	}
+	else{
+	    // récupérer l'identifiant et le statut
 	    $name = $user->getUsername();
+	    $statut = $user->getStatut();
+	}
 	// récuprération du service session
 	$session = $this->get('session');
 	// initiatisation des variables de sessions
 	$session->set('stockuser', $name);
+	$session->set('stockuserstatut', $statut);
 
         return $this->render('SYM16SimpleStockBundle:Acceuil:index.html.twig', array('name' => $name));
     }

@@ -27,6 +27,8 @@ class SimpleStockController extends Controller
     private $mesgflash;
     private $filtre;
     private $listcriteria=array();
+    private $propertyname;
+    private $listProperties=array('id' => array('Id', "%3d"));
 
     // récupère la première clé étrangère qui pointe sur une id
     private function getForeignKey($id)
@@ -119,6 +121,17 @@ class SimpleStockController extends Controller
 	return $this;
     }
 
+    protected function setPropertyName($name)
+    {
+	$this->propertyname = $name;
+    }
+
+    protected function addProperty($key, $property)
+    {
+	$this->listProperties[$key] = $property;
+	return $this;
+    }
+
     //liste une table
     public function listerAction()
     {
@@ -141,6 +154,32 @@ class SimpleStockController extends Controller
 	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
 	//lister
 	return $this->render($service['listtwig'], $service['tab']);
+    }
+
+    // propriété d'une entité
+    public function proprieteAction(Request $request)
+    {
+	// récupe de l'id de l'article à supprimer
+        $id = $request->query->get('valeur');
+	// recupération de l'entity manager
+	$em = $this->getDoctrine()->getManager();
+        //récupérartion de l'entite d'id  $id
+        $entity = $em->getRepository($this->repositoryPath)->find($id);
+	// inutile de tester entity ==NULL car ça ne peut pas se produire
+	$listArticles=array();
+	foreach ($this->listProperties as $key => $property){
+	    //on reconstruit les getters à partir des noms de colonnes
+	    $getter = 'get'.$property[0];
+	    //on obtient la valeur
+	    $valeur = $entity->$getter();
+	    //on test son type
+	    if(is_object($valeur))
+		$listArticles[$key] = $valeur->format('Y-m-d H:i:s');
+	    else
+	    	$listArticles[$key] = sprintf($property[1], $valeur);
+	}
+	return $this->render('SYM16SimpleStockBundle:Common:property.html.twig', 
+	    array('propertyname' => $this->propertyname, 'valeurs' => $listArticles));
     }
 
     //liste une table sur laquelle on applique un filtre

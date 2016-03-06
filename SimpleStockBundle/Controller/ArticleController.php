@@ -45,10 +45,25 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	$this->setModSupr(array(
             'mod' => 'sym16_simple_stock_article_modifier',
             'supr'=> 'sym16_simple_stock_article_supprimer',
-            'list'=> 'sym16_simple_stock_article_lister')
+            'list'=> 'sym16_simple_stock_article_lister',
+	    'prop'=> 'sym16_simple_stock_article_propriete')
 	);
 
 	$this->setListName("Liste des articles");
+
+	//pour l'affichage des propriétés d'une entité
+	$this->setPropertyName("Détails de l'Article :");
+	$this
+	    ->addProperty('Référence',			array('RefRef',		"%s"))
+	    ->addProperty('Libellé',			array('NomRef', 	"%s"))
+	    ->addProperty('Prix hors taxe',		array('Prixht', 	"%5.2f"))
+	    ->addProperty('TVA',			array('Tva',		"%5.2f"))
+	    ->addProperty("Stocké dans l'entrepot",	array('NomEntrepot',	"%s"))
+	    ->addProperty("Rangé à l'emplacement",	array('NomEmplacement',	"%s"))
+	    ->addProperty("Créateur de l'article",	array('Createur', 	"%s"))
+	    ->addProperty('Date et heure de création',		array('Creation', 	NULL))
+	    ->addProperty('Date et heure de modification',	array('Modification',	NULL))
+	;
     }
 
     /**
@@ -66,6 +81,23 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	 $this->aLister();
 	// appel de la fonction mère
 	return parent::listerAction();
+    }
+
+    /**
+     * lister un tableau en faisant appel à un service
+     *
+     * @Route("/property", name="sym16_simple_stock_article_propriete")
+     */
+    public function proprieteAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// precise le repository ainsi que les propriétés à afficher
+	 $this->aLister();
+	// appel de la fonction mère
+	return parent::proprieteAction($request);
     }
 
     /**
