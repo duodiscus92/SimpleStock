@@ -56,6 +56,9 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	    ->addProperty('Date de création',		array('Creation', 	NULL))
 	    ->addProperty('Date de modification',	array('Modification',	NULL))
 	;
+
+	// change de database donc d'entity manager
+	//$this->setEmName('stockmaster');
     }
 
     /**

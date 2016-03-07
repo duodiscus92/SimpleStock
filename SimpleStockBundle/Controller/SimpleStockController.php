@@ -29,12 +29,13 @@ class SimpleStockController extends Controller
     private $listcriteria=array();
     private $propertyname;
     private $listProperties=array('id' => array('Id', "%3d"));
+    private $emname = 'default'; //entity manager name
 
     // récupère la première clé étrangère qui pointe sur une id
     private function getForeignKey($id)
     {
 	//récupération de l'entity manager
-	$em = $this->getDoctrine()->getManager();
+	$em = $this->getDoctrine()->getManager($this->emname);
 	//création d'un objet rsm qui va recevoir les colonnes qui nous intéressent
         $rsm = new ResultSetMapping();
 	// on indique qu'on veut récupérer la colonne TABLE_NAME (la table propriétaire)
@@ -132,12 +133,17 @@ class SimpleStockController extends Controller
 	return $this;
     }
 
+    protected function  setEmName($name)
+    {
+	$this->emname = $name;
+    }
+
     //liste une table
     public function listerAction()
     {
 
 	// on récupère l'entity manager
-	$em = $this->getDoctrine()->getManager();
+	$em = $this->getDoctrine()->getManager($this->emname);
 	// on récupère tout le contenu de la table
 	$repository = $em->getRepository($this->repositoryPath);
 	// on récupère le contenu de la table
@@ -162,7 +168,7 @@ class SimpleStockController extends Controller
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');
 	// recupération de l'entity manager
-	$em = $this->getDoctrine()->getManager();
+	$em = $this->getDoctrine()->getManager($this->emname);
         //récupérartion de l'entite d'id  $id
         $entity = $em->getRepository($this->repositoryPath)->find($id);
 	// inutile de tester entity ==NULL car ça ne peut pas se produire
@@ -186,7 +192,7 @@ class SimpleStockController extends Controller
     public function filtrerAction(Request $request)
     {
 	// on récupère l'entity manager
-	$em = $this->getDoctrine()->getManager();
+	$em = $this->getDoctrine()->getManager($this->emname);
 	// on récupère tout le repository
 	$repository = $em->getRepository($this->repositoryPath);
 	$uniquement = array(); $sauf = array(); 
@@ -227,7 +233,7 @@ class SimpleStockController extends Controller
 	    // verifier la validité des valeurs d’entrée
 	    if($form->isValid()) {
 	        // enregistrer SReference dans la BDD
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager($this->emname);
 		$em->persist($entity);
 		$em->flush();
 		// affichage de la liste reactualisee
@@ -244,7 +250,7 @@ class SimpleStockController extends Controller
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');
 	// recupération de l'entity manager
-	$em = $this->getDoctrine()->getManager();
+	$em = $this->getDoctrine()->getManager($this->emname);
         //récuparartion de l'entite d'id  $id
         $entity = $em->getRepository($this->repositoryPath)->find($id);
 	// creation du formulaire
@@ -273,7 +279,7 @@ class SimpleStockController extends Controller
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');
 	// recupération de l'entity manager
-	$em = $this->getDoctrine()->getManager();
+	$em = $this->getDoctrine()->getManager($this->emname);
         //récupérartion de l'entite d'id  $id
         $entity = $em->getRepository($this->repositoryPath)->find($id);
 	// vérifier si une entité est propriétaire de cette entité d'id=$id

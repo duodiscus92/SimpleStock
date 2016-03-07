@@ -7,17 +7,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Droit
+ * Role
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\DroitRepository")
+ * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\RoleRepository")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
- * fields={"privilege"},
- * message="Ce privilege a déjà été utilisé",
+ * fields={"role"},
+ * message="Ce role a déjà été utilisé",
  * )
  */
-class Droit extends EntityTools
+class Role extends EntityTools
 {
     /**
      * @var integer
@@ -31,9 +31,9 @@ class Droit extends EntityTools
     /**
      * @var string
      *
-     * @ORM\Column(name="privilege", type="string", length=255, unique=true)
+     * @ORM\Column(name="role", type="string", length=255, unique=true)
      */
-    private $privilege;
+    private $role;
 
 
     /**
@@ -47,25 +47,25 @@ class Droit extends EntityTools
     }
 
     /**
-     * Set privilege
+     * Set role
      *
-     * @param string $privilege
-     * @return Droit
+     * @param string $role
+     * @return Role
      */
-    public function setPrivilege($privilege)
+    public function setRole($role)
     {
-        $this->privilege = strtoupper($this->wd_remove_accents($privilege));
+        $this->role = strtoupper($this->wd_remove_accents($role));
 
         return $this;
     }
 
     /**
-     * Get privilege
+     * Get role
      *
      * @return string 
      */
-    public function getPrivilege()
+    public function getRole()
     {
-        return $this->privilege;
+        return $this->role;
     }
 }

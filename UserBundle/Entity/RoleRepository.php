@@ -12,4 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class RoleRepository extends EntityRepository
 {
+	//renvoie le nombre total de lignes de l'entité (utilise DQL)
+	public function getNbItems()
+	{
+		$query = $this ->_em->createQuery('
+			SELECT COUNT(r)
+			FROM SYM16UserBundle:Role r');
+		return $query->getSingleScalarResult();
+	}
+
+	//pour assuurer la compatibilité ascendante
+	//cette fonction est obsolète
+	public function getNbArticle()
+	{
+		return $this->getNbItems();
+	}
+
 }

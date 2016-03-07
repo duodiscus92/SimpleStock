@@ -4,7 +4,8 @@
   <body>#}
 {% extends '::stocklayout.html.twig' %}
       {% block HEADER %}
-    <h2>Bienvenue sur Simple Stock dans le stock : {{stockname}}</h2>
+    <h2>Bienvenue sur Simple Stock</h2>
+    <h3>Nom du stock en cours d'utilisation: {{app.session.get('stockusage')}}</h3>
     {# utilisation de variables de sessions déclarées dans AcceuilController.php #}
     <h3>Utilisateur : {{ app.session.get('stockuser') }} - Votre statut est : {{app.session.get('stockuserstatut') }}</h3>
       {% endblock %}
@@ -97,6 +98,7 @@
           		<ul class="dropdown-menu dropdown-menu-primary">
             		    <li class="dropdown-header">Stock</li>
             		    <li><a href="#">Choisir un stock</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_stocklist_lister') }}">Voir les stocks</a></li>
             		    <li class="divider"></li>
             		    <li class="dropdown-header">Session</li>
             		    <li><a href="{{ path('login') }}">Se connecter</a></li>

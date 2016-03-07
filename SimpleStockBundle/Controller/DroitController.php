@@ -1,7 +1,6 @@
 <?php
 // src/SYM16/SimpleStockBundle/Controller/DroitController.php
 namespace SYM16\SimpleStockBundle\Controller;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -9,8 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-use SYM16\SimpleStockBundle\Entity\Droit;
-use SYM16\SimpleStockBundle\Entity\Utilisateur;
+//use SYM16\SimpleStockBundle\Entity\Role;
 use SYM16\SimpleStockBundle\Form\DroitType;
 
 /**
@@ -25,17 +23,25 @@ class DroitController extends /*Controller*/ SimpleStockController
     //permet de paramétrer ce qu'on veut lister
     private function aLister()
     {
-	$this->setRepositoryPath('SYM16SimpleStockBundle:Droit');
+	$this->setRepositoryPath('SYM16UserBundle:Role');
 	$this
-	    ->addColname('Statut',		'Privilege')
+	    ->addColname('Statut',		'Role')
 	;
 
 	$this->setModSupr(array(
-            'mod' => 'sym16_simple_stock_droit_modifier',
-            'supr'=> 'sym16_simple_stock_droit_supprimer')
+            'mod' => 'NULL',
+            'supr'=> 'NULL',
+	    'list'=> 'sym16_simple_stock_droit_lister',
+	    'prop'=> 'sym16_simple_stock_droit_propriete')
 	);
 
 	$this->setListName("Liste des statuts");
+
+	//pour l'affichage des propriétés d'une entité
+	$this->setPropertyName("Détail d'un Statut :");
+	$this
+	    ->addProperty('Nom du statut',	array('Role', 		"%s"))
+	;
     }
 
     /**
@@ -45,10 +51,31 @@ class DroitController extends /*Controller*/ SimpleStockController
      */
     public function listerAction()
     {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'SUPER_UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// precise le repository et ce qu'on veut lister
 	 $this->aLister();
 	// appel de la fonction mère
 	return parent::listerAction();
+    }
+
+    /**
+     * affcicher le proprité d'un item 
+     *
+     * @Route("/property", name="sym16_simple_stock_droit_propriete")
+     */
+    public function proprieteAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'SUPER_UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// precise le repository ainsi que les propriétés à afficher
+	 $this->aLister();
+	// appel de la fonction mère
+	return parent::proprieteAction($request);
     }
 
     /**
@@ -60,6 +87,10 @@ class DroitController extends /*Controller*/ SimpleStockController
      */
     public function ajouterAction(Request $request)
     {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'SUPER_UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// creation d'une instance de l'entité propriétaire a hydrater
 	$this->setEntityObject(new Droit);
 	// creation du formulaire
@@ -79,6 +110,10 @@ class DroitController extends /*Controller*/ SimpleStockController
      */
     public function modifierAction(Request $request)
     {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'SUPER_UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// préciser le formulaire à créer
 	$this->setFormNameAndObject("Modification d'un statut", new DroitType);
 	// preciser le repository et ce qu'on veut lister après modification
@@ -94,6 +129,10 @@ class DroitController extends /*Controller*/ SimpleStockController
      * @Route("/del", name="sym16_simple_stock_droit_supprimer")
      */
     public function supprimerAction(Request $request) {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'SUPER_UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// precsier le repository et ce qu'on veut lister après suppression
 	$this->aLister();
 	// message flash

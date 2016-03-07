@@ -37,8 +37,16 @@
                         <td> {{ article }} </td>
                     {% endif %}
                 {% endfor %}
-	        <td><a href="{{ path(path.mod,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-pencil"></span></a>
-	        <a class="confirmModalLink" href="{{ path(path.supr,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-trash"></span></a></td>
+	        {% if path.mod != 'NULL' %}
+                <td><a href="{{ path(path.mod,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                {% else %}
+                <td><span class="glyphicon glyphicon-pencil"></span>
+                {% endif %}
+	        {% if path.supr != 'NULL' %}
+                <a class="confirmModalLink" href="{{ path(path.supr,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-trash"></span></a></td>
+                {% else %}
+                <span class="glyphicon glyphicon-trash"></span></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
