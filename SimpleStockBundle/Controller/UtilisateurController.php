@@ -23,6 +23,9 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
     //permet de paramétrer ce qu'on veut lister
     private function aLister()
     {
+	// change de database donc d'entity manager
+	$this->setEmName('stockmaster');
+
 	$this->setRepositoryPath('SYM16UserBundle:User');
 	$this
 	    //->addColname('Nom',		'Nom')

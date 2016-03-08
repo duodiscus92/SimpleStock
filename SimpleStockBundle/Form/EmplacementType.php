@@ -21,7 +21,8 @@ class EmplacementType extends AbstractType
 	    ->add('modification', 	'datetime')
             ->add('entrepot', 'entity', array(
 		'class' => 'SYM16SimpleStockBundle:Entrepot',
-		'property' => 'nom'
+		'property' => 'nom',
+		'em' => 'simplestock2'
             ));
     }
     

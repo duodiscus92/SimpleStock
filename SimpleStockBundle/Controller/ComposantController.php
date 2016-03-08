@@ -24,6 +24,13 @@ class ComposantController extends /*Controller*/ SimpleStockController
     //permet de paramétrer ce qu'on veut lister
     private function aLister()
     {
+	// récuprération du service session
+	$session = $this->get('session');
+	// récupération de la vriable de session contenant le nom interne de la connection à la BDD courante
+	$stockconnection = $session->get('stockconnection');
+	// selection de la database du stock courant (donc de l'entity manager)
+	$this->setEmName($stockconnection);
+
 	$this->setRepositoryPath('SYM16SimpleStockBundle:Composant');
 	$this
 	    ->addColname('Composant',	'Nom')

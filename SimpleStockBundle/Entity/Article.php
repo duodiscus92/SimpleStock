@@ -67,6 +67,11 @@ class Article
 	return $this->getReference()->getNomEmplacement();
     }
 
+    public function getUdv()
+    {
+	return $this->getReference()->getUdv();
+    }
+
     /**
      * @var integer
      *

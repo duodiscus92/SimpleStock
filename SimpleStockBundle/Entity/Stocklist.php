@@ -37,6 +37,13 @@ class Stocklist
     private $usage;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="connection", type="string", length=255, unique=true)
+     */
+    private $connection;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -90,5 +97,28 @@ class Stocklist
     public function getUsage()
     {
         return $this->usage;
+    }
+
+    /**
+     * Set connection
+     *
+     * @param string $connection
+     * @return Stocklist
+     */
+    public function setConnection($connection)
+    {
+        $this->connection = $connection;
+
+        return $this;
+    }
+
+    /**
+     * Get connection
+     *
+     * @return string 
+     */
+    public function getConnection()
+    {
+        return $this->connection;
     }
 }

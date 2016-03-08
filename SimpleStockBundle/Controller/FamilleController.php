@@ -28,6 +28,13 @@ class FamilleController extends /*Controller*/ SimpleStockController
     //permet de paramétrer ce qu'on veut lister
     private function aLister()
     {
+	// récuprération du service session
+	$session = $this->get('session');
+	// récupération de la vriable de session contenant le nom interne de la connection à la BDD courante
+	$stockconnection = $session->get('stockconnection');
+	// selection de la database du stock courant (donc de l'entity manager)
+	$this->setEmName($stockconnection);
+
 	//pour l'accès au repositroy de l'entité dont on va s'occuper
 	$this->setRepositoryPath('SYM16SimpleStockBundle:Famille');
 	// sélection des colonnes à afficher

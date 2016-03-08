@@ -30,10 +30,18 @@ class ArticleController extends /*Controller*/ SimpleStockController
     //permet de paramétrer ce qu'on veut lister
     private function aLister()
     {
+	// récuprération du service session
+	$session = $this->get('session');
+	// récupération de la vriable de session contenant le nom interne de la connection à la BDD courante
+	$stockconnection = $session->get('stockconnection');
+	// selection de la database du stock courant (donc de l'entity manager)
+	$this->setEmName($stockconnection);
+
 	$this->setRepositoryPath('SYM16SimpleStockBundle:Article');
 	$this
 	    ->addColname('Réf',		'RefRef')
 	    ->addColname('Nom',		'NomRef')
+	    ->addColname('Qté',		'Quantite')
 	    ->addColname('PrixHT',	'Prixht')
 	    ->addColname('TVA',		'Tva')
 	    //->addColname('Créateur',	'Createur')
@@ -56,10 +64,14 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	$this
 	    ->addProperty('Référence',			array('RefRef',		"%s"))
 	    ->addProperty('Libellé',			array('NomRef', 	"%s"))
+	    ->addProperty('Quantité',			array('Quantite', 	"%5d"))
+	    ->addProperty('Unité de vente',		array('Udv',	 	"%5d"))
 	    ->addProperty('Prix hors taxe',		array('Prixht', 	"%5.2f"))
 	    ->addProperty('TVA',			array('Tva',		"%5.2f"))
+	    ->addProperty("Appartient à la famille",	array('NomFamille',	"%s"))
+	    ->addProperty("Appartient au composant dans cette famille",	array('NomComposant',	"%s"))
 	    ->addProperty("Stocké dans l'entrepot",	array('NomEntrepot',	"%s"))
-	    ->addProperty("Rangé à l'emplacement",	array('NomEmplacement',	"%s"))
+	    ->addProperty("Rangé à l'emplacement dans cet entrepot",	array('NomEmplacement',	"%s"))
 	    ->addProperty("Créateur de l'article",	array('Createur', 	"%s"))
 	    ->addProperty('Date et heure de création',		array('Creation', 	NULL))
 	    ->addProperty('Date et heure de modification',	array('Modification',	NULL))

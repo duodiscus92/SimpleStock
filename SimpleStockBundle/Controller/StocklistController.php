@@ -23,10 +23,14 @@ class StocklistController extends /*Controller*/ SimpleStockController
     //permet de paramétrer ce qu'on veut lister
     private function aLister()
     {
+	// change de database donc d'entity manager
+	$this->setEmName('stockmaster');
+
 	$this->setRepositoryPath('SYM16SimpleStockBundle:Stocklist');
 	$this
 	    ->addColname('Nom',		'Nom')
 	    ->addColname('Usage',	'Usage')
+	    ->addColname('Connection',	'Connection')
 	;
 
 	$this->setModSupr(array(
@@ -43,10 +47,8 @@ class StocklistController extends /*Controller*/ SimpleStockController
 	$this
 	    ->addProperty('Nom interne',		array('Nom', 		"%s"))
 	    ->addProperty('Nom d\'usage',		array('Usage', 		"%s"))
+	    ->addProperty('Nom de la connection à la base de données',		array('Connection', 		"%s"))
 	;
-
-	// change de database donc d'entity manager
-	$this->setEmName('stockmaster');
     }
 
     /**

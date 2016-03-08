@@ -93,14 +93,31 @@
        		    </li>
                     <li class="dropdown dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            		Stocks<b class="caret"></b>
+          		</a>
+          		<ul class="dropdown-menu dropdown-menu-primary">
+			    {% if is_granted('ROLE_EXAMINATEUR') %}
+            		    <li><a href="{{ path('sym16_simple_stock_stocklist_lister') }}">Voir les stocks</a></li>
+            		    <li class="divider"></li>
+            		    {#<li><a href="#">Choisir un stock</a></li>#}
+            		    <li class="dropdown-header">Selection d'un stock</li>
+			    {% for stock in  app.session.get('stocklist') %}
+				{% if stock.usage == app.session.get('stockusage') %}
+			    	    <li><a href="{{ path('sym16_simple_stock_changestock',{'stockusage':stock.usage }) }}"">>>>{{stock.usage}}<<<</a></li>
+				{% else %}
+			    	    <li><a href="{{ path('sym16_simple_stock_changestock',{'stockusage':stock.usage }) }}">{{stock.usage}}</a></li>
+				{% endif %} 
+			    {% endfor %}
+                            {% else %}
+			    <li><a href="{{ path('login') }}"><font color="grey">Connectez-vous pour acceder à ce menu</font></a></li>
+			    {% endif %} 
+          		</ul>
+       		    </li>
+                    <li class="dropdown dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             		Session<b class="caret"></b>
           		</a>
           		<ul class="dropdown-menu dropdown-menu-primary">
-            		    <li class="dropdown-header">Stock</li>
-            		    <li><a href="#">Choisir un stock</a></li>
-            		    <li><a href="{{ path('sym16_simple_stock_stocklist_lister') }}">Voir les stocks</a></li>
-            		    <li class="divider"></li>
-            		    <li class="dropdown-header">Session</li>
             		    <li><a href="{{ path('login') }}">Se connecter</a></li>
             		    <li><a href="{{ path('logout') }}">Se déconnecter</a></li>
             		    <li class="divider"></li>
