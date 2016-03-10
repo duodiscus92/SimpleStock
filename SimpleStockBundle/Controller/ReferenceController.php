@@ -140,7 +140,7 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 		     $this->addCriteria('entrepot', array('colonne' => NULL, 'ust' => $filtre->getEntrepotfiltre() ) );
 		if ($filtre->getCreateur() != NULL)
 		     // ... et ça itou
-		     $this->addCriteria('createur', array('colonne' => $filtre->getCreateur()->getLogin(),'ust' => $filtre->getCreateurfiltre() ) );
+		     $this->addCriteria('createur', array('colonne' => $filtre->getCreateur()->getUsername(),'ust' => $filtre->getCreateurfiltre() ) );
 		else
 		     $this->addCriteria('createur', array('colonne' => NULL, 'ust' => $filtre->getCreateurfiltre() ) );
    		// precise le repository et ce qu'on veut lister

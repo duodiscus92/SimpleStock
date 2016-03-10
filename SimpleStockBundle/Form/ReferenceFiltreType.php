@@ -50,8 +50,8 @@ class ReferenceFiltreType extends AbstractType
             // la liste déroulante  createur
 	    ->add('createur', 'entity', array(
 		'required' => false,
-		'class' => 'SYM16SimpleStockBundle:Utilisateur',
-		'property' => 'login',
+		'class' => 'SYM16UserBundle:User',
+		'property' => 'username',
 		'label' => 'Créateur',
 		'empty_value' => "-- Selectionnez un créateur --",
             ))

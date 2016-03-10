@@ -230,7 +230,7 @@ class ArticleController extends /*Controller*/ SimpleStockController
 		// on parcourt les entités de référence à prélever
 		foreach($entities as $entity){
 		    // si la qté à prélever est sup à la quantité dispo dans l'article on supprime l'article
-		    if($aprelever > $entity->getQuantite()){
+		    if($aprelever >= $entity->getQuantite()){
 			$aprelever = $aprelever - $entity->getQuantite();
 			$em->remove($entity); 
 		    }
