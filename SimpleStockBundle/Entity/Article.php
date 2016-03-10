@@ -15,8 +15,8 @@ class Article
     // valeurs par défaut
     public function __construct()
     {
-	$this->creation = new \Datetime();
-	$this->modification = $this->creation;
+	//$this->creation = new \Datetime();
+	//$this->modification = $this->creation;
 	$this->tva = 20.00;
     }
 

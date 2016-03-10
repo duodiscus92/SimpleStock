@@ -8,21 +8,30 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EmplacementType extends AbstractType
 {
-    /**
+    private $options = array();
+    public function __construct($options = array('em' => 'default'))
+    {
+        $this->options = $options;
+    }    
+
+   /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+	// récupération de l'entity manager courant
+	$em = $this->options['em'];
+	// construction du formulaire
         $builder
             ->add('nom', 		'text')
-	    ->add('createur',		'text')
-	    ->add('creation',		'datetime')
-	    ->add('modification', 	'datetime')
+	    //->add('createur',		'text')
+	    //->add('creation',		'datetime')
+	    //->add('modification', 	'datetime')
             ->add('entrepot', 'entity', array(
 		'class' => 'SYM16SimpleStockBundle:Entrepot',
 		'property' => 'nom',
-		'em' => 'simplestock2'
+		'em' => $em
             ));
     }
     

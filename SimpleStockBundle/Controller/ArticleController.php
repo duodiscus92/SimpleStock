@@ -17,6 +17,8 @@ use SYM16\SimpleStockBundle\Form\ArticleType;
 //use SYM16\SimpleStockBundle\Entity\Repository\ArticleFiltreRepository;
 use SYM16\SimpleStockBundle\Form\ArticleModifierType;
 use SYM16\SimpleStockBundle\Form\ArticleFiltreType;
+use SYM16\SimpleStockBundle\Controller\ArticlePrelevement;
+//use SYM16\SimpleStockBundle\Entity\Repository\ArticleRepository;
 
 /**
  *
@@ -26,16 +28,16 @@ use SYM16\SimpleStockBundle\Form\ArticleFiltreType;
  */
 class ArticleController extends /*Controller*/ SimpleStockController
 {
-
+    private $stockconnection;
     //permet de paramétrer ce qu'on veut lister
     private function aLister()
     {
 	// récuprération du service session
 	$session = $this->get('session');
 	// récupération de la vriable de session contenant le nom interne de la connection à la BDD courante
-	$stockconnection = $session->get('stockconnection');
+	$this->stockconnection = $session->get('stockconnection');
 	// selection de la database du stock courant (donc de l'entity manager)
-	$this->setEmName($stockconnection);
+	$this->setEmName($this->stockconnection);
 
 	$this->setRepositoryPath('SYM16SimpleStockBundle:Article');
 	$this
@@ -54,7 +56,8 @@ class ArticleController extends /*Controller*/ SimpleStockController
             'mod' => 'sym16_simple_stock_article_modifier',
             'supr'=> 'sym16_simple_stock_article_supprimer',
             'list'=> 'sym16_simple_stock_article_lister',
-	    'prop'=> 'sym16_simple_stock_article_propriete')
+	    'prop'=> 'sym16_simple_stock_article_propriete',
+	    'prel'=> 'sym16_simple_stock_article_prelever')
 	);
 
 	$this->setListName("Liste des articles");
@@ -127,10 +130,10 @@ class ArticleController extends /*Controller*/ SimpleStockController
 		array('statut' => 'GESTIONNAIRE', 'homepath' => "sym16_simple_stock_homepage"));
 	// creation d'une instance de l'entité propriétaire a hydrater
 	$this->setEntityObject(new Article);
-	// creation du formulaire
-	$this->setFormNameAndObject("Ajout d'un article", new ArticleType);
 	// preciser le repository ce qu'on veut lister après ajout
 	$this->aLister();
+	// creation du formulaire
+	$this->setFormNameAndObject("Ajout d'un article", new ArticleType(array('em' => $this->stockconnection)) );
     	// appel de la fonction mère
     	return parent::ajouterAction($request);
     }
@@ -167,11 +170,91 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	if(!$this->get('security.context')->isGranted('ROLE_GESTIONNAIRE'))
 	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
 		array('statut' => 'GESTIONNAIRE', 'homepath' => "sym16_simple_stock_homepage"));
-	// préciser le formulaire à créer
-	$this->setFormNameAndObject("Modification d'un article", new ArticleModifierType);
 	// preciser le repository et ce qu'on veut lister après modification
 	$this->aLister();
+	// préciser le formulaire à créer
+	$this->setFormNameAndObject("Modification d'un article", new ArticleModifierType(array('em' => $this->stockconnection)) );
 	// appel de la fonction mère
 	return parent::modifierAction($request);
     }
+
+    /**
+     *
+     * modifier un article dans l'entité (avec formulaire externalisé)
+     *
+     * @Route("/prel", name="sym16_simple_stock_article_prelever")
+     * @Template("SYM16SimpleStockBundle:Forms:simpleform.html.twig")
+     */
+    public function preleverAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_GESTIONNAIRE'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'GESTIONNAIRE', 'homepath' => "sym16_simple_stock_homepage"));
+
+	// récuprération du service session
+	$session = $this->get('session');
+	// récupération de la variable de session contenant le nom interne de la connection à la BDD courante
+	$stockconnection = $session->get('stockconnection');
+	// récuperation entity manager
+	$em = $this->getDoctrine()->getManager($stockconnection);
+	// récuparation du repository
+	$rep = $em->getRepository('SYM16SimpleStockBundle:Article');
+	// récupe de l'id de l'article à prélever
+        $id = $request->query->get('valeur');
+        //récupérartion de l'entite d'id  $id
+        $entity = $rep->find($id);
+	//récupération de la référence
+	$ref = $entity->getRefRef();
+	// calcul de la quantité totale disponible pour la référence donnée
+	$quantitetotale = $rep->getQteTotale($ref);
+	// Creation du forulaire de prélèvement
+	$articleprelevement = new ArticlePrelevement($quantitetotale);
+	$formBuilder = $this->createFormBuilder($articleprelevement);
+	// ajout des champs de formulaire
+	$formBuilder
+	    ->add('quantite',	'number', array('label' => "Quantité à prélever (".$quantitetotale." max.) : ") )
+	;
+	// génération du formulaire
+	$form = $formBuilder->getForm();
+
+	// test si on arrive par POST
+	$request = $this->getRequest();
+	if($request ->getMethod() == 'POST') {
+	    $form->bind($request);
+	    // vérification des valeurs du formulaire
+	    if($form->isValid()){
+		// y a plus qu'a prélever
+		$aprelever = $articleprelevement->getQuantite();
+		$entities = $rep->findByRef($ref);
+		// on parcourt les entités de référence à prélever
+		foreach($entities as $entity){
+		    // si la qté à prélever est sup à la quantité dispo dans l'article on supprime l'article
+		    if($aprelever > $entity->getQuantite()){
+			$aprelever = $aprelever - $entity->getQuantite();
+			$em->remove($entity); 
+		    }
+		    // sinon on actualise la quantité restante
+		    else{
+			$entity->setQuantite($entity->getQuantite()-$aprelever);
+		   	$em->persist($entity);
+			// et on arrête de parcourir les entités
+			break;
+		   }
+		}
+		$em->flush();
+		return $this->listerAction();
+	    }
+	}
+
+	// si on est là c'est qu'on est arrivé par GET
+	//affichage du formulaire
+	return $this->render(
+		'SYM16SimpleStockBundle:Forms:simpleform.html.twig',
+		array('titre' => "Prélèvement d'articles référencés : ".$ref." -  Quantité max. autorisée : ".$quantitetotale,
+			'form' => $form->CreateView()
+		)
+	);
+    }
 }
+

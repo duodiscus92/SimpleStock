@@ -12,12 +12,21 @@ use SYM16\SimpleStockBundle\Form\ReferenceType;
 
 class ArticleType extends AbstractType
 {
+    private $options = array();
+    public function __construct($options = array('em' => 'default'))
+    {
+        $this->options = $options;
+    }    
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+	// récupération de l'entity manager courant
+	$em = $this->options['em'];
+	// construction du formulaire
         $builder
             // la liste déroulante  reference
 	    ->add('reference', 'entity', array(
@@ -27,15 +36,16 @@ class ArticleType extends AbstractType
 			return $er->createQueryBuilder('reference')->orderBy('reference.ref','ASC');
 		},
 		'property' => 'nom',
+		'em' => $em,
 		'label' => 'Référence',
 		'empty_value' => "-- Selectionnez une référence --",
             ))
             ->add('prixht', 		'number', array('precision' => '2', 'label' => 'Prix HT'))
             ->add('tva', 		'number', array('precision' => '2', 'label' => 'TVA'))
 	    ->add('quantite', 		'integer', array('label' => 'Quantité'))
-	    ->add('createur',		'text', array('label' => 'Créateur'))
-	    ->add('creation',		'datetime', array('label' => 'Création'))
-	    ->add('modification', 	'datetime')
+	    //->add('createur',		'text', array('label' => 'Créateur'))
+	    //->add('creation',		'datetime', array('label' => 'Création'))
+	    //->add('modification', 	'datetime')
 	    // si on met le bouton ici il ne prend pas le style bootstrap
             //->add('valider', 'submit', array(
             //    'label' => 'Valider'

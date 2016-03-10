@@ -22,8 +22,8 @@ class Composant extends EntityTools
 {
     public function __construct()
     {
-	$this->creation = new \Datetime();
-	$this->modification = $this->creation;
+	//$this->creation = new \Datetime();
+	//$this->modification = $this->creation;
     }
 
     /**

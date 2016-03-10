@@ -24,8 +24,8 @@ class Reference extends EntityTools
     // valeurs par défaut
     public function __construct()
     {
-	$this->creation = new \Datetime();
-	$this->modification = $this->creation;
+	//$this->creation = new \Datetime();
+	//$this->modification = $this->creation;
 	$this->udv = 1;
 	$this->seuil = 1;
     }

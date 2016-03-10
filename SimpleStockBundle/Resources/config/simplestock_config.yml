@@ -52,8 +52,8 @@ doctrine:
             stockmaster:
                 connection: stockmaster     
                 mappings:
-                    SYM16SimpleStockBundle : ~
                     SYM16UserBundle : ~
+                    SYM16SimpleStockBundle : ~
             simplestock2:
                 connection: simplestock2     
                 mappings:

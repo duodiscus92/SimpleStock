@@ -60,8 +60,9 @@ class User implements UserInterface
     public function __construct()
     {
 	$this->roles = array();
-	$this->creation = new \Datetime();
-	$this->modification = $this->creation;
+	$this->roles[0]= 'UNDEFINED';
+	//$this->creation = new \Datetime();
+	//$this->modification = $this->creation;
 	$this->salt='';
     }
 
@@ -129,7 +130,9 @@ class User implements UserInterface
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        //$user->setPassword($name);
+        $options = ['cost' => 12];
+        $this->password = password_hash($password, PASSWORD_BCRYPT, $options);
 
         return $this;
     }
@@ -267,7 +270,8 @@ class User implements UserInterface
     {
 	$this->statut = $statut->getRole();
 	$role = "ROLE_".$this->statut;
-	$this->roles = array($role);
+	//$this->roles = array($role);
+	$this->roles[0]= $role;
 	return $this;
     }	
 

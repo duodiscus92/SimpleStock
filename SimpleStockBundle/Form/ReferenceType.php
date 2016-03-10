@@ -12,12 +12,21 @@ use SYM16\SimpleStockBundle\Form\EmplacementType;
 
 class ReferenceType extends AbstractType
 {
+    private $options = array();
+    public function __construct($options = array('em' => 'default'))
+    {
+        $this->options = $options;
+    }    
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+	// récupération de l'entity manager courant
+	$em = $this->options['em'];
+	// construction du formulaire
         $builder
             ->add('ref', 		'text')
             ->add('nom', 		'text')
@@ -29,6 +38,7 @@ class ReferenceType extends AbstractType
 			return $er->createQueryBuilder('entrepot')->orderBy('entrepot.nom','ASC');
 		},
 		'property' => 'nom',
+		'em' => $em,
 		'label' => 'Entrepot',
 		'empty_value' => "-- Selectionnez un entrepot --",
             ))
@@ -40,6 +50,7 @@ class ReferenceType extends AbstractType
 			return $er->createQueryBuilder('emplacement')->orderBy('emplacement.nom','ASC');
 		},
 		'property' => 'nom',
+		'em' => $em,
 		'label' => 'Emplacement',
 		'empty_value' => "-- Selectionnez un emplacement --",
             ))
@@ -51,6 +62,7 @@ class ReferenceType extends AbstractType
 			return $er->createQueryBuilder('famille')->orderBy('famille.nom','ASC');
 		},
 		'property' => 'nom',
+		'em' => $em,
 		'label' => 'Famille',
 		'empty_value' => "-- Selectionnez une famille --",
             ))
@@ -62,14 +74,15 @@ class ReferenceType extends AbstractType
 			return $er->createQueryBuilder('composant')->orderBy('composant.nom','ASC');
 		},
 		'property' => 'nom',
+		'em' => $em,
 		'label' => 'Composant',
 		'empty_value' => "-- Selectionnez un composant --",
             ))
 	    ->add('udv', 		'integer')
             ->add('seuil', 		'integer')
-	    ->add('createur',		'text') 
-	    ->add('creation',		'datetime')
-	    ->add('modification', 	'datetime')
+	    //->add('createur',		'text') 
+	    //->add('creation',		'datetime')
+	    //->add('modification', 	'datetime')
 	    // si on met le bouton ici il ne prend pas le style bootstrap
             //->add('valider', 'submit', array(
             //    'label' => 'Valider'

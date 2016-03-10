@@ -20,8 +20,13 @@
 		{% endfor %}
 		{#<th>Modifier</th>
 		<th>Supprimer</th>#}
-                <th><span class="glyphicon glyphicon-pencil"></span>
-                <span class="glyphicon glyphicon-trash"></span></th>
+                <th>
+		    {% if path.prel !=NULL %}
+		    <span class="glyphicon glyphicon-export"></span>
+		    {% endif %}
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    <span class="glyphicon glyphicon-trash"></span>
+		</th>
             </tr>
         </thead>
 	{# les autres lignes du tableau #}
@@ -37,17 +42,22 @@
                         <td> {{ article }} </td>
                     {% endif %}
                 {% endfor %}
+		<td>
+		{% if path.prel !=NULL %}
+		<a href="{{ path(path.prel,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-export"></span>
+		{% endif %}
 	        {% if path.mod != 'NULL' %}
-                <td><a href="{{ path(path.mod,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-pencil"></span></a>
+                <a href="{{ path(path.mod,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-pencil"></span></a>
                 {% else %}
-                <td><span class="glyphicon glyphicon-pencil"></span>
+                <span class="glyphicon glyphicon-pencil"></span>
                 {% endif %}
 	        {% if path.supr != 'NULL' %}
-                <a class="confirmModalLink" href="{{ path(path.supr,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-trash"></span></a></td>
+                <a class="confirmModalLink" href="{{ path(path.supr,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-trash"></span></a>
                 {% else %}
-                <span class="glyphicon glyphicon-trash"></span></td>
+                <span class="glyphicon glyphicon-trash"></span>
                 {% endif %}
-            </tr>
+		</td>
+	     </tr>
         {% endfor %}
         </tbody>
     </table>

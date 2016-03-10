@@ -42,9 +42,19 @@ class SimpleStockController extends Controller
         $rsm->addScalarResult('TABLE_NAME', 'proprio');
 	// on indique qu'on veut récupérer la colonne COLUMN_NAME (le nom de la clé_étrangère)
         $rsm->addScalarResult('COLUMN_NAME', 'keyname');
-	// construction de la requête SQL
+	// on indique qu'on veut récupérer la colonne CONSTRAINT_SCHEMA_NAME (le nom de la BDD où la clé se trouve)
+        $rsm->addScalarResult('CONSTRAINT_SCHEMA', 'dbname');
+	// récupération nom interne de la bdd courante
+	// récuprération du service session
+	$session = $this->get('session');
+	// récupération de la variable de session contenant le nom interne de la BDD courante
+	$currentdbname = $session->get('stockname');
+	//$currentdbname = 'simplestock';
 	$entityname = $this->getEntityName();
-        $sql = "SELECT TABLE_NAME,COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE  REFERENCED_TABLE_NAME = '".$entityname."'";
+	// construction de la requête SQL
+        $sql = "SELECT TABLE_NAME,COLUMN_NAME, CONSTRAINT_SCHEMA FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE"
+		." WHERE  REFERENCED_TABLE_NAME = '".$entityname.
+		"' AND CONSTRAINT_SCHEMA = '".$currentdbname."';";
 	// on prépare la requête
         $query = $em->createNativeQuery($sql, $rsm);
 	// on récupère le résultat : liste d'entité propriétaires et clé etrangère pointant sur cette entité
@@ -224,6 +234,8 @@ class SimpleStockController extends Controller
     public function ajouterAction(Request $request){
 	// récupératioin de l'entité à hydrater
 	$entity = $this->entityobject;
+	$entity->setCreation(new \DateTime() );
+	$entity->setModification(new \DateTime() );
 	// creation du formulaire
 	$form = $this->createForm($this->formobject, $entity);
 	// test de la méthode
@@ -253,6 +265,7 @@ class SimpleStockController extends Controller
 	$em = $this->getDoctrine()->getManager($this->emname);
         //récuparartion de l'entite d'id  $id
         $entity = $em->getRepository($this->repositoryPath)->find($id);
+	$entity->setModification(new \DateTime() );
 	// creation du formulaire
 	$form = $this->createForm($this->formobject, $entity);
 	// test de la méthode

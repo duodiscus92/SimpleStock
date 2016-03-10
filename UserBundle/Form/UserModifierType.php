@@ -1,12 +1,12 @@
 <?php
 
-namespace SYM16\SimpleStockBundle\Form;
+namespace SYM16\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class FamilleModifierType extends FamilleType
+class UserModifierType extends UserType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -17,8 +17,7 @@ class FamilleModifierType extends FamilleType
 	// on appelle la fonction de la classe mère
 	parent::buildForm($builder, $options);
 	// on neutralise l'attribut date dont on veut empecher la modif
-	//$builder->remove('creation');
-	//$builder->remove('modification');
+	$builder->remove('password');
     }
 
     /**
@@ -26,6 +25,6 @@ class FamilleModifierType extends FamilleType
      */
     public function getName()
     {
-        return 'sym16_simplestockbundle_famillemodifier';
+        return 'sym16_Userbundle_usermodifier';
     }
 }

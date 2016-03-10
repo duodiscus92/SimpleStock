@@ -16,9 +16,9 @@ class EntrepotType extends AbstractType
     {
         $builder
             ->add('nom', 		'text')
-	    ->add('createur',		'text')
-	    ->add('creation',		'datetime')
-	    ->add('modification', 	'datetime')
+	    //->add('createur',		'text')
+	    //->add('creation',		'datetime')
+	    //->add('modification', 	'datetime')
         ;
     }
     

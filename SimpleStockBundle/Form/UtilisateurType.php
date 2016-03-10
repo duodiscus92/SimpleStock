@@ -8,12 +8,20 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UtilisateurType extends AbstractType
 {
+    private $options = array();
+    public function __construct($options = array('em' => 'stockmaster'))
+    {
+        $this->options = $options;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+	// récupération de l'entity manager courant
+	$em = $this->options['em'];
         $builder
             //->add('login')
             ->add('nom',	'text')
@@ -27,7 +35,8 @@ class UtilisateurType extends AbstractType
             ->add('date',	'datetime')
             ->add('droit', 'entity', array(
 		'class' => 'SYM16SimpleStockBundle:Droit',
-		'property' => 'privilege'
+		'property' => 'privilege',
+		'em' => $em
 	    ));
     }
     

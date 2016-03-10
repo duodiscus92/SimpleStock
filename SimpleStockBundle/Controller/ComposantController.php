@@ -21,15 +21,16 @@ use SYM16\SimpleStockBundle\Form\ComposantType;
  */
 class ComposantController extends /*Controller*/ SimpleStockController
 {
+    private $stockconnection;
     //permet de paramétrer ce qu'on veut lister
     private function aLister()
     {
 	// récuprération du service session
 	$session = $this->get('session');
 	// récupération de la vriable de session contenant le nom interne de la connection à la BDD courante
-	$stockconnection = $session->get('stockconnection');
+	$this->stockconnection = $session->get('stockconnection');
 	// selection de la database du stock courant (donc de l'entity manager)
-	$this->setEmName($stockconnection);
+	$this->setEmName($this->stockconnection);
 
 	$this->setRepositoryPath('SYM16SimpleStockBundle:Composant');
 	$this
@@ -110,10 +111,10 @@ class ComposantController extends /*Controller*/ SimpleStockController
 		array('statut' => 'ADMINISTRATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// creation d'une instance de l'entité propriétaire a hydrater
 	$this->setEntityObject(new Composant);
-	// creation du formulaire
-	$this->setFormNameAndObject("Ajout d'un composant", new ComposantType);
 	// preciser le repository ce qu'on veut lister après ajout
 	$this->aLister();
+	// creation du formulaire
+	$this->setFormNameAndObject("Ajout d'un composant", new ComposantType(array('em' => $this->stockconnection)));
     	// appel de la fonction mère
     	return parent::ajouterAction($request);
     }
@@ -150,10 +151,10 @@ class ComposantController extends /*Controller*/ SimpleStockController
 	if(!$this->get('security.context')->isGranted('ROLE_ADMINISTRATEUR'))
 	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
 		array('statut' => 'ADMINISTRATEUR', 'homepath' => "sym16_simple_stock_homepage"));
-	// préciser le formulaire à créer
-	$this->setFormNameAndObject("Modification d'un composant", new ComposantType);
 	// preciser le repository et ce qu'on veut lister après modification
 	$this->aLister();
+	// préciser le formulaire à créer
+	$this->setFormNameAndObject("Modification d'un composant", new ComposantType(array('em' => $this->stockconnection)) );
 	// appel de la fonction mère
 	return parent::modifierAction($request);
     }

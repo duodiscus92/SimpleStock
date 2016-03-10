@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use SYM16\UserBundle\Entity\User;
 use SYM16\UserBundle\Form\UserType;
-//use SYM16\SimpleStockBundle\Form\UtilisateurModifierType;
+use SYM16\UserBundle\Form\UserModifierType;
 
 /**
  *
@@ -20,11 +20,12 @@ use SYM16\UserBundle\Form\UserType;
 class UtilisateurController extends /*Controller*/ SimpleStockController
 {
 
+    private $stockconnection='stockmaster';
     //permet de paramétrer ce qu'on veut lister
     private function aLister()
     {
 	// change de database donc d'entity manager
-	$this->setEmName('stockmaster');
+	$this->setEmName($this->stockconnection);
 
 	$this->setRepositoryPath('SYM16UserBundle:User');
 	$this
@@ -112,10 +113,10 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 		array('statut' => 'SUPER UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// creation d'une instance de l'entité propriétaire a hydrater
 	$this->setEntityObject(new User);
-	// creation du formulaire
-	$this->setFormNameAndObject("Ajout d'un utilisateur", new UserType);
 	// preciser le repository ce qu'on veut lister après ajout
 	$this->aLister();
+	// creation du formulaire
+	$this->setFormNameAndObject("Ajout d'un utilisateur", new UserType(array('em' => $this->stockconnection)) );
     	// appel de la fonction mère
     	return parent::ajouterAction($request);
     }
@@ -150,10 +151,10 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
 	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
 		array('statut' => 'SUPER UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));
-	// préciser le formulaire à créer
-	$this->setFormNameAndObject("Modification d'un utilisateur", new EmplacementType);
 	// preciser le repository et ce qu'on veut lister après modification
 	$this->aLister();
+	// préciser le formulaire à créer
+	$this->setFormNameAndObject("Modification d'un utilisateur", new UserModifierType(array('em' => $this->stockconnection)) );
 	// appel de la fonction mère
 	return parent::modifierAction($request);
     }

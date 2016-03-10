@@ -17,8 +17,8 @@ class ArticleModifierType extends ArticleType
 	// on appelle la fonction de la classe mère
 	parent::buildForm($builder, $options);
 	// on neutralise l'attribut date dont on veut empecher la modif
-	$builder->remove('creation');
-	$builder->remove('modification');
+	//$builder->remove('creation');
+	//$builder->remove('modification');
     }
 
     /**

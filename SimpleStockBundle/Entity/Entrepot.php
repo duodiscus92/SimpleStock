@@ -21,8 +21,8 @@ class Entrepot extends EntityTools
 {
     public function __construct()
     {
-	$this->creation = new \Datetime();
-	$this->modification = $this->creation;
+	//$this->creation = new \Datetime();
+	//$this->modification = $this->creation;
 	// pour la relation bi-directionnelle
 	$this->commentaires = new \Doctrine\Common\Collections\ArrayCollection();
     }
