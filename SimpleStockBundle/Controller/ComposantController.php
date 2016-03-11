@@ -48,6 +48,9 @@ class ComposantController extends /*Controller*/ SimpleStockController
 	    'prop'=> 'sym16_simple_stock_composant_propriete')
 	);
 
+        $this->addRoute('lister',               "sym16_simple_stock_composant_lister")
+        ;
+
 	$this->setListName("Liste des composants");
 
 	//pour l'affichage des propriétés d'une entité

@@ -46,6 +46,9 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	    'prop'=> 'sym16_simple_stock_utilisateur_propriete')
 	);
 
+        $this->addRoute('lister',               "sym16_simple_stock_utilisateur_lister")
+        ;
+
 	$this->setListName("Liste des utilisateurs");
 
 	//pour l'affichage des propriétés d'une entité

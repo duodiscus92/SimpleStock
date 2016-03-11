@@ -46,6 +46,10 @@ class EmplacementController extends /*Controller*/ SimpleStockController
 	    'prop'=> 'sym16_simple_stock_emplacement_propriete')
 	);
 
+
+        $this->addRoute('lister',               "sym16_simple_stock_emplacement_lister")
+        ;
+
 	$this->setListName("Liste des emplacements");
 
 	//pour l'affichage des propriétés d'une entité

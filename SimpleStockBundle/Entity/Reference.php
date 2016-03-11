@@ -28,6 +28,10 @@ class Reference extends EntityTools
 	//$this->modification = $this->creation;
 	$this->udv = 1;
 	$this->seuil = 1;
+	$this->entrepot = 
+	$this->emplacement = 
+	$this->famille =
+	$this->composant = NULL;
     }
 
     /**
@@ -354,5 +358,20 @@ class Reference extends EntityTools
     public function getModification()
     {
         return $this->modification;
+    }
+
+    /**
+    * @Assert\True(message="Tous les listes déroulantes doivent être sélectionnées" )
+    *
+    */
+    public function isSelected()
+    {
+	if($this->entrepot == NULL || 
+	   $this->emplacement == NULL ||
+	   $this->famille == NULL ||
+	   $this->composant == NULL)
+	   return false;
+	else
+	   return true;
     }
 }

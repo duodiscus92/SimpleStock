@@ -30,6 +30,7 @@ class SimpleStockController extends Controller
     private $propertyname;
     private $listProperties=array('id' => array('Id', "%3d"));
     private $emname = 'default'; //entity manager name
+    private $listroute=array();
 
     // récupère la première clé étrangère qui pointe sur une id
     private function getForeignKey($id)
@@ -148,6 +149,12 @@ class SimpleStockController extends Controller
 	$this->emname = $name;
     }
 
+    protected function addRoute($key, $route)
+    {
+	$this->listroute[$key] = $route;
+	return $this;
+    }
+
     //liste une table
     public function listerAction()
     {
@@ -249,7 +256,11 @@ class SimpleStockController extends Controller
 		$em->persist($entity);
 		$em->flush();
 		// affichage de la liste reactualisee
-		return $this->listerAction();
+		$listerRoute = $this->listroute['lister'];
+		if($listerRoute == NULL) 
+		    return $this->listerAction();
+		else
+		    return $this->redirect($this->generateUrl($listerRoute));
 	    }
 	}
     	// On est arrivé par GET ou bien données d'entrées invalides
@@ -279,7 +290,11 @@ class SimpleStockController extends Controller
 		    $em->persist($entity);
 		    $em->flush();
 		    // affichage de la liste reactualisee
-		    return $this->listerAction();
+		    $listerRoute = $this->listroute['lister'];
+		    if($listerRoute == NULL) 
+		    	return $this->listerAction();
+		    else
+		    	return $this->redirect($this->generateUrl($listerRoute));
 		}
 	}
     	// On est arrivé par GET ou bien données d'entrées invalides
@@ -310,9 +325,13 @@ class SimpleStockController extends Controller
 	$em->remove($entity);
 	$em->flush();
 	// message flash
-	$this->get('session')->getFlashBag()->add('info', $this->mesgflash);
-	$this->get('session')->getFlashBag()->add('info', 'Presser F5 pour supprimer ce message');
+	//$this->get('session')->getFlashBag()->add('info', $this->mesgflash);
+	//$this->get('session')->getFlashBag()->add('info', 'Presser F5 pour supprimer ce message');
 	// affichage de la liste reactualisee
-	return $this->listerAction();
+	$listerRoute = $this->listroute['lister'];
+	if($listerRoute == NULL) 
+	    return $this->listerAction();
+	else
+	    return $this->redirect($this->generateUrl($listerRoute));
     }
 }

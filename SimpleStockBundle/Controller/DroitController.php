@@ -38,6 +38,9 @@ class DroitController extends /*Controller*/ SimpleStockController
 	    'prop'=> 'sym16_simple_stock_droit_propriete')
 	);
 
+        $this->addRoute('lister',               "sym16_simple_stock_droit_lister")
+        ;
+
 	$this->setListName("Liste des statuts");
 
 	//pour l'affichage des propriétés d'une entité

@@ -46,6 +46,9 @@ class EntrepotController extends /*Controller*/ SimpleStockController
 	    'prop'=> 'sym16_simple_stock_entrepot_propriete')
 	);
 
+        $this->addRoute('lister',               "sym16_simple_stock_entrepot_lister")
+        ;
+
 	$this->setListName("Liste des entrepots");
 
 	//pour l'affichage des propriétés d'une entité

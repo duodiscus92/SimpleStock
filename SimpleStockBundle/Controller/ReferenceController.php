@@ -57,6 +57,9 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	    'prop'=> 'sym16_simple_stock_reference_propriete')
 	);
 
+        $this->addRoute('lister',               "sym16_simple_stock_reference_lister")
+        ;
+
 	$this->setListName("Liste des références");
 
 	//pour l'affichage des propriétés d'une reference

@@ -3,6 +3,9 @@
 namespace SYM16\SimpleStockBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * Article
@@ -18,6 +21,7 @@ class Article
 	//$this->creation = new \Datetime();
 	//$this->modification = $this->creation;
 	$this->tva = 20.00;
+	$this->reference = NULL;
     }
 
     /**
@@ -270,5 +274,17 @@ class Article
     public function getModification()
     {
         return $this->modification;
+    }
+
+    /**
+    * @Assert\True(message="La liste déroulante doit être sélectionnée" )
+    *
+    */
+    public function isSelected()
+    {
+	if($this->reference == NULL) 
+	   return false;
+	else
+	   return true;
     }
 }

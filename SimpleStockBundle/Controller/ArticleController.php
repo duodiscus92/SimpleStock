@@ -60,6 +60,9 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	    'prel'=> 'sym16_simple_stock_article_prelever')
 	);
 
+	$this->addRoute('lister',		"sym16_simple_stock_article_lister")
+	;
+
 	$this->setListName("Liste des articles");
 
 	//pour l'affichage des propriétés d'une entité
@@ -243,7 +246,8 @@ class ArticleController extends /*Controller*/ SimpleStockController
 		   }
 		}
 		$em->flush();
-		return $this->listerAction();
+		//return $this->listerAction();
+		return $this->redirect($this->generateUrl("sym16_simple_stock_article_lister"));
 	    }
 	}
 

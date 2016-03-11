@@ -53,6 +53,9 @@ class FamilleController extends /*Controller*/ SimpleStockController
 	    'prop'=> 'sym16_simple_stock_famille_propriete')
 	);
 
+        $this->addRoute('lister',               "sym16_simple_stock_famille_lister")
+        ;
+
 	$this->setListName("Liste des familles");
 
 	//pour l'affichage des propriétés d'une entité

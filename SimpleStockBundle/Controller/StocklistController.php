@@ -40,6 +40,9 @@ class StocklistController extends /*Controller*/ SimpleStockController
 	    'prop'=> 'sym16_simple_stock_stocklist_propriete')
 	);
 
+        $this->addRoute('lister',               "sym16_simple_stock_stocklist_lister")
+        ;
+
 	$this->setListName("Liste des Stocks");
 
 	//pour l'affichage des propriétés d'une entité
