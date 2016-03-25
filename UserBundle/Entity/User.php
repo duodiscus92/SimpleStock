@@ -1,14 +1,16 @@
 <?php
-
 namespace SYM16\UserBundle\Entity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
+//use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use SYM16\SimpleStockBundle\Validator as MyAssert;
 
 /**
  * User
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="SYM16\UserBundle\Entity\UserRepository")
+ * @MyAssert\UniqueEntityByEm(field = {"username"})
  */
 class User implements UserInterface
 {
@@ -56,6 +58,34 @@ class User implements UserInterface
      * @ORM\Column(name="roles", type="array")
      */
     private $roles;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", length=255)
+     */
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="asb", type="boolean")
+     */
+    private $asb;
 
     public function __construct()
     {
@@ -279,5 +309,97 @@ class User implements UserInterface
     {
 	//return 'TEMPORAIRE';
 	return substr($this->roles[0], 5);
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     * @return User
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string 
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set prenom
+     *
+     * @param string $prenom
+     * @return User
+     */
+    public function setPrenom($prenom)
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    /**
+     * Get prenom
+     *
+     * @return string 
+     */
+    public function getPrenom()
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set asb
+     *
+     * @param boolean $asb
+     * @return User
+     */
+    public function setAsb($asb)
+    {
+        $this->asb = $asb;
+
+        return $this;
+    }
+
+    /**
+     * Get asb
+     *
+     * @return boolean 
+     */
+    public function getAsb()
+    {
+        return $this->asb;
     }
 }

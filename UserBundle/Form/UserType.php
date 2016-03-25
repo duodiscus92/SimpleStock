@@ -17,8 +17,8 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username', 	'text', array('label' => 'Identifiant de connection') )
-            //->add('nom',	'text')
-            //->add('prenom',	'text')
+            ->add('nom',	'text', array('label' => 'Nom') )
+            ->add('prenom',	'text', array('label' => 'Prénom') )
             ->add('password',	'password', array('label' => 'Mot de passe') )
             /*->add('password',	'password', array(
 		'repeatedpassword' => 'repeated',
@@ -30,9 +30,9 @@ class UserType extends AbstractType
 		'class' => 'SYM16UserBundle:Role',
 		'property' => 'role',
 		'em' => 'stockmaster'
-            ));
-            //->add('mail')
-	    //->add('asb', 	'checkbox', array('required' => false))
+            ))
+            ->add('email', 	'email', array('label' => 'Mail') )
+	    ->add('asb', 	'checkbox', array('required' => false, 'label'=> 'Mail d\'alerte seuil bas'))
             //->add('adp')
             //->add('art')
             //->add('acr')

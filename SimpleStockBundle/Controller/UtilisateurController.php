@@ -29,14 +29,14 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 
 	$this->setRepositoryPath('SYM16UserBundle:User');
 	$this
-	    //->addColname('Nom',		'Nom')
-	    //->addColName('Prénom',	'Prenom')
-	    //->addColName('Asb',		'Asb')
+	    ->addColname('Nom',		'Nom')
+	    ->addColName('Prénom',	'Prenom')
 	    ->addColName('Login',	'Username')
 	    ->addColName('Mdp',		'Password')
 	    ->addColName('Statut',	'Statut')
-	    ->addColName('Créateur',	'Createur')
-	    ->addColName('Création',	'Creation')
+	    ->addColName('Asb',		'Asb')
+	    //->addColName('Créateur',	'Createur')
+	    //->addColName('Création',	'Creation')
 	;
 
 	$this->setModSupr(array(
@@ -54,18 +54,17 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	//pour l'affichage des propriétés d'une entité
 	$this->setPropertyName("Détail de l'Utilisateur :");
 	$this
-	    //->addProperty('Nom de l\'Utilisateur',	array('Nom', 		"%s"))
-	    //->addProperty('Prénom de l\'Utilisateur',	array('Prénom',		"%s"))
+	    ->addProperty('Nom de l\'Utilisateur',	array('Nom', 		"%s"))
+	    ->addProperty('Prénom de l\'Utilisateur',	array('Prenom',		"%s"))
 	    ->addProperty('Identifiant de connexion',	array('Username',	"%s"))
 	    ->addProperty('Mot de passe',		array('Password', 	"%s"))
 	    ->addProperty('Statut',			array('Statut',	 	"%s"))
-	     ->addProperty('Créateur du l\'Utilisateur',array('Createur',       "%s"))
+	    ->addProperty('Email',			array('Email',	 	"%s"))
+	    ->addProperty('Mail d\'alerte seuil bas',	array('Asb',	 	"%d"))
+	    ->addProperty('Créateur du l\'Utilisateur',array('Createur',        "%s"))
 	    ->addProperty('Date de création',		array('Creation', 	NULL))
 	    ->addProperty('Date de modification',	array('Modification',	NULL))
 	;
-
-	// change de database donc d'entity manager
-	//$this->setEmName('stockmaster');
     }
 
     /**

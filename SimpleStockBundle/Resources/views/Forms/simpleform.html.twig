@@ -5,7 +5,8 @@
 {#<h3>Ajouter un utilisateur<h3>#}
 <h3>{{titre}}<h3>
 <div class="well">
-    <form method = "post" {{ form_enctype(form) }}>
+{#    <form method = "post" {{ form_enctype(form) }}> #}
+    <form method = "post" >
 	{{ form_widget(form) }}
     	<input type="submit" class="btn btn-primary" />
     </form>

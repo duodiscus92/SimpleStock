@@ -1,0 +1,5 @@
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ * fields={"username"},
+ * message="Cet identifiant est déjà utilisé"
+ * )

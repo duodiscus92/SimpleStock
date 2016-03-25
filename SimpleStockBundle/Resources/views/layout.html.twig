@@ -40,11 +40,11 @@
             		Articles et Références<b class="caret"></b>
           		</a>
           		<ul class="dropdown-menu dropdown-menu-primary">
-			    {% if is_granted('ROLE_EXAMINATEUR') %}
+			    {% if is_granted('ROLE_TEMPORAIRE') %}
             		    <li class="dropdown-header">Articles</li>
             		    <li><a href="{{ path('sym16_simple_stock_article_lister') }}">Voir les articles</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_article_ajouter') }}">Déposer un article dans le stock</a></li>
-            		    {#<li><a href="#">Prélever des articles dans le stock (en construction)</a></li>#}
+            		    {#<li><a href="#">Prélever des articles dans le stock</a></li>#}
             		    <li class="divider"></li>
             		    <li class="dropdown-header">Références</li>
             		    <li><a href="{{ path('sym16_simple_stock_reference_lister') }}">Voir les références</a></li>
@@ -60,7 +60,7 @@
             		Catégories<b class="caret"></b>
           		</a>
           		<ul class="dropdown-menu dropdown-menu-primary">
-			    {% if is_granted('ROLE_EXAMINATEUR') %}
+			    {% if is_granted('ROLE_TEMPORAIRE') %}
             		    <li class="dropdown-header">Familles</li>
             		    <li><a href="{{ path('sym16_simple_stock_famille_lister') }}">Voir les familles</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_famille_ajouter') }}">Ajouter une famille</a></li>
@@ -78,7 +78,7 @@
             		Lieux de stockage<b class="caret"></b>
           		</a>
           		<ul class="dropdown-menu dropdown-menu-primary">
-			    {% if is_granted('ROLE_EXAMINATEUR') %}
+			    {% if is_granted('ROLE_TEMPORAIRE') %}
             		    <li class="dropdown-header">Entrepôts</li>
             		    <li><a href="{{ path('sym16_simple_stock_entrepot_lister') }}">Voir les entrepôts</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_entrepot_ajouter') }}">Ajouter un entrepôt</a></li>
@@ -96,7 +96,7 @@
             		Stocks<b class="caret"></b>
           		</a>
           		<ul class="dropdown-menu dropdown-menu-primary">
-			    {% if is_granted('ROLE_EXAMINATEUR') %}
+			    {% if is_granted('ROLE_TEMPORAIRE') %}
             		    <li><a href="{{ path('sym16_simple_stock_stocklist_lister') }}">Voir les stocks</a></li>
             		    <li class="divider"></li>
             		    {#<li><a href="#">Choisir un stock</a></li>#}
@@ -122,7 +122,10 @@
             		    <li><a href="{{ path('logout') }}">Se déconnecter</a></li>
             		    <li class="divider"></li>
             		    <li class="dropdown-header">Pas encore inscrit ?</li>
-            		    <li><a href="#">S'inscrire</a></li>
+            		    <li><a href="#">S'inscrire (en construction)</a></li>
+            		    <li class="divider"></li>
+            		    <li class="dropdown-header">Mot de passe perdu ?</li>
+            		    <li><a href="#">Obtenir un nouveau mot de passe (en construction)</a></li>
           		</ul>
        		    </li>
                     <li class="dropdown dropdown">
@@ -130,7 +133,7 @@
             		Gestion<b class="caret"></b>
           		</a>
           		<ul class="dropdown-menu dropdown-menu-primary">
-			    {% if is_granted('ROLE_EXAMINATEUR') %}
+			    {% if is_granted('ROLE_GESTIONNAIRE') %}
             		    <li class="dropdown-header">Utilisateurs</li>
             		    <li><a href="{{ path('sym16_simple_stock_utilisateur_lister') }}">Voir les utilisateurs et leur statut</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_utilisateur_ajouter') }}">Ajouter un utilisateur</a></li>
@@ -138,7 +141,7 @@
             		    <li class="dropdown-header">Statuts</li>
             		    <li><a href="{{ path('sym16_simple_stock_droit_lister') }}">Voir les statuts</a></li>
                             {% else %}
-			    <li><a href="{{ path('login') }}"><font color="grey">Connectez-vous pour acceder à ce menu</font></a></li>
+			    <li><a href="{{ path('login') }}"><font color="grey">Réservé au SUPER UTILISATEUR</font></a></li>
 			    {% endif %} 
                         </ul>
        		    </li>

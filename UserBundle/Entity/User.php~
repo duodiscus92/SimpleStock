@@ -57,11 +57,41 @@ class User implements UserInterface
      */
     private $roles;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", length=255)
+     */
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="asb", type="boolean")
+     */
+    private $asb;
+
     public function __construct()
     {
 	$this->roles = array();
-	$this->creation = new \Datetime();
-	$this->modification = $this->creation;
+	$this->roles[0]= 'UNDEFINED';
+	//$this->creation = new \Datetime();
+	//$this->modification = $this->creation;
+	$this->salt='';
     }
 
     /**
@@ -85,6 +115,7 @@ class User implements UserInterface
      */
     private $modification;
 
+    private $statut;
 
     /**
      * Get id
@@ -127,7 +158,9 @@ class User implements UserInterface
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        //$user->setPassword($name);
+        $options = ['cost' => 12];
+        $this->password = password_hash($password, PASSWORD_BCRYPT, $options);
 
         return $this;
     }
@@ -190,5 +223,89 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {
+    }
+
+    /**
+     * Set createur
+     *
+     * @param string $createur
+     * @return User
+     */
+    public function setCreateur($createur)
+    {
+        $this->createur = $createur;
+
+        return $this;
+    }
+
+    /**
+     * Get createur
+     *
+     * @return string 
+     */
+    public function getCreateur()
+    {
+        return $this->createur;
+    }
+
+    /**
+     * Set creation
+     *
+     * @param \DateTime $creation
+     * @return User
+     */
+    public function setCreation($creation)
+    {
+        $this->creation = $creation;
+
+        return $this;
+    }
+
+    /**
+     * Get creation
+     *
+     * @return \DateTime 
+     */
+    public function getCreation()
+    {
+        return $this->creation;
+    }
+
+    /**
+     * Set modification
+     *
+     * @param \DateTime $modification
+     * @return User
+     */
+    public function setModification($modification)
+    {
+        $this->modification = $modification;
+
+        return $this;
+    }
+
+    /**
+     * Get modification
+     *
+     * @return \DateTime 
+     */
+    public function getModification()
+    {
+        return $this->modification;
+    }
+
+    public function setStatut($statut)
+    {
+	$this->statut = $statut->getRole();
+	$role = "ROLE_".$this->statut;
+	//$this->roles = array($role);
+	$this->roles[0]= $role;
+	return $this;
+    }	
+
+    public function getStatut()
+    {
+	//return 'TEMPORAIRE';
+	return substr($this->roles[0], 5);
     }
 }
