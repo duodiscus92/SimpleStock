@@ -9,6 +9,13 @@
     {# utilisation de variables de sessions déclarées dans AcceuilController.php #}
     <h3>Utilisateur : {{ app.session.get('stockuser') }} - Votre statut est : {{app.session.get('stockuserstatut') }}</h3>
       {% endblock %}
+      {% block RACCOURCI %}
+      <p>
+        <a class="btn btn-primary btn-lg" href="{{ path('sym16_simple_stock_article_ajouter') }}">
+          Déposer dans le stock
+        </a>
+      </p>
+      {% endblock %}
     {% block FOOTER %}
     <footer>
     <dl>
