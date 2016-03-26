@@ -9,9 +9,9 @@ services:
         class: SYM16\SimpleStockBundle\Services\ListerCorrection
 #        arguments: [@service_id, "plain_value", %parameter%]
 #   service vérficiation d'unicité de login (identifiant utilisateur)
-    sym16_userbundle.isunique:
-        class: SYM16\SimplesStockBundle\Validator\UniqueEntityByEmValidator
-        arguments: [@request, @doctrine]
+    sym16_simple_stock.isunique:
+        class: SYM16\SimpleStockBundle\Validator\UniqueEntityByEmValidator
+        arguments: [@doctrine, @request]
         scope: request
         tags:
             - { name: validator.constraint_validator, alias: isunique } 

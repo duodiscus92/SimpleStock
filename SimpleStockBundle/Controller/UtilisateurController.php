@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use SYM16\UserBundle\Entity\User;
 use SYM16\UserBundle\Form\UserType;
 use SYM16\UserBundle\Form\UserModifierType;
+use SYM16\UserBundle\Form\UserInscriptionType;
 
 /**
  *
@@ -123,6 +124,27 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
     	return parent::ajouterAction($request);
     }
 
+    /**
+     *  S'inscrire : c'est presque comme ajouter sauf que le role est TEMPORAIRE
+     *
+     * @Route("/inscr", name="sym16_simple_stock_utilisateur_sinscrire")
+     * @Template("SYM16SimpleStockBundle:Forms:simpleform.html.twig")
+     */
+    public function sinscrireAction(Request $request)
+    {
+	// contrôle d'accès
+	/*if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'SUPER UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));*/
+	// creation d'une instance de l'entité propriétaire a hydrater
+	$this->setEntityObject(new User);
+	// preciser le repository ce qu'on veut lister après ajout
+	$this->aLister();
+	// creation du formulaire
+	$this->setFormNameAndObject("Formulaire d'inscription", new UserInscriptionType(array('em' => $this->stockconnection)) );
+    	// appel de la fonction mère
+    	return parent::sinscrireAction($request);
+    }
     /**
      *  supprimer un article
      *

@@ -122,7 +122,8 @@
             		    <li><a href="{{ path('logout') }}">Se déconnecter</a></li>
             		    <li class="divider"></li>
             		    <li class="dropdown-header">Pas encore inscrit ?</li>
-            		    <li><a href="#">S'inscrire (en construction)</a></li>
+            		    {#<li><a href="#">S'inscrire (en construction) </a></li>#}
+            		    <li><a href="{{ path('sym16_simple_stock_utilisateur_sinscrire') }}">S'inscrire</a></li>
             		    <li class="divider"></li>
             		    <li class="dropdown-header">Mot de passe perdu ?</li>
             		    <li><a href="#">Obtenir un nouveau mot de passe (en construction)</a></li>

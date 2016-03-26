@@ -19,12 +19,11 @@ class UserType extends AbstractType
             ->add('username', 	'text', array('label' => 'Identifiant de connection') )
             ->add('nom',	'text', array('label' => 'Nom') )
             ->add('prenom',	'text', array('label' => 'Prénom') )
-            ->add('password',	'password', array('label' => 'Mot de passe') )
-            /*->add('password',	'password', array(
-		'repeatedpassword' => 'repeated',
-		'mapped' => 'false',
-		'type' => 'password',
-		) ) */
+            //->add('password',	'password', array('label' => 'Mot de passe') )
+	    ->add('password',   'repeated', array(
+		'first_name' => 'Mot_de_passe',
+		'second_name' =>'Confirmation_mot_de_passe',
+		'type'	     => 'password') )
 	    //->add('statut',	'text')
             ->add('statut', 'entity', array(
 		'class' => 'SYM16UserBundle:Role',
@@ -32,7 +31,7 @@ class UserType extends AbstractType
 		'em' => 'stockmaster'
             ))
             ->add('email', 	'email', array('label' => 'Mail') )
-	    ->add('asb', 	'checkbox', array('required' => false, 'label'=> 'Mail d\'alerte seuil bas'))
+	    ->add('asb', 	'checkbox', array('required' => false, 'label'=> 'Recevoir un mail d\'alerte stock inférieur au seuil bas'))
             //->add('adp')
             //->add('art')
             //->add('acr')

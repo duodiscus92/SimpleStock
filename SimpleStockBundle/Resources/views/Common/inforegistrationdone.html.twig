@@ -1,0 +1,41 @@
+{% extends 'SYM16SimpleStockBundle::layout.html.twig' %}
+
+{% block BLOCA %}
+{% javascripts '@SYM16SimpleStockBundle/Resources/public/js/jquery-1.12.0.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{#=============== Code HTML de la fenêtre modale ======================#}
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-warning">
+                <button type="button" class="close" aria-hidden="true" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Inscription faite !!!!</h4>
+            </div>
+            <div class="modal-body">
+		<p>Votre inscription a été prise en compte<p>
+		<p>Vous possédez le statut {{statut}}<p>
+		<p>Patientez: un gestionnaire vous attribura bientôt un autre statut<p>
+            </div>
+            <div class="modal-footer">
+                {#<button class="btn btn-primary" id="confirmModalYes" type="button"><i class="icon icon-check icon-lg"></i> Supprimer</button>#}
+                <button class="btn btn-primary" id="confirmModalNo" href="{{ path(homepath) }}" type="button" data-dismiss="modal"><i class="icon icon-times icon-lg"></i> OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+{#========== Java Script pour gestion de la fenêtre modale =============#}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+	$("#confirmModal").modal("show");
+
+        $("#confirmModalNo").click(function(e) {
+            window.location.href =  $(this).attr("href");
+            //("#confirmModal").modal("hide");
+        });
+
+    });
+</script>
+{% endblock %}

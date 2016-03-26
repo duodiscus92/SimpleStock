@@ -268,6 +268,34 @@ class SimpleStockController extends Controller
     	return array('titre' => $this->formname, 'form' => $form->CreateView() );
     }
 
+    //special pour le formulaire d'insciption
+    public function sinscrireAction(Request $request){
+	// récupératioin de l'entité à hydrater
+	$entity = $this->entityobject;
+	$entity->setCreation(new \DateTime() );
+	$entity->setModification(new \DateTime() );
+	// creation du formulaire
+	$form = $this->createForm($this->formobject, $entity);
+	// test de la méthode
+	if($request->getMethod() == 'POST'){
+	// hydrater les variables $Reference
+	    $form->bind($request);
+	    // verifier la validité des valeurs d’entrée
+	    if($form->isValid()) {
+	        // enregistrer SReference dans la BDD
+		$em = $this->getDoctrine()->getManager($this->emname);
+		$em->persist($entity);
+		$em->flush();
+	        return $this->render('SYM16SimpleStockBundle:Common:inforegistrationdone.html.twig', 
+		    array('statut' => 'TEMPORAIRE', 'homepath' => "sym16_simple_stock_homepage"));
+	    }
+	}
+    	// On est arrivé par GET ou bien données d'entrées invalides
+    	// avec l'utilsation de l'annotation Template()
+    	return array('titre' => $this->formname, 'form' => $form->CreateView() );
+    }
+
+    // modifier une entité
     public function modifierAction(Request $request)
     {
 	// récupe de l'id de l'article à supprimer

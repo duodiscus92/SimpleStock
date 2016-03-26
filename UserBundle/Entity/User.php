@@ -10,7 +10,7 @@ use SYM16\SimpleStockBundle\Validator as MyAssert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="SYM16\UserBundle\Entity\UserRepository")
- * @MyAssert\UniqueEntityByEm(field = {"username"})
+ * @MyAssert\UniqueEntityByEm(field="username", connexion="stockmaster", message="Cet identifiant de connexion est déjà utilisé")
  */
 class User implements UserInterface
 {
@@ -90,7 +90,7 @@ class User implements UserInterface
     public function __construct()
     {
 	$this->roles = array();
-	$this->roles[0]= 'UNDEFINED';
+	$this->roles[0]= 'ROLE_TEMPORAIRE';
 	//$this->creation = new \Datetime();
 	//$this->modification = $this->creation;
 	$this->salt='';
