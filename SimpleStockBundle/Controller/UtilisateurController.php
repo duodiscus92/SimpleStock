@@ -33,7 +33,7 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	    ->addColname('Nom',		'Nom')
 	    ->addColName('Prénom',	'Prenom')
 	    ->addColName('Login',	'Username')
-	    ->addColName('Mdp',		'Password')
+	    ->addColName('Mail',	'Email')
 	    ->addColName('Statut',	'Statut')
 	    ->addColName('Asb',		'Asb')
 	    //->addColName('Créateur',	'Createur')
