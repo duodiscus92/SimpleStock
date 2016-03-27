@@ -155,24 +155,6 @@ class SimpleStockController extends Controller
 	return $this;
     }
 
-    //envoyer un mail pouor confirmer une inscription
-    private function registrationConfirmMail($entity)
-    {
-	$message = \Swift_Message::newInstance()
-           ->setSubject('Confirmation d\'inscription')
-           ->setFrom('simplestock@free.fr')
-           ->setTo($entity->getEmail())
-           ->setBody(
-           	 $this->renderView(
-                    'SYM16SimpleStockBundle:Emails:registration.txt.twig',
-                     array('nom' => $entity->getNom(), 'prenom' => $entity->getPrenom())
-            	)
-           )
-    	;
-    	$this->get('mailer')->send($message);
-	return;
-    }
-
     //liste une table
     public function listerAction()
     {
@@ -278,7 +260,14 @@ class SimpleStockController extends Controller
 		if($listerRoute == NULL) 
 		    return $this->listerAction();
 		else
-		    return $this->redirect($this->generateUrl($listerRoute));
+		    //return $this->redirect($this->generateUrl($listerRoute));
+		    $item = substr(strrchr($this->repositoryPath, ':'), 1);
+		    $objet = $item == 'Article' ? $entity->getNomRef() : $entity->getNom();
+		    return $this->redirect($this->generateUrl("sym16_simple_stock_mail_ams", 
+			array('item' => $item, 'nature' => 'ajout', 
+			      //'objet' => $entity->getNom(), 
+			      'objet' =>  $objet,
+			      'createur' => $entity->getCreateur(), 'route' => $listerRoute )) );
 	    }
 	}
     	// On est arrivé par GET ou bien données d'entrées invalides
@@ -304,9 +293,6 @@ class SimpleStockController extends Controller
 		$em = $this->getDoctrine()->getManager($this->emname);
 		$em->persist($entity);
 		$em->flush();
-		//$this->registrationConfirmMail($entity);
-	        //return $this->render('SYM16SimpleStockBundle:Common:inforegistrationdone.html.twig', 
-		    //array('statut' => 'TEMPORAIRE', 'homepath' => "sym16_simple_stock_homepage"));
 		return $this->redirect($this->generateUrl("sym16_simple_stock_mail_confreg", array('id' => $entity->getId())) );
 	    }
 	}
@@ -342,7 +328,14 @@ class SimpleStockController extends Controller
 		    if($listerRoute == NULL) 
 		    	return $this->listerAction();
 		    else
-		    	return $this->redirect($this->generateUrl($listerRoute));
+		    	//return $this->redirect($this->generateUrl($listerRoute));
+		        $item = substr(strrchr($this->repositoryPath, ':'), 1);
+			$objet = $item == 'Article' ? $entity->getNomRef() : $entity->getNom();
+		        return $this->redirect($this->generateUrl("sym16_simple_stock_mail_ams", 
+			    array('item' => $item, 'nature' => 'modification', 
+				  //'objet' => $entity->getNom(),
+				  'objet' =>  $objet,
+                                  'createur' => $entity->getCreateur(), 'route' => $listerRoute )) );
 		}
 	}
     	// On est arrivé par GET ou bien données d'entrées invalides
@@ -372,14 +365,18 @@ class SimpleStockController extends Controller
 	// suppression de l'entité
 	$em->remove($entity);
 	$em->flush();
-	// message flash
-	//$this->get('session')->getFlashBag()->add('info', $this->mesgflash);
-	//$this->get('session')->getFlashBag()->add('info', 'Presser F5 pour supprimer ce message');
 	// affichage de la liste reactualisee
 	$listerRoute = $this->listroute['lister'];
 	if($listerRoute == NULL) 
 	    return $this->listerAction();
 	else
-	    return $this->redirect($this->generateUrl($listerRoute));
+	   // return $this->redirect($this->generateUrl($listerRoute));
+	   $item = substr(strrchr($this->repositoryPath, ':'), 1);
+	   $objet = $item == 'Article' ? $entity->getNomRef() : $entity->getNom();
+	   return $this->redirect($this->generateUrl("sym16_simple_stock_mail_ams", 
+	       array('item' => $item, 'nature' => 'suppression', 
+		     //'objet' => $entity->getNom(),
+		     'objet' => $objet, 
+                     'createur' => $entity->getCreateur(), 'route' => $listerRoute )) );
     }
 }

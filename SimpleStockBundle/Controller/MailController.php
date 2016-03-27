@@ -30,7 +30,7 @@ class MailController extends Controller
     {
 	// récuprération du service session
 	$session = $this->get('session');
-	// récupération de la vriable de sessions
+	// récupération des variables de session
 	// mail de l'emmetteur
 	$this->sendermail = $session->get('sendermail');
 	// mail de notification
@@ -72,5 +72,44 @@ class MailController extends Controller
         return $this->render('SYM16SimpleStockBundle:Common:inforegistrationdone.html.twig',
             array('statut' => 'TEMPORAIRE', 'homepath' => "sym16_simple_stock_homepage"));
      }
-}
 
+    /**
+     * envoyer un mail pour toute action ajouter, modifier, supprimer
+     *
+     * @Route("/ams/{item}/{nature}/{objet}/{createur}/{route}", name="sym16_simple_stock_mail_ams")
+     */
+    public function amsAction($item, $nature, $objet, $createur, $route)
+    {
+	// récuprération du service session
+	$session = $this->get('session');
+	// récupération des variables de session
+	// mail de l'emmetteur
+	$this->sendermail = $session->get('sendermail');
+	// mail de notification
+	$this->notificationmail = $session->get('notificationmail');
+	// nom du site
+	$this->sitename = $session->get('sitename');
+	// nom d'usage du stock
+	$stockusage = $session->get('stockusage');
+	// recupération de l'entity manager
+	$em = $this->getDoctrine()->getManager('stockmaster');
+        //récupérartion de l'entite de l'utilisateur courant
+        $entity = $em->getRepository("SYM16UserBundle:User")->findOneByUsername($createur);
+
+	// message à l'utilisateur courant (celui qui a fait le changement)
+        $message = \Swift_Message::newInstance()
+           ->setSubject("[SimpleStock-".$this->sitename."] Changement dans le stock")
+           ->setFrom($this->sendermail)
+           ->setTo($entity->getEmail())
+           ->setBody(
+                 $this->renderView(
+                    'SYM16SimpleStockBundle:Mails:ams.html.twig',
+                     array('site' => $this->sitename, 'nom' => $entity->getNom(), 'prenom' => $entity->getPrenom(),
+			   'item' => $item, 'stock' => $stockusage, 'nature' => $nature, 'objet' => $objet, 'createur' => $createur)
+                )
+           )
+        ;
+        $this->get('mailer')->send($message);
+        return $this->redirect($this->generateUrl($route));
+    }
+}
