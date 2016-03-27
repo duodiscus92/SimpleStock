@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="SYM16\SimpleStockBundle\Entity\Locator" table="Locator">
+    <unique-constraints>
+      <unique-constraint name="client" columns="client"/>
+      <unique-constraint name="site" columns="site"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="site" type="string" column="site" length="255" nullable="false"/>
+    <field name="client" type="string" column="client" length="255" nullable="false"/>
+    <field name="rue1" type="string" column="rue1" length="255" nullable="false"/>
+    <field name="rue2" type="string" column="rue2" length="255" nullable="false"/>
+    <field name="ville" type="string" column="ville" length="255" nullable="false"/>
+    <field name="codepotal" type="string" column="codepotal" length="255" nullable="false"/>
+    <field name="pays" type="string" column="pays" length="255" nullable="false"/>
+    <field name="contactprenom" type="string" column="contactprenom" length="255" nullable="false"/>
+    <field name="contactnom" type="string" column="contactnom" length="255" nullable="false"/>
+    <field name="contactmail" type="string" column="contactmail" length="255" nullable="false"/>
+    <field name="contacttel" type="string" column="contacttel" length="255" nullable="false"/>
+  </entity>
+</doctrine-mapping>
