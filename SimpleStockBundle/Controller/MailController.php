@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use SYM16\UserBundle\Entity\User;
+use SYM16\UserBundle\Entity\Locator;
 
 /**
  *
@@ -17,7 +18,9 @@ use SYM16\UserBundle\Entity\User;
  */
 class MailController extends Controller
 {
-    private $mailsender= 'simplestock@free.fr';
+    private $sendermail;
+    private $notificationmail;
+    private $sitename;
     /**
      * envoyer un mail de confirmation à un nouvel inscrit
      *
@@ -25,19 +28,43 @@ class MailController extends Controller
      */
     public function confregMailAction($id)
     {
+	// récuprération du service session
+	$session = $this->get('session');
+	// récupération de la vriable de sessions
+	// mail de l'emmetteur
+	$this->sendermail = $session->get('sendermail');
+	// mail de notification
+	$this->notificationmail = $session->get('notificationmail');
+	// nom du site
+	$this->sitename = $session->get('sitename');
+
 	// recupération de l'entity manager
 	$em = $this->getDoctrine()->getManager('stockmaster');
         //récupérartion de l'entite d'id  $id
         $entity = $em->getRepository("SYM16UserBundle:User")->find($id);
-
+	// message au nouvel inscrit
         $message = \Swift_Message::newInstance()
-           ->setSubject("[SimpleStock] Confirmation d'inscription")
-           ->setFrom($this->mailsender)
+           ->setSubject("[SimpleStock-".$this->sitename."] Confirmation d'inscription")
+           ->setFrom($this->sendermail)
            ->setTo($entity->getEmail())
            ->setBody(
                  $this->renderView(
                     'SYM16SimpleStockBundle:Mails:registration.html.twig',
-                     array('nom' => $entity->getNom(), 'prenom' => $entity->getPrenom())
+                     array('site' => $this->sitename, 'nom' => $entity->getNom(), 'prenom' => $entity->getPrenom())
+                )
+           )
+        ;
+        $this->get('mailer')->send($message);
+
+        // notification au gestionnaire du stock
+	$message = \Swift_Message::newInstance()
+           ->setSubject("[SimpleStock-".$this->sitename."] Un nouvel utilisateur s'est inscrit")
+           ->setFrom($this->sendermail)
+           ->setTo($this->notificationmail)
+           ->setBody(
+                 $this->renderView(
+                    'SYM16SimpleStockBundle:Mails:notifregistration.html.twig',
+                     array('site' => $this->sitename,  'nom' => $entity->getNom(), 'prenom' => $entity->getPrenom())
                 )
            )
         ;

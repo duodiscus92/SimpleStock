@@ -90,6 +90,20 @@ class Locator extends EntityTools
     private $contacttel;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="sendermail", type="string", length=255, nullable=false)
+     */
+    private $sendermail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="notificationmail", type="string", length=255, nullable=false)
+     */
+    private $notificationmail;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -349,6 +363,52 @@ class Locator extends EntityTools
     public function getContacttel()
     {
         return $this->contacttel;
+    }
+
+    /**
+     * Set sendermail
+     *
+     * @param string $sendermail
+     * @return Locator
+     */
+    public function setSendermail($sendermail)
+    {
+        $this->sendermail = $sendermail;
+
+        return $this;
+    }
+
+    /**
+     * Get sendermail
+     *
+     * @return string 
+     */
+    public function getSendermail()
+    {
+        return $this->sendermail;
+    }
+
+    /**
+     * Set notificationmail
+     *
+     * @param string $notificationmail
+     * @return Locator
+     */
+    public function setNotificationmail($notificationmail)
+    {
+        $this->notificationmail = $notificationmail;
+
+        return $this;
+    }
+
+    /**
+     * Get notificationmail
+     *
+     * @return string 
+     */
+    public function getNotificationmail()
+    {
+        return $this->notificationmail;
     }
 
     /**

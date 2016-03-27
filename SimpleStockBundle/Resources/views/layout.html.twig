@@ -4,7 +4,7 @@
   <body>#}
 {% extends '::stocklayout.html.twig' %}
       {% block HEADER %}
-    <h2>Bienvenue sur Simple Stock</h2>
+    <h2>Bienvenue sur Simple Stock de {{app.session.get('sitename')}}</h2>
     <h3>Nom du stock en cours d'utilisation: {{app.session.get('stockusage')}}</h3>
     {# utilisation de variables de sessions déclarées dans AcceuilController.php #}
     <h3>Utilisateur : {{ app.session.get('stockuser') }} - Votre statut est : {{app.session.get('stockuserstatut') }}</h3>

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 use Symfony\Component\HttpFoundation\Request;
 use SYM16\SimpleStockBundle\Entity\Stocklist;
+use SYM16\SimpleStockBundle\Entity\Locator;
 
 /**
  * Classe Acceuil
@@ -54,6 +55,13 @@ class AcceuilController extends Controller
 	$connection = $repository->findOneByUsage($stockusage)->getConnection();
 	//reucupération de tous les stocks
 	$stocklist = $repository->findAll();
+	// recupération du repository locator
+	$repository = $em->getRepository('SYM16SimpleStockBundle:Locator');
+	$locator  =  $repository->find(1);
+	$sitename = $locator->getSite();
+	$sendermail = $locator->getSendermail();
+	$notificationmail = $locator->getNotificationmail();
+
 
 	// initiatisation des variables de sessions
 	$session->set('stockuser', $name);
@@ -62,6 +70,9 @@ class AcceuilController extends Controller
 	$session->set('stockname', $stockname);
 	$session->set('stockconnection', $connection);
 	$session->set('stockusage', $stockusage);
+	$session->set('sitename', $sitename);
+	$session->set('sendermail', $sendermail);
+	$session->set('notificationmail', $notificationmail);
 
         return $this->render('SYM16SimpleStockBundle:Acceuil:index.html.twig', array('name' => $name));
     }
