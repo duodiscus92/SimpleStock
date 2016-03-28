@@ -94,22 +94,29 @@ class MailController extends Controller
 	// recupération de l'entity manager
 	$em = $this->getDoctrine()->getManager('stockmaster');
         //récupérartion de l'entite de l'utilisateur courant
-        $entity = $em->getRepository("SYM16UserBundle:User")->findOneByUsername($createur);
-
-	// message à l'utilisateur courant (celui qui a fait le changement)
-        $message = \Swift_Message::newInstance()
-           ->setSubject("[SimpleStock-".$this->sitename."] Changement dans le stock")
-           ->setFrom($this->sendermail)
-           ->setTo($entity->getEmail())
-           ->setBody(
-                 $this->renderView(
-                    'SYM16SimpleStockBundle:Mails:ams.html.twig',
-                     array('site' => $this->sitename, 'nom' => $entity->getNom(), 'prenom' => $entity->getPrenom(),
-			   'item' => $item, 'stock' => $stockusage, 'nature' => $nature, 'objet' => $objet, 'createur' => $createur)
-                )
-           )
-        ;
-        $this->get('mailer')->send($message);
+        //$entity = $em->getRepository("SYM16UserBundle:User")->findOneByUsername($createur);
+	// récupération de tous les utilisateurs
+	$users = $em->getRepository("SYM16UserBundle:User")->findAll();
+	//boucle sur les utilisateurs
+	foreach ($users as $user) {
+	// message aux utilisateurs
+	    //on vérifie s'ils accetent d'être notitfiés
+	    if($user->getAsb() == 1){
+        	$message = \Swift_Message::newInstance()
+           	    ->setSubject("[SimpleStock-".$this->sitename."] Changement dans le stock")
+           	    ->setFrom($this->sendermail)
+           	    ->setTo($user->getEmail())
+           	    ->setBody(
+                 	$this->renderView(
+                    	    'SYM16SimpleStockBundle:Mails:ams.html.twig',
+                     	    array('site' => $this->sitename, 'nom' => $user->getNom(), 'prenom' => $user->getPrenom(),
+			    	'item' => $item, 'stock' => $stockusage, 'nature' => $nature, 'objet' => $objet, 'createur' => $createur)
+                	)
+           	    )
+        	;
+        	$this->get('mailer')->send($message);
+	    }
+	}
         return $this->redirect($this->generateUrl($route));
     }
 }

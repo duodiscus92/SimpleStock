@@ -17,7 +17,7 @@ class UserModifierType extends UserType
 	// on appelle la fonction de la classe mère
 	parent::buildForm($builder, $options);
 	// on neutralise l'attribut date dont on veut empecher la modif
-	$builder->remove('password');
+	$builder->remove('username');
     }
 
     /**

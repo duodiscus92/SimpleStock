@@ -257,6 +257,8 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	// si entrepotId est défini on  passe entrepot_id à la requête sqp
         if($entrepotId != '')
             $query->setParameter('entrepot_id', $entrepotId);
+	else
+            return   new JsonResponse(NULL);
 	// on récupère le résultat : les emplacements liés à cet entrepot
         $emplacements = $query->getResult();
 	// on met le résultat dans un tableau
@@ -293,12 +295,13 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	// si familleId  est défini on continue la construction pat concaténation
         if($familleId != '')
             $sql .= " AND Composant.famille_id = :famille_id ";
-	//echo "<script>alert($sql)</script>";
 	// on prépare la requête
         $query = $em->createNativeQuery($sql, $rsm);
 	// si familleId est défini on  passe famille_id à la requête sqp
         if($familleId != '')
             $query->setParameter('famille_id', $familleId);
+	else
+            return   new JsonResponse(NULL);
 	// on récupère le résultat : les composants liés à cet famille
         $composants = $query->getResult();
 	// on met le résultat dans un tableau

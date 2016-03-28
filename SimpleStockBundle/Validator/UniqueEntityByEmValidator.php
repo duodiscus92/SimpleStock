@@ -7,6 +7,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
+use Symfony\Component\HttpFoundation\Session\Session;
 class UniqueEntityByEmValidator extends ConstraintValidator
 {
     private $doctrine;
@@ -20,6 +21,9 @@ class UniqueEntityByEmValidator extends ConstraintValidator
 
     public function validate($entity, Constraint $constraint)
     {
+	// recupération de la session
+	$session = $this->request->getSession();
+	$username = $session->get('stockuser');
 	//on récupère l'entity manager associé à la connexion (c'est à dire à la bdd)
 	$em = $this->doctrine->getManager($constraint->connexion);
 	// on récupère le repository de cette entité

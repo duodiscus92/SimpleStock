@@ -321,7 +321,7 @@ class SimpleStockController extends Controller
 		// verifier la validité des valeurs d’entrée
 		if($form->isValid()) {
 		    // enregistrer Reference dans la BDD
-		    $em->persist($entity);
+		    //$em->persist($entity);
 		    $em->flush();
 		    // affichage de la liste reactualisee
 		    $listerRoute = $this->listroute['lister'];

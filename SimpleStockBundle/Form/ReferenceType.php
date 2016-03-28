@@ -43,7 +43,7 @@ class ReferenceType extends AbstractType
 		'empty_value' => "-- Selectionnez un entrepot --",
             ))
 	    // la liste déroulante emplacement
-            ->add('emplacement', 'entity', array(
+            /*->add('emplacement', 'entity', array(
 		'required' => false,
 		'class' => 'SYM16SimpleStockBundle:Emplacement',
 		'query_builder' => function(EntityRepository $er){
@@ -53,7 +53,9 @@ class ReferenceType extends AbstractType
 		'em' => $em,
 		'label' => 'Emplacement',
 		'empty_value' => "-- Selectionnez un emplacement --",
-            ))
+            ))*/
+	    ->add('emplacement', 'choice', array(
+		'choices' => array('default_value' =>  "-- Selectionnez un emplacement --")))
             // la liste déroulante famille
 	    ->add('famille', 'entity', array(
 		'required' => false,
@@ -67,7 +69,7 @@ class ReferenceType extends AbstractType
 		'empty_value' => "-- Selectionnez une famille --",
             ))
 	    // la liste déroulante composant
-            ->add('composant', 'entity', array(
+            /*->add('composant', 'entity', array(
 		'required' => false,
 		'class' => 'SYM16SimpleStockBundle:Composant',
 		'query_builder' => function(EntityRepository $er){
@@ -77,7 +79,9 @@ class ReferenceType extends AbstractType
 		'em' => $em,
 		'label' => 'Composant',
 		'empty_value' => "-- Selectionnez un composant --",
-            ))
+            ))*/
+	    ->add('composant', 'choice', array(
+		'choices' => array('default_value' =>  "-- Selectionnez un composant --")))
 	    ->add('udv', 		'integer')
             ->add('seuil', 		'integer')
 	    //->add('createur',		'text') 
