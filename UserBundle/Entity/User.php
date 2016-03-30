@@ -2,16 +2,18 @@
 namespace SYM16\UserBundle\Entity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
-//use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use SYM16\SimpleStockBundle\Validator as MyAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+//use SYM16\SimpleStockBundle\Validator as MyAssert;
 
 /**
  * User
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="SYM16\UserBundle\Entity\UserRepository")
- * @MyAssert\UniqueEntityByEm(field="username", connexion="stockmaster", message="Cet identifiant de connexion est déjà utilisé")
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(fields={"username"}, message="Cet identifiant de connexion est déjà utilisé", em="stockmaster")
  */
+ /* MyAssert\UniqueEntityByEm(field="username", connexion="stockmaster", message="Cet identifiant de connexion est déjà utilisé")*/
 class User implements UserInterface
 {
     /**
@@ -85,7 +87,21 @@ class User implements UserInterface
      *
      * @ORM\Column(name="asb", type="boolean")
      */
-    private $asb;
+    private $asb; //flag d'alerte seuil bas 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="acp", type="boolean")
+     */
+    private $acp; // flag d'alrte changement parametre
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adr", type="boolean")
+     */
+    private $adr; // flag d'alerte dépot retrait dans le stock
 
     public function __construct()
     {
@@ -401,5 +417,73 @@ class User implements UserInterface
     public function getAsb()
     {
         return $this->asb;
+    }
+
+    /**
+     * Set acp
+     *
+     * @param boolean $acp
+     * @return User
+     */
+    public function setAcp($acp)
+    {
+        $this->acp = $acp;
+
+        return $this;
+    }
+
+    /**
+     * Get acp
+     *
+     * @return boolean 
+     */
+    public function getAcp()
+    {
+        return $this->acp;
+    }
+
+    /**
+     * Set adr
+     *
+     * @param boolean $adr
+     * @return User
+     */
+    public function setAdr($adr)
+    {
+        $this->adr = $adr;
+
+        return $this;
+    }
+
+    /**
+     * Get adr
+     *
+     * @return boolean 
+     */
+    public function getAdr()
+    {
+        return $this->adr;
+    }
+
+    // pour le changement du password
+    // non enregistré dans BDD
+    private $oldpassword=NULL;
+    public function setOldpassword($oldpassword)
+    {
+        //$user->setoldpassword($name);
+        //$options = ['cost' => 12];
+        $this->oldpassword = $oldpassword /*password_hash($oldpassword, PASSWORD_BCRYPT, $options)*/;
+
+        return $this;
+    }
+
+    /**
+     * Get oldpassword
+     *
+     * @return string 
+     */
+    public function getOldpassword()
+    {
+        return $this->oldpassword;
     }
 }

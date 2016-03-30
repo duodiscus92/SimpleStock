@@ -31,7 +31,9 @@ class UserType extends AbstractType
 		'em' => 'stockmaster'
             ))
             ->add('email', 	'email', array('label' => 'Mail') )
-	    ->add('asb', 	'checkbox', array('required' => false, 'label'=> 'Recevoir un mail d\'alerte stock inférieur au seuil bas'))
+	    ->add('asb', 	'checkbox', array('required' => false, 'label'=> 'Recevoir un mail d\'alerte si stock inférieur au seuil bas'))
+	    ->add('acp', 	'checkbox', array('required' => false, 'label'=> 'Recevoir un mail d\'alerte pour tout changement de paramètres'))
+	    ->add('adr', 	'checkbox', array('required' => false, 'label'=> 'Recevoir un mail d\'alerte si dépôt ou prélèvement dans le stock'))
             //->add('adp')
             //->add('art')
             //->add('acr')

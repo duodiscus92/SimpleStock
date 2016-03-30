@@ -28,7 +28,7 @@ class UniqueEntityByEmValidator extends ConstraintValidator
 	$em = $this->doctrine->getManager($constraint->connexion);
 	// on récupère le repository de cette entité
 	$rep = $em->getRepository(get_class($entity));
-	// on construir le getter pour l'attribut de l'entité récupéré en paramètres de la contrainte (le champ "field")
+	// on construit le getter pour l'attribut de l'entité récupéré en paramètres de la contrainte (le champ "field")
 	$getter = "get".ucfirst($constraint->field);
 	// on construit le findBy pour faire un findBy de l'attribut
 	$repositoryMethod = $constraint->repositoryMethod.ucfirst($constraint->field);

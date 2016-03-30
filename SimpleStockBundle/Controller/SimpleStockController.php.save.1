@@ -428,38 +428,29 @@ class SimpleStockController extends Controller
         //récuparartion de l'entite d'id  $id
         $entity = $em->getRepository($this->repositoryPath)->find($id);
 	$entity->setModification(new \DateTime() );
-	// récuperer le mdp de l'ego utilisateur
-	$password = $entity->getPassword();
-	// récuperer le username de l'ego utilisateur
-	$username = $entity->getUsername();
-	// creation du formulaire de changement de mdp : usernam, ancien mdp et nouveau mdp 2 fois
+	// creation du formulaire
 	$form = $this->createForm($this->formobject, $entity);
 	// test de la méthode
 	if($request->getMethod() == 'POST'){
 	// on est donc arrivé en ce point par POST
-	// hydrater l'entité 
+	// hydrater la variable $Reference
 		$form->bind($request);
 		// verifier la validité des valeurs d’entrée
 		if($form->isValid()) {
-		    //récupérer l'ancien mdp (non codé)  fourni par l'utilisateur
-		    $givenoldpassword = $entity->getOldpassword();
-		    //récupérer le username fourni par l'utilisateur
-		    $givenusername = $entity->getUsername();
-		    // vérifier que le username fourni est bien celui de l'ego utilisateur
-		    if($givenusername == $username){
-			//vérifier que mdp non codé fourni est équivaleent au mdp de l'égo codé
-			if(password_verify($givenoldpassword, $password)){
-			    // C'est oui, alors on peut enregistrer le nouveau mdp
-		    	    $em->flush();
-		    	    // et pour finir, boite de dialoguer info et retour page acceuil
-	    		   return $this->render('SYM16SimpleStockBundle:Common:infochpwddone.html.twig', 
-				array('homepath' => "sym16_simple_stock_homepage"));
-			}
+		    // vérifier que l'ancien mot de passe et le username existent
+		    // récupération de tous les utilisateurs
+		    $users = $em->getRepository($this->repositoryPath)->findAll();
+		    foreach ($users as $user)
+
+
+		    if (1) {
+		    // enregistrer Reference dans la BDD
+		    //$em->persist($entity);
+		    	$em->flush();
+		    	// affichage des propriétés
+		    	return $this->proprieteAction($request);
 		    }
 		}
-		// on arrive ici c'est que le mdp et/ou le username fourni ne sont pas ceux de l'égo
-	    	return $this->render('SYM16SimpleStockBundle:Common:alertchpwdfail.html.twig', 
-			array('homepath' => "sym16_simple_stock_homepage"));
 	}
     	// On est arrivé par GET ou bien données d'entrées invalides
     	// avec l'utilisation de l'annotation Template()

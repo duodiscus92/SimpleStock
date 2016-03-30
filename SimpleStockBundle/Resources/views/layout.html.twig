@@ -23,7 +23,6 @@
     <dd>Propulsé par : Symfony, Linux, Apache, PHP, MySQL</dd>
     <dd>Simple Stock est un projet à vocation pédagogique</dd>
     <dd>Conception d'JET Conseil - Formation - Projets</dd>
-    {#<dd>Projet réalisé par les étudiants de {{university}}, Cursus : {{cursus}}, Cours : {{lecture}}, Prof :  {{prof}}</dd>#}
     </dl>
     </footer>
     {% endblock%}
@@ -51,7 +50,7 @@
             		    <li class="dropdown-header">Articles</li>
             		    <li><a href="{{ path('sym16_simple_stock_article_lister') }}">Voir les articles</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_article_ajouter') }}">Déposer un article dans le stock</a></li>
-            		    {#<li><a href="#">Prélever des articles dans le stock</a></li>#}
+            		    <li><a href="#">Prélever des articles dans le stock (en construction)</a></li>
             		    <li class="divider"></li>
             		    <li class="dropdown-header">Références</li>
             		    <li><a href="{{ path('sym16_simple_stock_reference_lister') }}">Voir les références</a></li>
@@ -129,6 +128,10 @@
             		        <li><a href="{{ path('login') }}">Se connecter</a></li>
                            {% else %}
             		        <li><a href="{{ path('logout') }}">Se déconnecter</a></li>
+            		        <li class="divider"></li>
+            		        {#<li><a href="#">Modifier mes données personnelles (en construction)</a></li>#}
+                		<li><a href="{{ path('sym16_simple_stock_utilisateur_modifiermoi',{'valeur':app.session.get('stockuserid'), 'exposant':app.session.get('stockuserid') }) }}">Modifier mes données personnelles</a></li>
+                		<li><a href="{{ path('sym16_simple_stock_utilisateur_modifiermdp',{'valeur':app.session.get('stockuserid'), 'exposant':app.session.get('stockuserid') }) }}">Changer mon mot de passe</a></li>
                            {% endif %}
             		    {#<li><a href="#">S'inscrire (en construction) </a></li>#}
                             {% if app.session.get('stockuser') == 'anonyme' %}

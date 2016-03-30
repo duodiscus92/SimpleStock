@@ -101,16 +101,63 @@ class MailController extends Controller
 	foreach ($users as $user) {
 	// message aux utilisateurs
 	    //on vérifie s'ils accetent d'être notitfiés
-	    if($user->getAsb() == 1){
+	    if($user->getAcp() == 1){
         	$message = \Swift_Message::newInstance()
-           	    ->setSubject("[SimpleStock-".$this->sitename."] Changement dans le stock")
+           	    ->setSubject("[SimpleStock-".$this->sitename."] Changement de paramètres")
            	    ->setFrom($this->sendermail)
            	    ->setTo($user->getEmail())
            	    ->setBody(
                  	$this->renderView(
                     	    'SYM16SimpleStockBundle:Mails:ams.html.twig',
                      	    array('site' => $this->sitename, 'nom' => $user->getNom(), 'prenom' => $user->getPrenom(),
-			    	'item' => $item, 'stock' => $stockusage, 'nature' => $nature, 'objet' => $objet, 'createur' => $createur)
+			    	'item' => $item, 'stock' => $stockusage, 'nature' => $nature, 'objet' => $objet, 'createur' => $session->get('stockuser'))
+                	)
+           	    )
+        	;
+        	$this->get('mailer')->send($message);
+	    }
+	}
+        return $this->redirect($this->generateUrl($route));
+    }
+
+    /**
+     * envoyer un mail pour toute action dépot/retrait 
+     *
+     * @Route("/adr/{item}/{nature}/{objet}/{createur}/{route}", name="sym16_simple_stock_mail_adr")
+     */
+    public function adrAction($item, $nature, $objet, $createur, $route)
+    {
+	// récuprération du service session
+	$session = $this->get('session');
+	// récupération des variables de session
+	// mail de l'emmetteur
+	$this->sendermail = $session->get('sendermail');
+	// mail de notification
+	$this->notificationmail = $session->get('notificationmail');
+	// nom du site
+	$this->sitename = $session->get('sitename');
+	// nom d'usage du stock
+	$stockusage = $session->get('stockusage');
+	// recupération de l'entity manager
+	$em = $this->getDoctrine()->getManager('stockmaster');
+        //récupérartion de l'entite de l'utilisateur courant
+        //$entity = $em->getRepository("SYM16UserBundle:User")->findOneByUsername($createur);
+	// récupération de tous les utilisateurs
+	$users = $em->getRepository("SYM16UserBundle:User")->findAll();
+	//boucle sur les utilisateurs
+	foreach ($users as $user) {
+	// message aux utilisateurs
+	    //on vérifie s'ils accetent d'être notitfiés
+	    if($user->getAdr() == 1){
+        	$message = \Swift_Message::newInstance()
+           	    ->setSubject("[SimpleStock-".$this->sitename."] Dépot ou retrait d'articles")
+           	    ->setFrom($this->sendermail)
+           	    ->setTo($user->getEmail())
+           	    ->setBody(
+                 	$this->renderView(
+                    	    'SYM16SimpleStockBundle:Mails:adr.html.twig',
+                     	    array('site' => $this->sitename, 'nom' => $user->getNom(), 'prenom' => $user->getPrenom(),
+			    	'item' => $item, 'stock' => $stockusage, 'nature' => $nature, 'objet' => $objet, 'createur' => $session->get('stockuser'))
                 	)
            	    )
         	;

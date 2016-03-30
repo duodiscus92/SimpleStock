@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use SYM16\UserBundle\Entity\User;
 use SYM16\UserBundle\Form\UserType;
 use SYM16\UserBundle\Form\UserModifierType;
+use SYM16\UserBundle\Form\UserModifierMoiType;
+use SYM16\UserBundle\Form\UserChangerMdpType;
 use SYM16\UserBundle\Form\UserInscriptionType;
 
 /**
@@ -35,7 +37,7 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	    ->addColName('Login',	'Username')
 	    ->addColName('Mail',	'Email')
 	    ->addColName('Statut',	'Statut')
-	    ->addColName('Asb',		'Asb')
+	    ->addColName('Adr',		'Adr')
 	    //->addColName('Créateur',	'Createur')
 	    //->addColName('Création',	'Creation')
 	;
@@ -47,7 +49,8 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	    'prop'=> 'sym16_simple_stock_utilisateur_propriete')
 	);
 
-        $this->addRoute('lister',               "sym16_simple_stock_utilisateur_lister")
+        $this
+	    ->addRoute('lister',               "sym16_simple_stock_utilisateur_lister")
         ;
 
 	$this->setListName("Liste des utilisateurs");
@@ -55,16 +58,18 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	//pour l'affichage des propriétés d'une entité
 	$this->setPropertyName("Détail de l'Utilisateur :");
 	$this
-	    ->addProperty('Nom de l\'Utilisateur',	array('Nom', 		"%s"))
-	    ->addProperty('Prénom de l\'Utilisateur',	array('Prenom',		"%s"))
-	    ->addProperty('Identifiant de connexion',	array('Username',	"%s"))
-	    ->addProperty('Mot de passe',		array('Password', 	"%s"))
-	    ->addProperty('Statut',			array('Statut',	 	"%s"))
-	    ->addProperty('Email',			array('Email',	 	"%s"))
-	    ->addProperty('Mail d\'alerte seuil bas',	array('Asb',	 	"%d"))
-	    ->addProperty('Créateur du l\'Utilisateur',array('Createur',        "%s"))
-	    ->addProperty('Date de création',		array('Creation', 	NULL))
-	    ->addProperty('Date de modification',	array('Modification',	NULL))
+	    ->addProperty('Nom de l\'Utilisateur',			array('Nom', 		"%s"))
+	    ->addProperty('Prénom de l\'Utilisateur',			array('Prenom',		"%s"))
+	    ->addProperty('Identifiant de connexion',			array('Username',	"%s"))
+	    //->addProperty('Mot de passe',				array('Password', 	"%s"))
+	    ->addProperty('Statut',					array('Statut',	 	"%s"))
+	    ->addProperty('Email',					array('Email',	 	"%s"))
+	    ->addProperty('Mail d\'alerte seuil bas',			array('Asb',	 	"%d"))
+	    ->addProperty('Mail d\'alerte changement de paramètre',	array('Acp',	 	"%d"))
+	    ->addProperty('Mail d\'alerte dépôt/prélèvement',		array('Adr',	 	"%d"))
+	    ->addProperty('Créateur du l\'Utilisateur',			array('Createur',        "%s"))
+	    ->addProperty('Date de création',				array('Creation', 	NULL))
+	    ->addProperty('Date de modification',			array('Modification',	NULL))
 	;
     }
 
@@ -93,9 +98,9 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
     public function proprieteAction(Request $request)
     {
 	// contrôle d'accès
-	if(!$this->get('security.context')->isGranted('ROLE_ADMINISTRATEUR'))
+	if(!$this->get('security.context')->isGranted('ROLE_TEMPORAIRE'))
 	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
-		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+		array('statut' => 'TEMPORAIRE', 'homepath' => "sym16_simple_stock_homepage"));
 	// precise le repository ainsi que les propriétés à afficher
 	 $this->aLister();
 	// appel de la fonction mère
@@ -119,7 +124,7 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	// preciser le repository ce qu'on veut lister après ajout
 	$this->aLister();
 	// creation du formulaire
-	$this->setFormNameAndObject("Ajout d'un utilisateur", new UserType(array('em' => $this->stockconnection)) );
+	$this->setFormNameAndObject("Ajout d'un utilisateur", new UserType(array('em' => $this->stockconnection) ));
     	// appel de la fonction mère
     	return parent::ajouterAction($request);
     }
@@ -178,8 +183,48 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	// preciser le repository et ce qu'on veut lister après modification
 	$this->aLister();
 	// préciser le formulaire à créer
-	$this->setFormNameAndObject("Modification d'un utilisateur", new UserModifierType(array('em' => $this->stockconnection)) );
+	$this->setFormNameAndObject("Modification d'un utilisateur", new UserModifierType(array('em' => $this->stockconnection) ));
 	// appel de la fonction mère
 	return parent::modifierAction($request);
+    }
+
+    /**
+     *   modifierMoi c'est comme modifier mais uniquement pour l'utilisateur courant
+     *
+     * @Route("/modme", name="sym16_simple_stock_utilisateur_modifiermoi")
+     * @Template("SYM16SimpleStockBundle:Forms:simpleform.html.twig")
+     */
+    public function modifierMoiAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_TEMPORAIRE'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'TEMPORAIRE', 'homepath' => "sym16_simple_stock_homepage"));
+	// preciser le repository et ce qu'on veut lister après modification
+	$this->aLister();
+	// préciser le formulaire à créer
+	$this->setFormNameAndObject("Mise à jour de mes données personnelles", new UserModifierMoiType(array('em' => $this->stockconnection) ));
+	// appel de la fonction mère
+	return parent::modifierMoiAction($request);
+    }
+
+    /**
+     *   changer mot de passe
+     *
+     * @Route("/modmdp", name="sym16_simple_stock_utilisateur_modifiermdp")
+     * @Template("SYM16SimpleStockBundle:Forms:simpleform.html.twig")
+     */
+    public function changerMdpAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_TEMPORAIRE'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'TEMPORAIRE', 'homepath' => "sym16_simple_stock_homepage"));
+	// preciser le repository et ce qu'on veut lister après modification
+	$this->aLister();
+	// préciser le formulaire à créer
+	$this->setFormNameAndObject("Changer mon mot de passe", new UserChangerMdpType(array('em' => $this->stockconnection) ));
+	// appel de la fonction mère
+	return parent::changerMdpAction($request);
     }
 }

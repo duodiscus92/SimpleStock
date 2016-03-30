@@ -31,11 +31,13 @@ class AcceuilController extends Controller
 	if(null === $user){
 	    $name = 'anonyme';
 	    $statut = 'VISITEUR';
+	    $id = NULL;
 	}
 	else{
 	    // récupérer l'identifiant et le statut
 	    $name = $user->getUsername();
 	    $statut = $user->getStatut();
+	    $id = $user->getId();
 	}
 
 	//récupération de l'entity manager
@@ -65,6 +67,7 @@ class AcceuilController extends Controller
 
 	// initiatisation des variables de sessions
 	$session->set('stockuser', $name);
+	$session->set('stockuserid', $id);
 	$session->set('stockuserstatut', $statut);
 	$session->set('stocklist', $stocklist);
 	$session->set('stockname', $stockname);

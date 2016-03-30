@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class UserModifierType extends UserType
+class UserModifierMoiType extends UserType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -19,6 +19,7 @@ class UserModifierType extends UserType
 	// on neutralise l'attribut date dont on veut empecher la modif
 	$builder->remove('username');
 	$builder->remove('password');
+	$builder->remove('statut');
     }
 
     /**
@@ -26,26 +27,6 @@ class UserModifierType extends UserType
      */
     public function getName()
     {
-        return 'sym16_Userbundle_usermodifier';
+        return 'sym16_Userbundle_usermodifiermoi';
     }
-
-    /**
-     * @param OptionsResolverInterface $resolver
-    */
-    /*public function setDefaultOptions(OptionsResolverInterface $resolver)  
-    {
-        $resolver->setDefaults(array(
-            'validation_groups' =>  array('default'),
-        ));
-    }*/
-
-    /**
-     * @return array()
-    */
-    /*public function getDefaultOptions(array $options)
-    {
-        return array(
-            'validation_groups' => array('default'),
-        );
-    }*/
 }

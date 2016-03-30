@@ -62,9 +62,9 @@ class StocklistController extends /*Controller*/ SimpleStockController
     public function listerAction()
     {
 	// contrôle d'accès
-	//if(!$this->get('security.context')->isGranted('ROLE_ADMINISTRATEUR'))
-	    //return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
-		//array('statut' => 'ADMINISTRATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// precise le repository et ce qu'on veut lister
 	 $this->aLister();
 	// appel de la fonction mère
@@ -79,9 +79,9 @@ class StocklistController extends /*Controller*/ SimpleStockController
     public function proprieteAction(Request $request)
     {
 	// contrôle d'accès
-	//if(!$this->get('security.context')->isGranted('ROLE_ADMINISTRATEUR'))
-	    //return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
-		//array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// precise le repository ainsi que les propriétés à afficher
 	 $this->aLister();
 	// appel de la fonction mère
