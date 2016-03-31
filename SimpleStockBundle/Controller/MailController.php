@@ -207,7 +207,7 @@ class MailController extends Controller
            )
         ;
         $this->get('mailer')->send($message);
-        return $this->render('SYM16SimpleStockBundle:Common:inforegistrationdone.html.twig',
+        return $this->render('SYM16SimpleStockBundle:Common:infooublimdpdone.html.twig',
             array('statut' => 'TEMPORAIRE', 'homepath' => "sym16_simple_stock_homepage"));
      }
 }
