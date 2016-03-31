@@ -158,7 +158,12 @@ class SimpleStockController extends Controller
     //liste une table
     public function listerAction()
     {
-
+	$session = $this->get('session');
+	$id = $session->get('stockuserid');
+	if($session->get('flagoubli') == 1)
+	    return $this->redirect($this->generateUrl("sym16_simple_stock_utilisateur_modifiermdp",
+               array('valeur' => $id, 'exposant' => $id))
+	    );
 	// on récupère l'entity manager
 	$em = $this->getDoctrine()->getManager($this->emname);
 	// on récupère tout le contenu de la table
@@ -182,6 +187,13 @@ class SimpleStockController extends Controller
     // propriété d'une entité
     public function proprieteAction(Request $request)
     {
+	$this->branchIfFlagOubli();
+	$session = $this->get('session');
+	$id = $session->get('stockuserid');
+	if($session->get('flagoubli') == 1)
+	    return $this->redirect($this->generateUrl("sym16_simple_stock_utilisateur_modifiermdp",
+               array('valeur' => $id, 'exposant' => $id))
+	    );
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');
 	// recupération de l'entity manager
@@ -208,6 +220,12 @@ class SimpleStockController extends Controller
     //liste une table sur laquelle on applique un filtre
     public function filtrerAction(Request $request)
     {
+	$session = $this->get('session');
+	$id = $session->get('stockuserid');
+	if($session->get('flagoubli') == 1)
+	    return $this->redirect($this->generateUrl("sym16_simple_stock_utilisateur_modifiermdp",
+               array('valeur' => $id, 'exposant' => $id))
+	    );
 	// on récupère l'entity manager
 	$em = $this->getDoctrine()->getManager($this->emname);
 	// on récupère tout le repository
@@ -239,6 +257,12 @@ class SimpleStockController extends Controller
 
     //ajoute une entite
     public function ajouterAction(Request $request){
+	$session = $this->get('session');
+	$id = $session->get('stockuserid');
+	if($session->get('flagoubli') == 1)
+	    return $this->redirect($this->generateUrl("sym16_simple_stock_utilisateur_modifiermdp",
+               array('valeur' => $id, 'exposant' => $id))
+	    );
 	// récupératioin de l'entité à hydrater
 	$entity = $this->entityobject;
 	$entity->setCreation(new \DateTime() );
@@ -311,6 +335,12 @@ class SimpleStockController extends Controller
     // modifier une entité
     public function modifierAction(Request $request)
     {
+	$session = $this->get('session');
+	$id = $session->get('stockuserid');
+	if($session->get('flagoubli') == 1)
+	    return $this->redirect($this->generateUrl("sym16_simple_stock_utilisateur_modifiermdp",
+               array('valeur' => $id, 'exposant' => $id))
+	    );
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');
 	// recupération de l'entity manager
@@ -352,6 +382,12 @@ class SimpleStockController extends Controller
 
     //supprime une entité
     public function supprimerAction(Request $request) {
+	$session = $this->get('session');
+	$id = $session->get('stockuserid');
+	if($session->get('flagoubli') == 1)
+	    return $this->redirect($this->generateUrl("sym16_simple_stock_utilisateur_modifiermdp",
+               array('valeur' => $id, 'exposant' => $id))
+	    );
 	// récupe de l'id de l'article à supprimer
         $id = $request->query->get('valeur');
 	// recupération de l'entity manager
@@ -390,6 +426,12 @@ class SimpleStockController extends Controller
     // modifier mes données personnelles (n'est utilisée que par UtilisateurController)
     public function modifierMoiAction(Request $request)
     {
+	$session = $this->get('session');
+	$id = $session->get('stockuserid');
+	if($session->get('flagoubli') == 1)
+	    return $this->redirect($this->generateUrl("sym16_simple_stock_utilisateur_modifiermdp",
+               array('valeur' => $id, 'exposant' => $id))
+	    );
 	// récupe de l'id de l'article modifier
         $id = $request->query->get('valeur');
 	// recupération de l'entity manager
@@ -430,8 +472,9 @@ class SimpleStockController extends Controller
 	$entity->setModification(new \DateTime() );
 	// récuperer le mdp de l'ego utilisateur
 	$password = $entity->getPassword();
-	// récuperer le username de l'ego utilisateur
+	// récuperer le username de l'ego utilisateur puis le mettre à NULL
 	$username = $entity->getUsername();
+	$entity->setUsername(NULL);
 	// creation du formulaire de changement de mdp : usernam, ancien mdp et nouveau mdp 2 fois
 	$form = $this->createForm($this->formobject, $entity);
 	// test de la méthode
@@ -450,6 +493,8 @@ class SimpleStockController extends Controller
 			//vérifier que mdp non codé fourni est équivaleent au mdp de l'égo codé
 			if(password_verify($givenoldpassword, $password)){
 			    // C'est oui, alors on peut enregistrer le nouveau mdp
+			    // mais avant on signale que le mot de passe oublié  a été changé (au cas où)
+	        	    $entity->setFlagoubli(0);
 		    	    $em->flush();
 		    	    // et pour finir, boite de dialoguer info et retour page acceuil
 	    		   return $this->render('SYM16SimpleStockBundle:Common:infochpwddone.html.twig', 

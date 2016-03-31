@@ -12,8 +12,9 @@ use SYM16\UserBundle\Form\UserType;
 use SYM16\UserBundle\Form\UserModifierType;
 use SYM16\UserBundle\Form\UserModifierMoiType;
 use SYM16\UserBundle\Form\UserChangerMdpType;
+use SYM16\UserBundle\Form\UserOubliMdpType;
 use SYM16\UserBundle\Form\UserInscriptionType;
-
+use  SYM16\SimpleStockBundle\Controller\OubliMdp;
 /**
  *
  * Classe Utilisateur
@@ -137,10 +138,6 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
      */
     public function sinscrireAction(Request $request)
     {
-	// contrôle d'accès
-	/*if(!$this->get('security.context')->isGranted('ROLE_SUPER_UTILISATEUR'))
-	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
-		array('statut' => 'SUPER UTILISATEUR', 'homepath' => "sym16_simple_stock_homepage"));*/
 	// creation d'une instance de l'entité propriétaire a hydrater
 	$this->setEntityObject(new User);
 	// preciser le repository ce qu'on veut lister après ajout
@@ -150,6 +147,7 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
     	// appel de la fonction mère
     	return parent::sinscrireAction($request);
     }
+
     /**
      *  supprimer un article
      *
@@ -226,5 +224,71 @@ class UtilisateurController extends /*Controller*/ SimpleStockController
 	$this->setFormNameAndObject("Changer mon mot de passe", new UserChangerMdpType(array('em' => $this->stockconnection) ));
 	// appel de la fonction mère
 	return parent::changerMdpAction($request);
+    }
+
+    public function oubliMdpOldAction(Request $request)
+    {
+	// creation d'une instance de l'entité propriétaire a hydrater
+	$this->setEntityObject(new OubliMdp);
+	// preciser le repository ce qu'on veut lister après ajout
+	$this->aLister();
+	// creation du formulaire
+	$this->setFormNameAndObject("Mot de passe oublié", new UserOubliMdpType(array('em' => $this->stockconnection)) );
+    	// appel de la fonction mère
+    	return parent::oubliMdpAction($request);
+    }
+
+    /**
+     *  Mot de passe oublié
+     *
+     * @Route("/oublimdp", name="sym16_simple_stock_utilisateur_oublimdp")
+     * @Template("SYM16SimpleStockBundle:Forms:simpleform.html.twig")
+     */
+    public function oubliMdpAction(Request $request)
+    {
+	// récupération de l'entité à hydrater
+	$entity = new OubliMdp;
+	// creation du formulaire
+	$form = $this->createFormBuilder($entity)
+            ->add('username', 	'text', array('label' => 'Identifiant de connection') )
+            ->add('email', 	'email', array('label' => 'Mail') )
+	    ->getForm()
+	;
+	// test de la méthode
+	if($request->getMethod() == 'POST'){
+	// hydrater les variables $Reference
+	    $form->bind($request);
+	    // verifier la validité des valeurs d’entrée
+	    if($form->isValid()) {
+		// récupération de l'entity manager
+		$em = $this->getDoctrine()->getManager('stockmaster');
+		// username et mail fourni pour valider l'envoi d'un nouveau mdp
+		$givenmail = $entity->getEmail();
+		$givenusername = $entity->getUsername();
+		// verifier si username et email existent dans la BDD
+		$rep = $em->getRepository("SYM16UserBundle:User");
+		if(($user = $rep->findOneBy(array('username' => $givenusername, 'email' => $givenmail) ))!= NULL){
+		   // oui ils existent
+		   $id = $user->getId();
+		   // on met le flag oubli à pour garder en mémoire le fait qu'il faudra changer le mdp à la prochaine connexion
+		   $user->setFlagoubli(1);
+		   $session = $this->get('session');
+		   $session->set('flagoubli', 1); 
+	           // mettre à jour l'entité dans la BDD, donc on persiste le flag oubli
+		   $em->persist($user);
+		   $em->flush();
+		   // et on se branche vers le mailer pour qu'il envoie le mdp
+		   return $this->redirect($this->generateUrl("sym16_simple_stock_mail_mdpenvoi", 
+			array('id' => $id)) ); 
+	    	}
+		// sinon retour page d'acceuil
+		else
+	    	   return $this->render('SYM16SimpleStockBundle:Common:alertoublimdpfail.html.twig', 
+			array('homepath' => "sym16_simple_stock_homepage"));
+	    }
+	}
+    	// On est arrivé par GET ou bien données d'entrées invalides
+    	// avec l'utilsation de l'annotation Template()
+    	return array('titre' => "Recevoir un nouveau mot de passe", 'form' => $form->CreateView() );
     }
 }

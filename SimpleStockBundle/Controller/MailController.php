@@ -166,4 +166,48 @@ class MailController extends Controller
 	}
         return $this->redirect($this->generateUrl($route));
     }
+
+    /**
+     * envoyer un mail de confirmation à un nouvel inscrit
+     *
+     * @Route("mdpenvoi/{id}", name="sym16_simple_stock_mail_mdpenvoi")
+     */
+    public function mdpenvoiMailAction($id)
+    {
+	// récuprération du service session
+	$session = $this->get('session');
+	// récupération des variables de session
+	// mail de l'emmetteur
+	$this->sendermail = $session->get('sendermail');
+	// nom du site
+	$this->sitename = $session->get('sitename');
+	// recupération de l'entity manager
+	$em = $this->getDoctrine()->getManager('stockmaster');
+        //récupérartion de l'entite d'id  $id
+        $entity = $em->getRepository("SYM16UserBundle:User")->find($id);
+	// génération du nouveau mdp
+	//$nouveaumdp = 'hellohello';
+	$nouveaumdp = uniqid();;
+	//hydratation
+        $entity->setPassword($nouveaumdp);
+        $entity->setModification(new \Datetime());
+	//enregistrement dans la bdd
+	$em->persist($entity);
+	$em->flush();
+	// message au nouvel inscrit
+        $message = \Swift_Message::newInstance()
+           ->setSubject("[SimpleStock-".$this->sitename."] Nouveau mot de passe")
+           ->setFrom($this->sendermail)
+           ->setTo($entity->getEmail())
+           ->setBody(
+                 $this->renderView(
+                    'SYM16SimpleStockBundle:Mails:mdpenvoi.html.twig',
+                     array('site' => $this->sitename, 'nom' => $entity->getNom(), 'prenom' => $entity->getPrenom(), 'nouveaumdp' => $nouveaumdp)
+                )
+           )
+        ;
+        $this->get('mailer')->send($message);
+        return $this->render('SYM16SimpleStockBundle:Common:inforegistrationdone.html.twig',
+            array('statut' => 'TEMPORAIRE', 'homepath' => "sym16_simple_stock_homepage"));
+     }
 }

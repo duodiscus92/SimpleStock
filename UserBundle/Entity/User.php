@@ -103,6 +103,13 @@ class User implements UserInterface
      */
     private $adr; // flag d'alerte dépot retrait dans le stock
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="flagoubli", type="boolean")
+     */
+    private $flagoubli; // mis à 1 si password oublié
+
     public function __construct()
     {
 	$this->roles = array();
@@ -465,6 +472,29 @@ class User implements UserInterface
         return $this->adr;
     }
 
+    /**
+     * Set flagoubli
+     *
+     * @param boolean $flagoubli
+     * @return User
+     */
+    public function setFlagoubli($flagoubli)
+    {
+        $this->flagoubli = $flagoubli;
+
+        return $this;
+    }
+
+    /**
+     * Get flagoubli
+     *
+     * @return boolean 
+     */
+    public function getFlagoubli()
+    {
+        return $this->flagoubli;
+    }
+
     // pour le changement du password
     // non enregistré dans BDD
     private $oldpassword=NULL;
@@ -477,11 +507,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * Get oldpassword
-     *
-     * @return string 
-     */
     public function getOldpassword()
     {
         return $this->oldpassword;

@@ -24,9 +24,14 @@ class AcceuilController extends Controller
     */ 
     public function indexAction(/*$name*/)
     {
-	//$name = 'jehrlich';
+	//récupération de l'entity manager
+	$em = $this->getDoctrine()->getManager('stockmaster');
 	// récupération de l'utilisateur courant
 	$user = $this->getUser();
+	// flagoubli est à  1 si l'utilisateur se connecte 
+	// pour la première fois après avoit reçu un mdp car il faut
+	// l'obliger à changer
+	$flagoubli = 0;
 	// test si l'utilisateur est anonyme
 	if(null === $user){
 	    $name = 'anonyme';
@@ -40,8 +45,7 @@ class AcceuilController extends Controller
 	    $id = $user->getId();
 	}
 
-	//récupération de l'entity manager
-	$em = $this->getDoctrine()->getManager('stockmaster');
+	//récupération du repository liste des stock
 	$repository = $em->getRepository('SYM16SimpleStockBundle:Stocklist');
 
 	// récuprération du service session
@@ -77,9 +81,24 @@ class AcceuilController extends Controller
 	$session->set('sendermail', $sendermail);
 	$session->set('notificationmail', $notificationmail);
 
-        return $this->render('SYM16SimpleStockBundle:Acceuil:index.html.twig', array('name' => $name));
+        // si le flag oubli est à 0 c'est une connexion normale
+	if($id != NULL){
+	    // récupérer le repository des utilisateurs
+	    $repository = $em->getRepository("SYM16UserBundle:User");
+	    //obtenir son flagoubli
+	    $user = $repository->find($id);
+	    $flagoubli = $user->getFlagoubli();
+	    $session->set('flagoubli',$flagoubli); 
+	}
+	if($flagoubli == 0)
+	    return $this->render('SYM16SimpleStockBundle:Acceuil:index.html.twig', array('name' => $name));
+	//sinon il faut changer le mod de passe
+	else
+            return $this->redirect($this->generateUrl("sym16_simple_stock_utilisateur_modifiermdp",
+               array('valeur' => $id, 'exposant' => $id))
+	    );
     }
-    
+
     /**
     *
     * @Route("/changestock", name="sym16_simple_stock_changestock")
