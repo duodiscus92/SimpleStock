@@ -187,7 +187,6 @@ class SimpleStockController extends Controller
     // propriété d'une entité
     public function proprieteAction(Request $request)
     {
-	$this->branchIfFlagOubli();
 	$session = $this->get('session');
 	$id = $session->get('stockuserid');
 	if($session->get('flagoubli') == 1)
