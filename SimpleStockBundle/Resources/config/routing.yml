@@ -1,4 +1,5 @@
 app:
     resource: '@SYM16SimpleStockBundle/Controller/'
     type:     annotation
-    prefix:   /SimpleStock
+#    prefix:   /SimpleStock
+    prefix:   
