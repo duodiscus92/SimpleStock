@@ -76,6 +76,11 @@ class Article
 	return $this->getReference()->getUdv();
     }
 
+    public function getSeuil()
+    {
+	return $this->getReference()->getSeuil();
+    }
+
     /**
      * @var integer
      *

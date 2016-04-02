@@ -4,12 +4,6 @@ namespace SYM16\SimpleStockBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * ReferenceFiltre
- *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\ReferenceFiltreRepository")
- */
 class ReferenceFiltre
 {
     const FILTRE_TOUS = 't';
@@ -19,88 +13,26 @@ class ReferenceFiltre
     public function __construct()
     {
 	$this->entrepotfiltre =
-	$this->categoriefiltre =
+	$this->famillefiltre =
 	$this->createurfiltre =
 	$this->refvide = self::FILTRE_TOUS;
     }
 
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
     private $id;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="refvide", type="smallint")
-     */
     private $refvide;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="entrepot", type="string", length=255)
-     */
     private $entrepot;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="entrepotfiltre", type="smallint")
-     */
     private $entrepotfiltre;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="categorie", type="string", length=255)
-     */
-    private $categorie;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="categoriefiltre", type="smallint")
-     */
-    private $categoriefiltre;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="createur", type="string", length=255)
-     */
+    private $famille;
+    private $famillefiltre;
     private $createur;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="createurfiltre", type="smallint")
-     */
     private $createurfiltre;
 
-
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set refvide
-     *
-     * @param integer $refvide
-     * @return ReferenceFiltre
-     */
     public function setRefvide($refvide)
     {
         $this->refvide = $refvide;
@@ -108,22 +40,11 @@ class ReferenceFiltre
         return $this;
     }
 
-    /**
-     * Get refvide
-     *
-     * @return integer 
-     */
     public function getRefvide()
     {
         return $this->refvide;
     }
 
-    /**
-     * Set entrepot
-     *
-     * @param string $entrepot
-     * @return ReferenceFiltre
-     */
     public function setEntrepot($entrepot)
     {
         $this->entrepot = $entrepot;
@@ -131,22 +52,11 @@ class ReferenceFiltre
         return $this;
     }
 
-    /**
-     * Get entrepot
-     *
-     * @return string 
-     */
     public function getEntrepot()
     {
         return $this->entrepot;
     }
 
-    /**
-     * Set entrepotfiltre
-     *
-     * @param integer $entrepotfiltre
-     * @return ReferenceFiltre
-     */
     public function setEntrepotfiltre($entrepotfiltre)
     {
         $this->entrepotfiltre = $entrepotfiltre;
@@ -154,68 +64,35 @@ class ReferenceFiltre
         return $this;
     }
 
-    /**
-     * Get entrepotfiltre
-     *
-     * @return integer 
-     */
     public function getEntrepotfiltre()
     {
         return $this->entrepotfiltre;
     }
 
-    /**
-     * Set categorie
-     *
-     * @param string $categorie
-     * @return ReferenceFiltre
-     */
-    public function setCategorie($categorie)
+    public function setFamille($famille)
     {
-        $this->categorie = $categorie;
+        $this->famille = $famille;
 
         return $this;
     }
 
-    /**
-     * Get categorie
-     *
-     * @return string 
-     */
-    public function getCategorie()
+    public function getFamille()
     {
-        return $this->categorie;
+        return $this->famille;
     }
 
-    /**
-     * Set categoriefiltre
-     *
-     * @param integer $categoriefiltre
-     * @return ReferenceFiltre
-     */
-    public function setCategoriefiltre($categoriefiltre)
+    public function setFamillefiltre($famillefiltre)
     {
-        $this->categoriefiltre = $categoriefiltre;
+        $this->famillefiltre = $famillefiltre;
 
         return $this;
     }
 
-    /**
-     * Get categoriefiltre
-     *
-     * @return integer 
-     */
-    public function getCategoriefiltre()
+    public function getFamillefiltre()
     {
-        return $this->categoriefiltre;
+        return $this->famillefiltre;
     }
 
-    /**
-     * Set createur
-     *
-     * @param string $createur
-     * @return ReferenceFiltre
-     */
     public function setCreateur($createur)
     {
         $this->createur = $createur;
@@ -223,22 +100,11 @@ class ReferenceFiltre
         return $this;
     }
 
-    /**
-     * Get createur
-     *
-     * @return string 
-     */
     public function getCreateur()
     {
         return $this->createur;
     }
 
-    /**
-     * Set createurfiltre
-     *
-     * @param integer $createurfiltre
-     * @return ReferenceFiltre
-     */
     public function setCreateurfiltre($createurfiltre)
     {
         $this->createurfiltre = $createurfiltre;
@@ -246,11 +112,6 @@ class ReferenceFiltre
         return $this;
     }
 
-    /**
-     * Get createurfiltre
-     *
-     * @return integer 
-     */
     public function getCreateurfiltre()
     {
         return $this->createurfiltre;

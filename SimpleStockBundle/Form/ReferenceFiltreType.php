@@ -16,12 +16,12 @@ class ReferenceFiltreType extends AbstractType
     {
         $builder
 	    // Radio boutons
-            ->add('refvide', 	'choice', array(
+           /* ->add('refvide', 	'choice', array(
 	    	'choices' => 		array('t'=> 'Utilisées ou pas', 'u' => 'Utilisées uniquement', 's' => 'Non utilisées uniquement'),
 	    	'expanded' => 		true, // radio boutons ou case à cocher
 		'multiple' =>		false,	// radio boutons
 		'label' =>		'Filtrer selon l\'utilisation des références',
-		))
+		))*/
 	    // Radio boutons 
             ->add('entrepotfiltre', 	'choice', array(
 	    	'choices' => 		array('t'=> 'Tous les entrepôts', 'u' => 'Uniquement l\'entrepôt selectionné', 's' => 'Sauf l\'entrepot selectionné'),
@@ -36,6 +36,21 @@ class ReferenceFiltreType extends AbstractType
 		'property' => 'nom',
 		'label' => 'Entrepôt',
 		'empty_value' => "-- Selectionnez un entrepot --",
+            ))
+	    // Radio boutons 
+            ->add('famillefiltre', 	'choice', array(
+	    	'choices' => 		array('t'=> 'Toutes les familles', 'u' => 'Uniquement la famille selectionnée', 's' => 'Sauf la famille selectionnée'),
+	    	'expanded' => 		true, // radio boutons ou case à cocher
+		'multiple' =>		false,	// radio boutons
+		'label' =>		'Filtrer selon la famille selectionée ci-dessous'
+		))
+            // la liste déroulante famille
+            ->add('famille', 'entity', array(
+		'required' => false,
+		'class' => 'SYM16SimpleStockBundle:Famille',
+		'property' => 'nom',
+		'label' => 'Famille',
+		'empty_value' => "-- Selectionnez une famille --",
             ))
 	    // provisoirement en commentaire car les categories n'existent pas encore
             //->add('categorie')
@@ -54,6 +69,7 @@ class ReferenceFiltreType extends AbstractType
 		'property' => 'username',
 		'label' => 'Créateur',
 		'empty_value' => "-- Selectionnez un créateur --",
+		'em' => 'stockmaster',
             ))
         ;
     }

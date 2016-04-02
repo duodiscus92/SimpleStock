@@ -135,12 +135,20 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	    // verifier la validité des valeurs du formulaire
 	    if($form->isValid()) {
 		//ajoute des critères de filtrage (vanant du formulaire)
+		// réglage filtre Entrepot
 		if ($filtre->getEntrepot() != NULL)
 		     // oui, je sais c'est pas facile à comprende ... ('ust' veux dire uniquement, sauf, tout)
 		     // si on veut filter sur un autre critere faut changer getXXX() avec XXX nom de la colonne
 		     $this->addCriteria('entrepot', array('colonne' => $filtre->getEntrepot()->getNom(),'ust' => $filtre->getEntrepotfiltre() ) );
 		else
 		     $this->addCriteria('entrepot', array('colonne' => NULL, 'ust' => $filtre->getEntrepotfiltre() ) );
+		// réglage filtre Famille
+		if ($filtre->getFamille() != NULL)
+		     // ... et ça itou
+		     $this->addCriteria('famille', array('colonne' => $filtre->getFamille()->getNom(),'ust' => $filtre->getFamillefiltre() ) );
+		else
+		     $this->addCriteria('famille', array('colonne' => NULL, 'ust' => $filtre->getFamillefiltre() ) );
+		// réglage filtre Createur
 		if ($filtre->getCreateur() != NULL)
 		     // ... et ça itou
 		     $this->addCriteria('createur', array('colonne' => $filtre->getCreateur()->getUsername(),'ust' => $filtre->getCreateurfiltre() ) );
@@ -149,7 +157,7 @@ class ReferenceController extends /*Controller*/ SimpleStockController
    		// precise le repository et ce qu'on veut lister
 		$this->aLister();
 		// change de repository
-		$this->setRepositoryPath('SYM16SimpleStockBundle:ReferenceFiltre');
+		//$this->setRepositoryPath('SYM16SimpleStockBundle:ReferenceFiltre');
 		// appel de la fonction mère
 		return parent::filtrerAction($request);
 	    }

@@ -247,8 +247,22 @@ class ArticleController extends /*Controller*/ SimpleStockController
 		   }
 		}
 		$em->flush();
-		//return $this->listerAction();
-		return $this->redirect($this->generateUrl("sym16_simple_stock_article_lister"));
+		// test si le reliquat est supérieur au seuil d'alerte
+		if($entity->getQuantite() > $entity->getSeuil())
+		   // si oui, on se contente d'afficher la liste des articles (provisoirement, ensuite prévoir un confirmation avec reliquat)
+ 		   return $this->redirect($this->generateUrl("sym16_simple_stock_article_lister"));
+		else
+		   // si non, on envoie un mail d'alerte
+ 		   return $this->redirect($this->generateUrl("sym16_simple_stock_article_lister"));
+		   /*return $this->redirect($this->generateUrl("sym16_simple_stock_mail_asb", 
+			array(
+			'reference' => $entity->getReference(),
+			'reliquat' => $entity->getQuantite(),
+			'seuil' => $getSeuil(),
+			'nature' => 'prélevement', 
+			'createur' => $entity->getCreateur(),
+			'route' => $this->generateUrl("sym16_simple_stock_article_lister") )) 
+		   );*/
 	    }
 	}
 
