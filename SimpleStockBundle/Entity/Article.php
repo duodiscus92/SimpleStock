@@ -134,6 +134,13 @@ class Article
 
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire", type="string", length=255)
+     */
+    private $commentaire;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -274,11 +281,34 @@ class Article
     /**
      * Get modification
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getModification()
     {
         return $this->modification;
+    }
+
+    /**
+     * Set commentaire
+     *
+     * @param string $commentaire
+     * @return Article
+     */
+    public function setCommentaire($commentaire)
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaire
+     *
+     * @return string
+     */
+    public function getcommentaire()
+    {
+        return $this->commentaire;
     }
 
     /**
