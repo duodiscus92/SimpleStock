@@ -14,7 +14,7 @@ use SYM16\UserBundle\Form\UserModifierMoiType;
 use SYM16\UserBundle\Form\UserChangerMdpType;
 use SYM16\UserBundle\Form\UserOubliMdpType;
 use SYM16\UserBundle\Form\UserInscriptionType;
-use  SYM16\SimpleStockBundle\Controller\OubliMdp;
+use  SYM16\SimpleStockBundle\Entity\OubliMdp;
 /**
  *
  * Classe Utilisateur

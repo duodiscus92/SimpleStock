@@ -39,8 +39,8 @@ class Entrepot extends EntityTools
     /**
     * pour la relation bidir
     *
-    * @ORM\OneToMany(targetEntity="SYM16\SimpleStockBundle\Entity\Emplacement", mappedBy="entrepot")
     */
+    // @ORM\OneToMany(targetEntity="SYM16\SimpleStockBundle\Entity\Emplacement", mappedBy="entrepot")
     private $emplacements;
 
     public function addEmplacement(\SYM16\SimpleStockBundle\Entity\Emplacement $emplacement)

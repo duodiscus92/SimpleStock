@@ -1,14 +1,11 @@
 <?php
-namespace SYM16\SimpleStockBundle\Controller;
+namespace SYM16\SimpleStockBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
+/*
  * ArticlePrelevement
- *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Controller")
  */
 class ArticlePrelevement{
 
@@ -21,29 +18,14 @@ class ArticlePrelevement{
 	$this->maxprelevement = $max;
     }
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="quantite", type="smallint")
-     */
+    // quantitié à prélever
     private $quantite;
 
-    /**
-     * Get quantite
-     *
-     * @return integer
-     */
     public function getQuantite()
     {
 	return $this->quantite;
     }
 
-    /**
-     * Set quantite
-     *
-     * @param integer $quantite
-     * @return ArticlePrelevement
-     */
     public function setQuantite($quantite)
     {
 	$this->quantite = $quantite;
@@ -51,7 +33,6 @@ class ArticlePrelevement{
     }
 
     /**
-     * 
      *
      * @Assert\True(message="La quantité prélevée doit être positive mais inféieure ou égale à max")
      */

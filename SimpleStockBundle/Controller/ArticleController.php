@@ -13,12 +13,9 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 use SYM16\SimpleStockBundle\Entity\Article;
 use SYM16\SimpleStockBundle\Form\ArticleType;
-//use SYM16\SimpleStockBundle\Entity\ArticleFiltre;
-//use SYM16\SimpleStockBundle\Entity\Repository\ArticleFiltreRepository;
 use SYM16\SimpleStockBundle\Form\ArticleModifierType;
 use SYM16\SimpleStockBundle\Form\ArticleFiltreType;
-use SYM16\SimpleStockBundle\Controller\ArticlePrelevement;
-//use SYM16\SimpleStockBundle\Entity\Repository\ArticleRepository;
+use SYM16\SimpleStockBundle\Entity\ArticlePrelevement;
 
 /**
  *

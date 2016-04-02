@@ -38,8 +38,8 @@ class Famille extends EntityTools
     /**
     * pour la relation bidir
     *
-    * @ORM\OneToMany(targetEntity="SYM16\SimpleStockBundle\Entity\Composant", mappedBy="famille")
     */
+    // @ORM\OneToMany(targetEntity="SYM16\SimpleStockBundle\Entity\Composant", mappedBy="famille")
     private $composants;
 
     public function addComposant(\SYM16\SimpleStockBundle\Entity\Composant $composant)

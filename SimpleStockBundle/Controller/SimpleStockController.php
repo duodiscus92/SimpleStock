@@ -158,12 +158,12 @@ class SimpleStockController extends Controller
     //liste une table
     public function listerAction()
     {
-	$session = $this->get('session');
+	/*$session = $this->get('session');
 	$id = $session->get('stockuserid');
 	if($session->get('flagoubli') == 1)
 	    return $this->redirect($this->generateUrl("sym16_simple_stock_utilisateur_modifiermdp",
                array('valeur' => $id, 'exposant' => $id))
-	    );
+	    );*/
 	// on récupère l'entity manager
 	$em = $this->getDoctrine()->getManager($this->emname);
 	// on récupère tout le contenu de la table

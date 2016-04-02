@@ -1,5 +1,5 @@
 <?php
-namespace SYM16\SimpleStockBundle\Controller;
+namespace SYM16\SimpleStockBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;

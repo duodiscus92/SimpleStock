@@ -35,10 +35,9 @@ class Emplacement extends EntityTools
     }
 
     /**
-    * @ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Entrepot")
+    * @ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Entrepot", inversedBy="emplacement")
     * @ORM\JoinColumn(nullable=false)
     */
-    //@ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Entrepot", inversedBy="emplacement")
     private $entrepot;
 
     public function getEntrepot()

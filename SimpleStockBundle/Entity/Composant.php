@@ -35,9 +35,10 @@ class Composant extends EntityTools
     }
 
     /**
-    * @ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Famille", inversedBy="composant")
+    * @ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Famille")
     * @ORM\JoinColumn(nullable=false)
     */
+    // @ORM\ManyToOne(targetEntity="SYM16\SimpleStockBundle\Entity\Famille", inversedBy="composant")
     private $famille;
 
     public function getFamille()
