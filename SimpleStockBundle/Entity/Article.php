@@ -23,6 +23,7 @@ class Article
 	$this->tva = 20.00;
 	$this->reference = NULL;
 	$this->commentaire = 'NEANT';
+	$this->prixht = 1;
     }
 
     /**
