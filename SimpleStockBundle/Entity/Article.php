@@ -24,6 +24,7 @@ class Article
 	$this->reference = NULL;
 	$this->commentaire = 'NEANT';
 	$this->prixht = 1;
+	$this->quantite = 1;
     }
 
     /**
