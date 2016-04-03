@@ -40,7 +40,7 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	$this
 	    ->addColname('Réf',		'RefRef')
 	    ->addColname('Nom',		'NomRef')
-	    ->addColname('Commentaire',	'Commentaire')
+	    ->addColname('N° de série',	'Commentaire')
 	    ->addColname('Qté',		'Quantite')
 	    //->addColname('PrixHT',	'Prixht')
 	    //->addColname('TVA',		'Tva')
@@ -69,7 +69,7 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	$this
 	    ->addProperty('Référence',			array('RefRef',		"%s"))
 	    ->addProperty('Libellé',			array('NomRef', 	"%s"))
-	    ->addProperty('Commentaire',		array('Commentaire', 	"%s"))
+	    ->addProperty('N° de série',		array('Commentaire', 	"%s"))
 	    ->addProperty('Quantité',			array('Quantite', 	"%5d"))
 	    ->addProperty('Unité de vente',		array('Udv',	 	"%5d"))
 	    ->addProperty('Prix hors taxe',		array('Prixht', 	"%5.2f"))

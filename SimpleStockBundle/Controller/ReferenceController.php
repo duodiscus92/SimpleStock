@@ -154,6 +154,12 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 		     $this->addCriteria('createur', array('colonne' => $filtre->getCreateur()->getUsername(),'ust' => $filtre->getCreateurfiltre() ) );
 		else
 		     $this->addCriteria('createur', array('colonne' => NULL, 'ust' => $filtre->getCreateurfiltre() ) );
+		// réglage filtre recherche d'une chaine
+		if ($filtre->getNom() != NULL)
+		     // ... et ça itou
+		     $this->addCriteria('ref', array('colonne' => $filtre->getNom(),'ust' => $filtre->getNomfiltre() ) );
+		else
+		     $this->addCriteria('ref', array('colonne' => NULL, 'ust' => $filtre->getNomfiltre() ) );
    		// precise le repository et ce qu'on veut lister
 		$this->aLister();
 		// change de repository

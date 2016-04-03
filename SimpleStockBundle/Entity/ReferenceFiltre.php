@@ -12,6 +12,7 @@ class ReferenceFiltre
 
     public function __construct()
     {
+	$this->nomfiltre =
 	$this->entrepotfiltre =
 	$this->famillefiltre =
 	$this->createurfiltre =
@@ -21,6 +22,8 @@ class ReferenceFiltre
 
     private $id;
     private $refvide;
+    private $nom;
+    private $nomfiltre;
     private $entrepot;
     private $entrepotfiltre;
     private $famille;
@@ -43,6 +46,30 @@ class ReferenceFiltre
     public function getRefvide()
     {
         return $this->refvide;
+    }
+
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    public function setNomfiltre($nomfiltre)
+    {
+        $this->nomfiltre = $nomfiltre;
+
+        return $this;
+    }
+
+    public function getNomfiltre()
+    {
+        return $this->nomfiltre;
     }
 
     public function setEntrepot($entrepot)

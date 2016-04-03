@@ -16,12 +16,13 @@ class ReferenceFiltreType extends AbstractType
     {
         $builder
 	    // Radio boutons
-           /* ->add('refvide', 	'choice', array(
-	    	'choices' => 		array('t'=> 'Utilisées ou pas', 'u' => 'Utilisées uniquement', 's' => 'Non utilisées uniquement'),
+            ->add('nomfiltre', 	'choice', array(
+	    	'choices' => 		array('t'=> 'Tous', 'u' => 'Contenant la chaîne', 's' => 'Ne contenant pas la chaîne'),
 	    	'expanded' => 		true, // radio boutons ou case à cocher
 		'multiple' =>		false,	// radio boutons
-		'label' =>		'Filtrer selon l\'utilisation des références',
-		))*/
+		'label' =>		'Filtrer selon une chaine de caractères (même partielle)',
+		))
+	   ->add('nom', 	'text', array('required' => false, 'label' => 'Chaîne à  rechercher') )
 	    // Radio boutons 
             ->add('entrepotfiltre', 	'choice', array(
 	    	'choices' => 		array('t'=> 'Tous les entrepôts', 'u' => 'Uniquement l\'entrepôt selectionné', 's' => 'Sauf l\'entrepot selectionné'),

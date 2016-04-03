@@ -39,10 +39,19 @@ class ReferenceRepository extends EntityRepository
 		$querybuilder->leftJoin('r.entrepot', 'e');
 		$querybuilder->leftjoin('r.famille', 'f');
 		// traitement du uniquement
+		if( ($ef = $filtre['u']['ref']) == NULL)
+		    $querybuilder->where('r.ref IS NOT NULL');
+		else {
+		    $querybuilder->where('r.ref LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('r.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('e.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('f.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		}
+
 		if( ($ef = $filtre['u']['entrepot']) == NULL)
-		    $querybuilder->where('e.nom IS NOT NULL');
+		    $querybuilder->andwhere('e.nom IS NOT NULL');
 		else 
-		    $querybuilder->where('e.nom = :inclureEntrepot')->setParameter('inclureEntrepot', $ef);
+		    $querybuilder->andwhere('e.nom = :inclureEntrepot')->setParameter('inclureEntrepot', $ef);
 
 		if( ($ef = $filtre['u']['famille']) == NULL)
 		    $querybuilder->andWhere('f.nom IS NOT NULL');
@@ -55,6 +64,14 @@ class ReferenceRepository extends EntityRepository
 		    $querybuilder->andWhere('r.createur = :inclureCreateur')->setParameter('inclureCreateur', $ef);
 
 		//traitement du sauf
+		if( ($ef = $filtre['s']['ref']) == NULL)
+		    $querybuilder->andwhere('r.ref IS NOT NULL');
+		else { 
+		    $querybuilder->andwhere('r.ref NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('r.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('e.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('f.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		}
 		if( ($ef = $filtre['s']['entrepot']) == NULL)
 		    $querybuilder->andWhere('e.nom IS NOT NULL');
 		else 
@@ -85,10 +102,19 @@ class ReferenceRepository extends EntityRepository
 		$querybuilder->leftJoin('r.entrepot', 'e');
 		$querybuilder->leftjoin('r.famille', 'f');
 		// traitement du uniquement
+		if( ($ef = $filtre['u']['ref']) == NULL)
+		    $querybuilder->where('r.ref IS NOT NULL');
+		else {
+		    $querybuilder->where('r.ref LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('r.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('e.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('f.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		}
+
 		if( ($ef = $filtre['u']['entrepot']) == NULL)
-		    $querybuilder->where('e.nom IS NOT NULL');
+		    $querybuilder->andwhere('e.nom IS NOT NULL');
 		else 
-		    $querybuilder->where('e.nom = :inclureEntrepot')->setParameter('inclureEntrepot', $ef);
+		    $querybuilder->andwhere('e.nom = :inclureEntrepot')->setParameter('inclureEntrepot', $ef);
 
 		if( ($ef = $filtre['u']['famille']) == NULL)
 		    $querybuilder->andWhere('f.nom IS NOT NULL');
@@ -101,6 +127,15 @@ class ReferenceRepository extends EntityRepository
 		    $querybuilder->andWhere('r.createur = :inclureCreateur')->setParameter('inclureCreateur', $ef);
 
 		//traitement du sauf
+		if( ($ef = $filtre['s']['ref']) == NULL)
+		    $querybuilder->andwhere('r.ref IS NOT NULL');
+		else {
+		    $querybuilder->andwhere('r.ref NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('r.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('e.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('f.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		}
+
 		if( ($ef = $filtre['s']['entrepot']) == NULL)
 		    $querybuilder->andWhere('e.nom IS NOT NULL');
 		else 
