@@ -168,6 +168,57 @@ class MailController extends Controller
     }
 
     /**
+     * envoyer un mail en cas d'alerte stock inférieur ou égal à seuil 
+     *
+     * @Route("/asb/{reference}/{reliquat}/{seuil}/{createur}/{route}", name="sym16_simple_stock_mail_asb")
+     */
+    public function asbAction($reference, $reliquat, $seuil, $createur, $route)
+    {
+	// récuprération du service session
+	$session = $this->get('session');
+	// récupération des variables de session
+	// mail de l'emmetteur
+	$this->sendermail = $session->get('sendermail');
+	// mail de notification
+	$this->notificationmail = $session->get('notificationmail');
+	// nom du site
+	$this->sitename = $session->get('sitename');
+	// nom d'usage du stock
+	$stockusage = $session->get('stockusage');
+	// recupération de l'entity manager
+	$em = $this->getDoctrine()->getManager('stockmaster');
+	// récupération de tous les utilisateurs
+	$users = $em->getRepository("SYM16UserBundle:User")->findAll();
+	//boucle sur les utilisateurs
+	foreach ($users as $user) {
+	// message aux utilisateurs
+	    //on vérifie s'ils accetent d'être notitfiés
+	    if($user->getAsb() == 1){
+        	$message = \Swift_Message::newInstance()
+           	    ->setSubject("[SimpleStock-".$this->sitename."] Alerte seuil bas !!!!")
+           	    ->setFrom($this->sendermail)
+           	    ->setTo($user->getEmail())
+           	    ->setBody(
+                 	$this->renderView(
+                    	    'SYM16SimpleStockBundle:Mails:asb.html.twig',
+                     	    array('site' => $this->sitename,
+				  'nom' => $user->getNom(),
+				  'prenom' => $user->getPrenom(),
+			    	  'stock' => $stockusage,
+				  'seuil' => $seuil,
+				  'reliquat' => $reliquat,
+				  'reference' => $reference,
+				  'createur' => $session->get('stockuser'))
+                	)
+           	    )
+        	;
+        	$this->get('mailer')->send($message);
+	    }
+	}
+        return $this->redirect($this->generateUrl($route));
+    }
+
+    /**
      * envoyer un mail de confirmation à un nouvel inscrit
      *
      * @Route("mdpenvoi/{id}", name="sym16_simple_stock_mail_mdpenvoi")

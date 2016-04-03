@@ -1,20 +1,19 @@
 {# app/Resources/views/Mails/asb.html.twig #}
 Chèr(e) {{prenom}} {{nom}}
 
-Site : {{site}}
-Stock : {{stock}}
+Site : {{site}}.
+Stock : {{stock}}.
+Auteur de l'opération : {{createur}}.
+Nature de l'opération : prélèvement dans le stock.
+Référence prélevée : {{ reference}}
+Seuil d'alerte : {{ seuil}}.
 
+Il reste dans le stock : {{reliquat}} exemplaire(s) de la référence "{{reference}}". 
 
-Alerte !! Suite à l'opération détaillée ci-desssous
-le reliquat pour la référence {{ref}} s'elève à : {{quantite}}
+ALERTE ! LE RELIQUAT EST INFERIEUR AU SEUIL !
 
-Pensez à renouveller votre stock.
+Pensez à approvisionner la référence "{{reference}}" dans votre stock.
 
-Détails de l'opération :
-Nature de l'opération : {{nature}}
-Item : {{item}}
-Objet de l'opération ({{nature}}) : {{objet}}
-Auteur de l'opération : {{createur}}
 
 A bientôt.
 

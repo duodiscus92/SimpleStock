@@ -183,7 +183,7 @@ class ArticleController extends /*Controller*/ SimpleStockController
 
     /**
      *
-     * modifier un article dans l'entité (avec formulaire externalisé)
+     * prélever  une article dans le stocl
      *
      * @Route("/prel", name="sym16_simple_stock_article_prelever")
      * @Template("SYM16SimpleStockBundle:Forms:simpleform.html.twig")
@@ -246,22 +246,22 @@ class ArticleController extends /*Controller*/ SimpleStockController
 		   }
 		}
 		$em->flush();
-		// test si le reliquat est supérieur au seuil d'alerte
-		if($entity->getQuantite() > $entity->getSeuil())
+		// test si le reliquat est supérieur ou égal au seuil d'alerte
+		if($entity->getQuantite() >= $entity->getSeuil())
 		   // si oui, on se contente d'afficher la liste des articles (provisoirement, ensuite prévoir un confirmation avec reliquat)
  		   return $this->redirect($this->generateUrl("sym16_simple_stock_article_lister"));
 		else
 		   // si non, on envoie un mail d'alerte
- 		   return $this->redirect($this->generateUrl("sym16_simple_stock_article_lister"));
-		   /*return $this->redirect($this->generateUrl("sym16_simple_stock_mail_asb", 
+ 		   //return $this->redirect($this->generateUrl("sym16_simple_stock_article_lister"));
+		   return $this->redirect($this->generateUrl("sym16_simple_stock_mail_asb", 
 			array(
-			'reference' => $entity->getReference(),
+			'reference' => $ref,
 			'reliquat' => $entity->getQuantite(),
-			'seuil' => $getSeuil(),
-			'nature' => 'prélevement', 
+			'seuil' => $entity->getSeuil(),
 			'createur' => $entity->getCreateur(),
-			'route' => $this->generateUrl("sym16_simple_stock_article_lister") )) 
-		   );*/
+			//'route' => $this->generateUrl("sym16_simple_stock_article_lister") )) 
+			'route' => "sym16_simple_stock_article_lister") ) 
+		   );
 	    }
 	}
 

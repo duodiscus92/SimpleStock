@@ -22,6 +22,7 @@ class Article
 	//$this->modification = $this->creation;
 	$this->tva = 20.00;
 	$this->reference = NULL;
+	$this->commentaire = 'NEANT';
     }
 
     /**
