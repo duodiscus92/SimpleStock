@@ -25,6 +25,7 @@ class Article
 	$this->commentaire = 'NEANT';
 	$this->prixht = 1;
 	$this->quantite = 1;
+	$this->dateacquisition = new \Datetime();
     }
 
     /**
@@ -142,6 +143,13 @@ class Article
      * @ORM\Column(name="commentaire", type="string", length=255)
      */
     private $commentaire;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateacquisition", type="datetime")
+     */
+    private $dateacquisition;
 
     /**
      * Get id
@@ -312,6 +320,29 @@ class Article
     public function getcommentaire()
     {
         return $this->commentaire;
+    }
+
+    /**
+     * Set dateacquisition
+     *
+     * @param \DateTime $dateacquisition
+     * @return Article
+     */
+    public function setDateacquisition($dateacquisition)
+    {
+        $this->dateacquisition = $dateacquisition;
+
+        return $this;
+    }
+
+    /**
+     * Get dateacquisition
+     *
+     * @return \DateTime
+     */
+    public function getDateacquisition()
+    {
+        return $this->dateacquisition;
     }
 
     /**

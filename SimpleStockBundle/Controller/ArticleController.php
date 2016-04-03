@@ -74,6 +74,7 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	    ->addProperty('Unité de vente',		array('Udv',	 	"%5d"))
 	    ->addProperty('Prix hors taxe',		array('Prixht', 	"%5.2f"))
 	    ->addProperty('TVA',			array('Tva',		"%5.2f"))
+	    ->addProperty('Date d\'acquisition',	array('Dateacquisition',	NULL))
 	    ->addProperty("Appartient à la famille",	array('NomFamille',	"%s"))
 	    ->addProperty("Appartient au composant dans cette famille",	array('NomComposant',	"%s"))
 	    ->addProperty("Stocké dans l'entrepot",	array('NomEntrepot',	"%s"))

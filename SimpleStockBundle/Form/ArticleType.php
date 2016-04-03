@@ -44,6 +44,7 @@ class ArticleType extends AbstractType
             ->add('prixht', 		'number', array('precision' => '2', 'label' => 'Prix HT'))
             ->add('tva', 		'number', array('precision' => '2', 'label' => 'TVA'))
 	    ->add('quantite', 		'integer', array('label' => 'Quantité'))
+	    ->add('dateacquisition', 	'datetime', array('label' => 'Date d\'acquisition'))
 	    //->add('createur',		'text', array('label' => 'Créateur'))
 	    //->add('creation',		'datetime', array('label' => 'Création'))
 	    //->add('modification', 	'datetime')
