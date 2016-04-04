@@ -49,6 +49,7 @@
 			    {% if is_granted('ROLE_TEMPORAIRE') %}
             		    <li class="dropdown-header">Articles</li>
             		    <li><a href="{{ path('sym16_simple_stock_article_lister') }}">Voir les articles</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_article_filtrer') }}">Voir les articles filtrés</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_article_ajouter') }}">Déposer un article dans le stock</a></li>
             		    <li><a href="#">Prélever des articles dans le stock (en construction)</a></li>
             		    <li class="divider"></li>
