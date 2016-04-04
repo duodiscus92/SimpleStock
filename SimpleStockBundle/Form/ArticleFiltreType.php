@@ -25,7 +25,7 @@ class ArticleFiltreType extends AbstractType
 	   ->add('recherche', 	'text', array('required' => false, 'label' => 'Chaîne à  rechercher') )
 	    // Radio boutons 
             ->add('referencefiltre', 	'choice', array(
-	    	'choices' => 		array('t'=> 'Toutes les références', 'u' => 'Uniquement la référence selectionnée', 's' => 'Sauf le référence selectionnée'),
+	    	'choices' => 		array('t'=> 'Toutes les références', 'u' => 'Uniquement la référence selectionnée', 's' => 'Sauf la référence selectionnée'),
 	    	'expanded' => 		true, // radio boutons ou case à cocher
 		'multiple' =>		false,	// radio boutons
 		'label' =>		'Filtrer selon la référence selectionée ci-dessous'
