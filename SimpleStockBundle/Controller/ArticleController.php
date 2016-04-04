@@ -48,7 +48,7 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	    //->addColname('Créateur',	'Createur')
 	    //->addColname('Famille',	'Famille')
 	    ->addColname('Entrepot',	'NomEntrepot') 
-	    ->addColname('Creation',	'Creation') 
+	    ->addColname('Famille',	'NomFamille') 
 	    //->addColname('Emplacement', 'NomEmplacement')
 	;
 
