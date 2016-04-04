@@ -59,4 +59,138 @@ class ArticleRepository extends EntityRepository
 
 	}
 
+
+	// filter selon une liste de critères
+	public function findByFilter($filtre)
+	{
+		// on crée un query builder
+		$querybuilder = $this->_em->CreateQueryBuilder();
+		$querybuilder->select('a')->from('SYM16SimpleStockBundle:Article', 'a');
+		$querybuilder->leftJoin('a.reference', 'r');
+		$querybuilder->leftJoin('r.entrepot', 'e');
+		$querybuilder->leftJoin('r.famille', 'f');
+		// traitement du uniquement
+		if( ($ef = $filtre['u']['commentaire']) == NULL)
+		    $querybuilder->where('a.commentaire IS NOT NULL');
+		else {
+		    $querybuilder->where('a.commentaire LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('r.ref LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('r.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('e.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('f.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		}
+
+		if( ($ef = $filtre['u']['reference']) == NULL)
+		    $querybuilder->andwhere('r.ref IS NOT NULL');
+		else 
+		    $querybuilder->andwhere('r.ref = :inclureReference')->setParameter('inclureReference', $ef);
+
+		if( ($ef = $filtre['u']['nom']) == NULL)
+		    $querybuilder->andWhere('r.nom IS NOT NULL');
+		else 
+		    $querybuilder->andWhere('r.nom = :inclureNom')->setParameter('inclureNom', $ef);
+
+		if( ($ef = $filtre['u']['createur']) == NULL)
+		    $querybuilder->andWhere('a.createur IS NOT NULL');
+		else
+		    $querybuilder->andWhere('a.createur = :inclureCreateur')->setParameter('inclureCreateur', $ef);
+
+		//traitement du sauf
+		if( ($ef = $filtre['s']['commentaire']) == NULL)
+		    $querybuilder->andwhere('a.commentaire IS NOT NULL');
+		else {
+		    $querybuilder->andwhere('a.commentaire NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('r.ref NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('r.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('e.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('f.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		}
+
+		if( ($ef = $filtre['s']['reference']) == NULL)
+		    $querybuilder->andwhere('r.ref IS NOT NULL');
+		else 
+		    $querybuilder->andwhere('r.ref <> :inclureReference')->setParameter('inclureReference', $ef);
+
+		if( ($ef = $filtre['s']['nom']) == NULL)
+		    $querybuilder->andWhere('r.nom IS NOT NULL');
+		else 
+		    $querybuilder->andWhere('r.nom <> :inclureNom')->setParameter('inclureNom', $ef);
+
+		if( ($ef = $filtre['s']['createur']) == NULL)
+		    $querybuilder->andWhere('a.createur IS NOT NULL');
+		else
+		    $querybuilder->andWhere('a.createur <> :inclureCreateur')->setParameter('inclureCreateur', $ef);
+
+		// on récupère la query à partir du querybuilder
+		$query = $querybuilder->getQuery();
+		// on l'exécute et on renvoie sa valeur
+		return $query->getResult();
+	}
+
+	// compter le nb d'article selon un filtre
+	public function countByFilter($filtre)
+	{
+		// on crée un query builder
+		$querybuilder = $this->_em->CreateQueryBuilder();
+		$querybuilder->select('COUNT(a)')->from('SYM16SimpleStockBundle:Article', 'a');
+		$querybuilder->leftJoin('a.reference', 'r');
+		$querybuilder->leftJoin('r.entrepot', 'e');
+		$querybuilder->leftJoin('r.famille', 'f');
+		// traitement du uniquement
+		if( ($ef = $filtre['u']['commentaire']) == NULL)
+		    $querybuilder->where('a.commentaire IS NOT NULL');
+		else {
+		    $querybuilder->where('a.commentaire LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('r.ref LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('r.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('e.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->orwhere('f.nom LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		}
+
+		if( ($ef = $filtre['u']['reference']) == NULL)
+		    $querybuilder->andwhere('r.ref IS NOT NULL');
+		else 
+		    $querybuilder->andwhere('r.ref = :inclureReference')->setParameter('inclureReference', $ef);
+
+		if( ($ef = $filtre['u']['nom']) == NULL)
+		    $querybuilder->andWhere('r.nom IS NOT NULL');
+		else 
+		    $querybuilder->andWhere('r.nom = :inclureNom')->setParameter('inclureNom', $ef);
+
+		if( ($ef = $filtre['u']['createur']) == NULL)
+		    $querybuilder->andWhere('a.createur IS NOT NULL');
+		else
+		    $querybuilder->andWhere('a.createur = :inclureCreateur')->setParameter('inclureCreateur', $ef);
+
+		//traitement du sauf
+		if( ($ef = $filtre['s']['commentaire']) == NULL)
+		    $querybuilder->andwhere('a.commentaire IS NOT NULL');
+		else {
+		    $querybuilder->andwhere('a.commentaire NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('r.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('r.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('e.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		    $querybuilder->andwhere('f.nom NOT LIKE :inclureNom')->setParameter('inclureNom', '%'.$ef.'%');
+		}
+
+		if( ($ef = $filtre['s']['reference']) == NULL)
+		    $querybuilder->andwhere('r.ref IS NOT NULL');
+		else 
+		    $querybuilder->andwhere('r.ref <> :inclureReference')->setParameter('inclureReference', $ef);
+
+		if( ($ef = $filtre['s']['nom']) == NULL)
+		    $querybuilder->andWhere('r.nom IS NOT NULL');
+		else 
+		    $querybuilder->andWhere('r.nom <> :inclureNom')->setParameter('inclureNom', $ef);
+
+		if( ($ef = $filtre['s']['createur']) == NULL)
+		    $querybuilder->andWhere('a.createur IS NOT NULL');
+		else
+		    $querybuilder->andWhere('a.createur <> :inclureCreateur')->setParameter('inclureCreateur', $ef);
+
+		// on récupère la query à partir du querybuilder
+		$query = $querybuilder->getQuery();
+		// on l'exécute et on renvoie sa valeur
+		return $query->getSingleScalarResult();
+	}
 }

@@ -15,6 +15,7 @@ use SYM16\SimpleStockBundle\Entity\Article;
 use SYM16\SimpleStockBundle\Form\ArticleType;
 use SYM16\SimpleStockBundle\Form\ArticleModifierType;
 use SYM16\SimpleStockBundle\Form\ArticleFiltreType;
+use SYM16\SimpleStockBundle\Entity\ArticleFiltre;
 use SYM16\SimpleStockBundle\Entity\ArticlePrelevement;
 
 /**
@@ -100,6 +101,67 @@ class ArticleController extends /*Controller*/ SimpleStockController
 	 $this->aLister();
 	// appel de la fonction mère
 	return parent::listerAction();
+    }
+
+    /**
+     * filtrer un tableau en faisant appel à un service
+     *
+     * @Route("/filter", name="sym16_simple_stock_article_filtrer")
+     */
+    public function filtrerAction(Request $request)
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// creation d'une instance de la classe de filtrage
+	$filtre = new ArticleFiltre();
+	// creation du formulaire de saisie des parapètres du filtre
+	$form = $this->createForm(new ArticleFiltreType, $filtre);
+	// test de la méthode
+	if($request->getMethod() == 'POST'){
+	    // hydrater les variables ReferenceFiltre
+	    $form->bind($request);
+	    // verifier la validité des valeurs du formulaire
+	    if($form->isValid()) {
+		//ajoute des critères de filtrage (vanant du formulaire)
+		// réglage filtre Reference
+		if ($filtre->getReference() != NULL)
+		     // oui, je sais c'est pas facile à comprende ... ('ust' veux dire uniquement, sauf, tout)
+		     // si on veut filter sur un autre critere faut changer getXXX() avec XXX nom de la colonne
+		     $this->addCriteria('reference', array('colonne' => $filtre->getReference()->getRef(),'ust' => $filtre->getReferencefiltre() ) );
+		else
+		     $this->addCriteria('reference', array('colonne' => NULL, 'ust' => $filtre->getReferencefiltre() ) );
+		// réglage filtre Nom de la référence
+		if ($filtre->getNom() != NULL)
+		     // ... et ça itou
+		     $this->addCriteria('nom', array('colonne' => $filtre->getNom()->getNom(),'ust' => $filtre->getNomfiltre() ) );
+		else
+		     $this->addCriteria('nom', array('colonne' => NULL, 'ust' => $filtre->getNomfiltre() ) );
+		// réglage filtre Createur de l'Article
+		if ($filtre->getCreateur() != NULL)
+		     // ... et ça itou
+		     $this->addCriteria('createur', array('colonne' => $filtre->getCreateur()->getUsername(),'ust' => $filtre->getCreateurfiltre() ) );
+		else
+		     $this->addCriteria('createur', array('colonne' => NULL, 'ust' => $filtre->getCreateurfiltre() ) );
+		// réglage filtre recherche d'une chaine
+		if ($filtre->getRecherche() != NULL)
+		     // ... et ça itou
+		     $this->addCriteria('commentaire', array('colonne' => $filtre->getRecherche(),'ust' => $filtre->getRecherchefiltre() ) );
+		else
+		     $this->addCriteria('commentaire', array('colonne' => NULL, 'ust' => $filtre->getRecherchefiltre() ) );
+   		// precise le repository et ce qu'on veut lister
+		$this->aLister();
+		// change de repository
+		// appel de la fonction mère
+		return parent::filtrerAction($request);
+	    }
+	}
+	//arrivé ici par GET : afficher le formulaire et le passer à la vue
+    	    return $this->render(
+		'SYM16SimpleStockBundle:Forms:simpleform.html.twig', 
+		array('titre' => "Filtre d'affichage des articles", 'form' => $form->CreateView() )
+	    );
     }
 
     /**
