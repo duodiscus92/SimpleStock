@@ -14,7 +14,8 @@ class Lister
 	else if(is_bool($var))
 	    return ($var == 0 ? 'false' : 'true');
 	else if(is_object($var))
-	    return $var->format('Y-m-d H:i:s');
+	    //return $var->format('Y-m-d H:i:s');
+	    return $var->format('Y-m-d');
 	else if(is_null($var))
 	    return 'null';
 	else

@@ -40,7 +40,7 @@ class ArticleType extends AbstractType
 		'label' => 'Référence',
 		'empty_value' => "-- Selectionnez une référence --",
             ))
-	    ->add('commentaire',		'text', array('required' => false, 'label' => 'Commentaire'))
+	    ->add('commentaire',		'text', array('required' => false, 'label' => 'N° de série ou commentaire'))
             ->add('prixht', 		'number', array('precision' => '2', 'label' => 'Prix HT'))
             ->add('tva', 		'number', array('precision' => '2', 'label' => 'TVA'))
 	    ->add('quantite', 		'integer', array('label' => 'Quantité'))

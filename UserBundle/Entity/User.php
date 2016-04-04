@@ -117,6 +117,7 @@ class User implements UserInterface
 	//$this->creation = new \Datetime();
 	//$this->modification = $this->creation;
 	$this->salt='';
+	$this->flagoubli = 0;
     }
 
     /**
