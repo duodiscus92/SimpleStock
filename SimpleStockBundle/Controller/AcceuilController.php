@@ -53,7 +53,8 @@ class AcceuilController extends Controller
 
 	// récupération du nom interne du stock par défaut (qui devient le stock courant)
 	// codés en dur dans .../Symfony/app/config/config.yml et .../Symfony/app/config/paramters.yml
-	$stockname = $this->container->getParameter('currentstockname');
+	if (($stockname = $session->get('stockname')) == NULL)
+	    $stockname = $this->container->getParameter('currentstockname');
 
 	// récupération du nom d'usage du stock courant
 	$stockusage = $repository->findOneByNom($stockname)->getUsage();
