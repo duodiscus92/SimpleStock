@@ -1,0 +1,159 @@
+{# app/Resources/views/Usermanual/usersmanual.html.twig #}
+{# template affichier la manuel d'utilisation #}
+{% extends 'SYM16SimpleStockBundle::layout.html.twig' %}
+{% block BLOCA %}
+{% endblock %}
+{% block MENU0 %}
+<ul class="nav nav-tabs">
+  <li role="presentation"><a href="{{path('sym16_simple_stock_homepage',{'name':stockuser}) }}">Retour à l'accueil</a></li>
+  <li role="presentation" class="active"><a href="#introduction">Introduction</a></li>
+  <li role="presentation"><a href="#statuts">Statuts</a></li>
+  <li role="presentation"><a href="#premiereconnexion">Première connection</a></li>
+  <li role="presentation"><a href="#menus">Menus</a></li>
+  <li role="presentation"><a href="#listes">Listes</a></li>
+  <li role="presentation"><a href="#filtres">Filtres</a></li>
+  <li role="presentation"><a href="#depot">Dépôt</a></li>
+  <li role="presentation"><a href="#retrait">Retrait</a></li>
+  <li role="presentation"><a href="#ref">Référence</a></li>
+  <li role="presentation"><a href="#famille">Famille et Entrepot</a></li>
+</ul>
+
+<div  style="overflow:auto;width:200; height:200px">
+	<div id="introduction">
+                <h3>Introduction</h3>
+		<p>
+		Le système peut être utilisé aussi bien pour enregistrer des objets comme un planeur, un avion
+		 des vis ou des écrous des outils, des ressorts, des fournitures de bureau, des produits d'entretien etc.
+		</p>
+		C'esr un système multi-utilisateurs basé sur une architecture client-serveur, permettant d'être utilisé avec
+		un simple navigateur. De n'importe quel point de la planète plusieurs utilisateurs peuvent l'utiliser simultanément
+		à condition de posséder un login, un mot de passe et les droits d'accès.
+		<p>
+		Pour la plupart des opérations, il faut faire des sélections dans des listes  donc c'est simple et ça limite les erreurs de frappe.
+		Exemple : vous voulez prélever dans le stock une référence à 5 exemplaires : le système vous propose dans une liste les articles stockés
+		et si vous cliquez sur l'icône de prélèvement, il vous propose un menu pour prélever la quantité désirée : vous ne pouvez pas prélever plus que
+		le disponible.
+		</p>
+	</div>
+	<div id="statuts">
+		<h3>Statuts</h3>
+		Chaque utilisateur possèe un statut. A chaque statut correspondent des droits d'accès.
+		<ul>
+		<li>VISITEUR : c'est le statut de toute internaute qui arrive sur la page d'acceuil mais ne s'est pas encore identifié. Il n'offre aucun droit d'accès</li>
+		<li>TEMPORAIRE : c'est le statut qui est attribué à tout nouvel utilisateur avant que le SUPER UTILISATEUR lui assigne un autre statut : ce statut n'offre aucun droit sauf celui de changer son mot de passe</li>
+		<li>EXAMINATEUR : avec ce statut, un utilisateur  peut que examiner toutes les rubriques sans pouvoir ni en ajouter, ni en supprimer, ni les modifier</li>
+		<li>GESTIONNAIRE : en plus des droits de l'examinateur les gestionnaire, il  peut créer/supprimer/modifier des références et déposer ou retirer des articles dans le stock</li>
+		<li>ADMINISTRATEUR : en plus des droits de l'examinateur l'administrateur, il peut créer/supprimer/modifier les familles, des composants, des entrepots et des emplacements</li>
+		<li>SUPER UTILISATEUR : en plus des droits de l'administrateur, il peut changer les statut des autres utilisateurs</li>
+		</ul>
+	</div>
+	<div id="premiereconnexion">
+	        <h3>Première connexion</h3>
+		<p> Il faut d'abord s'inscrire pour être enregistré dans le système : menu Connexion->S'inscrire et ensuite il faut 
+		remplir les champs d'un formulaire:</p>
+		<ul>
+		<li>Nom</li>
+		<li>Prénom</li>
+		<li>Identidiant(login)</li>
+		<li>Mot de passe</li>
+		<li>email</li>
+		<li>Trois cases à cocher si on veut recevoir des mails d'alerte.
+		</ul>
+		<p>
+		Après la première connexion le statut 'TEMPORAIRE' est automatiquement assigné à tout nouvel inscrit 
+		ce qui n'offre que des droits d'accès très limités.
+		Il faut attendre que l'administrateur du site (le SUPER UTILISATEUR) assigne un statut qui ouvre des droits d'accès plus importants.
+		</p>
+  	</div>
+	<div id="menus">
+          	<h3>Les menus</h3>
+		<li><b>Menu Gestion :</b> réservé au SUPER UTILISATATEUR</li>
+		<li><b>Menu Stock :</b> permet de consulter les différents stocks et de selectionner le stock sur lequel on veut travailler</li>
+		<li><b>Menu Lieux de stockage :</b> permet de consuler, ajouter, supprimer des Entrepots et des Emplacements</li>
+		<li><b>Menu Catégories :</b> permet de consulter, ajouter, supprimer des Familles et des Composants</li>
+		<li><b>Menu Articles et Références :</b> permet de consulter, ajouter, supprimer des Reférences et des Articles</li>
+	</div>
+	<div id="listes">
+	        <h3>Les listes</h3>
+		Dans chaque menu il existe un choix "Voir ..." qui affiche la liste des informations (des items) souhaitées 
+		(ex : Famille, Entrepot, Reference etc.)<br>
+		Chaque information occupe une ligne dans la liste.
+		A l'extrémité droite de chaque ligne figurent deux icônes :
+		<li> En cliquant sur l'icône "corbeille" on peut supprimer l'item</li>
+		<li> En cliquant sur l'icône "stylo" on appelle un menu qui permet de modifier l'item</li>
+		<br>
+		A l'extrémité gauche de chaque ligne figure un numéro : un ID (IDentifiant) :
+		<li> En cliquant sur l'ID on affiche les caractéristiques détaillées (on appelle ça les proorpiétés) de l'item</li>
+	</div>
+	<div id="filtres">
+		<h3>Les filtres</h3>
+		Il arrive que les liste deviennent trop longues ce qui rend leur compréhension difficile.
+		Les filtres vous offrent la possibilité de restreindre l'affichage uniquement à l'information que vous recherchez.
+		Les fitres ne sont disponibles que pour  l'affichages des références et des articles.
+		Sélectionnez dans les menu Articles et Référence "Voir les articles filtrés" ou "Voir les références filtrées"
+		et remplissez le formulaire de filtrage puis validez.
+		<p>
+		Le fitre par recherche de chaîne de caractère est très puissant : vous pouvez saisir une chaine partielle par exemple 
+		"PAR" et vous afficherez dans votre liste tous les items qui possèdent cette chaine de caractère en référence, en commentaire
+		en entrepot ou en famille.
+		Exemples : PARACHUTE, PARATONNERRE, APPARTEMENT etc
+		Avec les options "uniquement" et "sauf" les filtres offrent vraiment des possibilités intéréssantes : découvrez les !
+		</p>
+	</div>
+	<div id="depot">
+	        <h3>Dépôt d'articles dans le stock</h3>
+		<ul>
+		<li>Menu "Références et articles" puis selection "Déposer un article dans le stock : ceci provoque l'affichage d'un formulaire"
+		<li>NB: On ajoute ou on retire des articles en les désignant par leur référence, donc il faut avoir créé les références au préalable</li> 
+		<li>On précise un numéro de série ou un commentaire (par défaut "NEANT")</li>
+		<li>On précise la quantité ajoutée</li>
+		<li>On précise si possible, le prix et la TVA (cela permettra ultérieurement de valoriser le stock), si inconnu mettre 0.00</li>
+		<li>On précise la date d'acquisition (si inconnue mettre 01/01/1900)</li>
+		</ul>
+	</div>
+	<div id="retrait">
+	        <h3>Retrait d'articles dans le stock</h3>
+		<ul>
+		<li>Il faut d'abord afficher la liste des articles puis cliquer sur l'icone de prélèvement en extémité de la ligne</li>
+		<li>Un formulaire s'affiche : il permet de  préciser la quantité à retirer</li>
+		</ul>
+	</div>
+	<div id="famille">
+	        <h3>Familles, composant, entrepots et emplacements</h3>
+		<h4> Familles et entrepôts</h4>
+		Pour créer des Familles et des composants utilisez le menu "Catégorie".
+		<ul>
+		<li>Vous pouvez librement mais obligatoirement définir des familles auxquelles appartiendront les références : exemple INFORMATIQUE</li>
+		<li>Vous pouvez librement mais obligatoirement définir des composants auxquelles appartiendront les références : exemples ORDINATEUR, SAUVEGARDE, IMPRIMANTE, MULTIMEDIA</li>
+		<li>NB: une composant est rattachée à une seule famille (appelée famille mère)</li>
+		<li>NB: le système est founi avec la famille intitulée INDEFINIE et le composant INDEFINI à utiliser si vous ne souhaitez pas gérer les catégories</li>
+		</ul>
+		<h4> Entrepôts et emplacements</h4>
+		Pour créer des Entrepots et des emplacement utilisez le menu "Lieux de stockage"
+		<ul>
+		<li>Vous pouvez librement mais obligatoirement définir des entrepôts de rangement de votre stock : exemple BATIMENT A312</li>
+		<li>Vous pouvez librement mais obligatoirement  définir des emplacement dans vos entrepots : exemple ARMOIRE N°4-2</li>
+		<li>NB: un emplacement  est rattaché à un seul entrepôt (appelé entrpôt père)</li>
+		<li>NB: le système est founi une entrepôt intitulé INDEFINI et un emplacement  INDEFINI à utiliser si vous ne souhaitez pas gérer les lieux de stockage</li>
+		</ul>
+	</div>
+	<div id="ref">
+	        <h3>Création d'une référence</h3>
+		<p>Une référence sert à identifier un produit. Exemple : VP3215 pour une vidéo projecteur, RES-50-23 pour un ressort.
+		Ne confondez pas article et référence. Vous devez créer des références avant de déposer des articles. 
+		Une référence est caractérisé par son label (VP3215, RES-50-23), celui-ci est unique.
+		Il ne peut pas y avoir deux labels identiques dans un même stock.
+		Mais vous pouvez déposer dans le stock autant d'articles que nécessaire portant cette référence.<br>
+		</p>
+		Dans le menu Articles et Référence sélectionnez "Ajouter une référence". Ceci apelle un formulaire qu'il faut renseigner.
+		<ul>
+		<li>Une désignation : texte libre pour expliciter ce que c'est (les références sont souvent obscures)</li>
+		<li>Udv : unité de vente (certains articles sont achetés par UDV (exemple : boite de 100 vis l'UDV est égale à 100)</li>
+		<li>La Famille et le composant à laquelle appartient la référence (il faut donc avoir créé les familles  et les composants au préalable)</li>
+		<li>L'entrepôt et l'emplacement où est stocké la référence (il faut donc avoir créé les entrepôts et les emplacements au préalable)</li>
+		</ul>
+		NB : si vous ne souhaitez pas gérer les catégories et les lieux de stockage utilisez les valeurs INDEFINIE qui sont proposées par défaut.
+	</div>
+</div>
+<br><br><br>
+{% endblock %}

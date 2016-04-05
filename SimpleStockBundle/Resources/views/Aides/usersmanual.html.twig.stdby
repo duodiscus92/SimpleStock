@@ -1,0 +1,127 @@
+{# app/Resources/views/Usermanual/usersmanual.html.twig #}
+{# template affichier la manuel d'utilisation #}
+{% extends 'SYM16SimpleStockBundle::layout.html.twig' %}
+{% block BLOCA %}
+        <h3>Introduction</h3>
+		<p>
+		Le système peut être utilisé aussi bien pour enregistrer des choses comme un planeur, un avion<br>
+		que des vis ou des écrous des outils, des ressorts, des fournitures de bureau, des produits d'entretien.<br>
+		</p>
+		<h3>Un système multi-tutilisateurs</h3>
+		<p>
+		C'est une application WEB basée sur une architecture client-serveur, c'est à dire qu'avec<br>
+		un simple navigateur, de n'importe quel point de la planète vous
+		pourrez vous en servir (à condition de posséder un login, un mot de passe et les droits d'accès).
+		</p>
+
+		<p>A chaque utilisateur est attribué un statut qui lui ouvre des droits :<p>
+		<ul>
+		<li>VISITEUR : ce le statut de toute internaute qui arrive sur la page d'acceuil mais ne s'est pas encore identifié.</li>
+		<li>TEMPORAIRE : c'est le statut qui est attribué à tout nouvel utilisateur avant que le SUPER UTILISATEUR<br> lui assigne un autre statut : ce statut n'offre aucun droit sauf celui de changer son mot de passe</li>
+		<li>EXAMINATEUR : ne peut que examiner c'est à dire obtenir un état du stock</li>
+		<li>GESTIONNAIRE : peut ajouter, retirer des références dans le stock + les mêmes droits que l'EXAMINATEUR</li>
+		<li>ADMINISTRATEUR : peut paramétrer le système : définir les familles, les sous-catégories, les destinations,<br> les sous-destination et créer de nouvelles références + les droits GESTIONNAIRE</li>
+		<li>SUPER UTILISATEUR : peut fixer le statuts des autres + les droits ADMINISTRATEUR</li>
+		</ul>
+
+	<h3>Saisies guidées</h3>
+		<p>
+		Pour la plupart des opérations, il faut faire des sélections dans des listes  donc c'est simple et ça limite les erreurs de frappe.
+		Exemple : vous voulez prélever dans le stock une référence à 5 exemplaires : le système vous propose dans une liste les articles stockés
+		et si vous cliquez sur l'icônede prélèvement, il vous propose un menu pour prélever la quantité désirée : vous ne pouvez pas prélever plus que
+		le disponible.
+		</p>
+		
+	<h3>Première connexion.</h3>
+		<p> Il faut d'abord s'inscrire pour être enregistré dans le système : menu Connexion->S'inscrire</p>
+		<p> Il faut alors remplir les champs d'un formulaire</p>
+		<ul>
+		<li>Nom</li>
+		<li>Prénom</li>
+		<li>Identidiant(login)</li>
+		<li>Mot de passe</li>
+		<li>email</li>
+		<li>Trois cases à cocher si on veut recevoir des mails d'alerte.
+		</ul>
+		<p>
+		Après la première connexion le statut 'TEMPORAIRE' est automatiquement assigné à tout nouvel inscrit. Les droits d'accès sont très limités.
+		Il faut attendre que l'administrateur du site (le SUPER UTILISATEUR) assigne un statut qui ouvre des droits d'accès plus importants.
+		</p>
+
+	<h3>Les menus</h3>
+		<li><b>Menu Gestion :</b> réservé au SUPER UTILISATATEUR</li>
+		<li><b>Menu Stock :</b> permet de consulter les différents stocks et de selectionner le stock sur lequel on veut travailler</li>
+		<li><b>Menu Lieux de stockage :</b> permet de consuler, ajouter, supprimer des Entrepots et des Emplacements</li>
+		<li><b>Menu Catégories :</b> permet de consulter, ajouter, supprimer des Familles et des Composants</li>
+		<li><b>Menu Articles et Références :</b> permet de consulter, ajouter, supprimer des Reférences et des Articles</li>
+
+	<h3>Les listes</h3>
+		<p>
+		Dans chaque menu il existe un choix "Voir ..." qui affiche la liste des informations (des items) souhaitées (ex : Famille, Entrepot, Reference etc.)<br>
+		Chaque information occupe une ligne dans la liste.<br>
+		A l'extrémité droite de chaque ligne figurent deux icônes :
+		<li> En cliquant sur la corbeille on peut supprimer l'item</li>
+		<li> En cliquant sur le stylo on appelle un menu qui permet de modifier l'item</li>
+		<br>
+		A l'extrémité gauche de chaque ligne figure un numéro : un ID (IDentifiant) :
+		<li> En cliquant sur l'ID on affiche les caractéristiques détaillées de l'item</li>
+		</p> 
+
+	<h3>Les filtres</h3>
+		<p>
+		Vous pouvez afficher des listes filtrées pour n'afficher que ce qui vous intéresse.
+		Ceci n'est valable que pour l'affichages des références et des articles.
+		Sélectionnez dans les menu Articles et Référence "Voir les articles filtrés" ou "Voir les références filtrées"
+		et remplissez les menu de filtrage puis validez.
+		<p> 
+
+	<h3>Opérations d'ajout d'articles dans le stock</h3>
+		<ul>
+		<li>Menu "Références et articles" puis selection "Déposer un article dans le stock"
+		<li>NB: On ajoute ou on retire des articles en les désignant par leur référence, donc il faut avoir créé les références au préalable</li> 
+		<li>Un numéro de série ou un commentaire</li>
+		<li>On précise la quantité ajoutée</li>
+		<li>Si possible, le prix (cala permettra ultérieurement de valoriser le stock), si inconnu mettre 0.00</li>
+		<li>La date d'acquisition (si inconnue mettre 01/01/1900)</li>
+		</ul>
+		
+	<h3>Opération de prélèvement  d'articles dans le stock</h3>
+		<ul>
+		<li>Il faut d'abord afficher la liste des articles puis cliquer sur l'icone de prélèvement en extémité de la ligne</li>
+		<li>On précise la quantité à retirer puis on valide la formulaire</li>
+		</ul>
+
+	<h3>Création d'une référence</h3>
+		<p>Une référence sert à identifier un produit. Exemple : VP3215 pour une vidéo projecteur, RES-50-23 pour un ressort.<br>
+		Ne confondez pas article et référence. Une référence est unique.<br>
+		Mais vous pouvez mettre dans le stock autant d'articles que nécessaire portant cette référence.<br>
+		Une référence est caractérisé par son label (VP3215, RES-50-23). Ce label doit donc forcément être unique.<br>
+		</p>
+		<ul>
+		<li>Une désignation : texte libre pour expliciter ce que c'est (les références sont souvent obscures)</li>
+		<li>Udv : unité de vente (certains articles sont achetés par UDV (exemple : boite de 100 vis l'UDV est égale à 100)</li>
+		<li>La Famille et le composant à laquelle appartient la référence (il faut donc avoir créé les Familles  et les composants au préalable)</li>
+		<li>L'entrepôt et l'emplacement où est stocké la référence (il faut donc avoir créé les entrepôts et les emplacements au préalable)</li>
+		</ul>
+	
+	<h3>Famille et composants</h3>
+		<ul>
+		<li>Vous pouvez librement mais obligatoirement définir des familles auxquelles appartiendront les références : exemple INFORMATIQUE</li>
+		<li>Vous pouvez librement mais obligatoirement définir des composants auxquelles appartiendront les références : exemples ORDINATEUR, SAUVEGARDE, IMPRIMANTE, MULTIMEDIA</li>
+		<li>NB: une composant est rattachée à une seule famille (appelée famille mère)</li>
+		<li>NB: le système est founi avec la famille intitulée INDEFINIE et le composant INDEFINI à utiliser si vous ne souhaitez pas gérer les catégories</li>
+		</ul>
+
+	<h3>Entrepot et emplacement</h3>
+		<ul>
+		<li>Vous pouvez librement mais obligatoirement définir des entrepôts de rangement de votre stock : exemple BATIMENT A312</li>
+		<li>Vous pouvez librement mais obligatoirement  définir des emplacement dans vos entrepots : exemple ARMOIRE N°4-2</li>
+		<li>NB: un emplacement  est rattaché à un seul entrepôt (appelé entrpôt père)</li>
+		<li>NB: le système est founi une entrepôt intitulé INDEFINI et un emplacement  INDEFINI à utiliser si vous ne souhaitez pas gérer les lieux de stockage</li>
+		</ul>
+		
+	<h3>Imprimer l'état du stock</h3>
+		Après avoir affiché la liste partielle ou totale des articles,
+		il faut se servir du menu "Imprimer" de votre navigateur".<br>
+		Plus tard on proposera des impressions au format PDF ...<br>		
+{% endblock %}
