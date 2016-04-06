@@ -22,24 +22,29 @@
 	<div id="introduction">
                 <h3>Introduction</h3>
 		<p>
-		Le système peut être utilisé aussi bien pour enregistrer des objets comme un planeur, un avion
-		 des vis ou des écrous des outils, des ressorts, des fournitures de bureau, des produits d'entretien etc.
+		Simple Stock peut être utilisé aussi bien pour enregistrer des objets comme un aéronef, un perçeuse,
+		 des vis ou des écrous, des outils, des ressorts, des fournitures de bureau, des produits d'entretien etc.
+		Bref Simple Stock est fait pour enregistrer un patrimoine quel qu'il soit.
 		</p>
-		C'esr un système multi-utilisateurs basé sur une architecture client-serveur, permettant d'être utilisé avec
+		<h4>Un système multi utilisateur</h4>
+		Simple Stock est un système multi-utilisateurs basé sur une architecture client-serveur, permettant d'être utilisé avec
 		un simple navigateur. De n'importe quel point de la planète plusieurs utilisateurs peuvent l'utiliser simultanément
 		à condition de posséder un login, un mot de passe et les droits d'accès.
-		<p>
-		Pour la plupart des opérations, il faut faire des sélections dans des listes  donc c'est simple et ça limite les erreurs de frappe.
+		<h4>Un système multi stock</h4>
+		Avec Simple Stock vous pouvez gérer autant de stock que vous le souhaitez. Chaque stock est totalement indépendant
+		des autres. Pour passer d'un stock à un autre, utilisez le menu "Stock" et sélectionnez le nom du stock sur lequel vous
+		voulez travailler.
+		<h4>Des saisies guidées</h4>
+		Pour la plupart des opérations, il faut faire des sélections dans des listes  donc c'est simple et ça limite les erreurs de saisie.
 		Exemple : vous voulez prélever dans le stock une référence à 5 exemplaires : le système vous propose dans une liste les articles stockés
 		et si vous cliquez sur l'icône de prélèvement, il vous propose un menu pour prélever la quantité désirée : vous ne pouvez pas prélever plus que
 		le disponible.
-		</p>
 	</div>
 	<div id="statuts">
 		<h3>Statuts</h3>
-		Chaque utilisateur possèe un statut. A chaque statut correspondent des droits d'accès.
+		Chaque utilisateur possède un statut. A chaque statut correspondent des droits d'accès.
 		<ul>
-		<li>VISITEUR : c'est le statut de toute internaute qui arrive sur la page d'acceuil mais ne s'est pas encore identifié. Il n'offre aucun droit d'accès</li>
+		<li>VISITEUR : c'est le statut de tout internaute qui arrive sur la page d'acceuil mais ne s'est pas encore identifié. Il n'offre aucun droit d'accès</li>
 		<li>TEMPORAIRE : c'est le statut qui est attribué à tout nouvel utilisateur avant que le SUPER UTILISATEUR lui assigne un autre statut : ce statut n'offre aucun droit sauf celui de changer son mot de passe</li>
 		<li>EXAMINATEUR : avec ce statut, un utilisateur  peut que examiner toutes les rubriques sans pouvoir ni en ajouter, ni en supprimer, ni les modifier</li>
 		<li>GESTIONNAIRE : en plus des droits de l'examinateur les gestionnaire, il  peut créer/supprimer/modifier des références et déposer ou retirer des articles dans le stock</li>
