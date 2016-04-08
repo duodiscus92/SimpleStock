@@ -155,6 +155,17 @@ class SimpleStockController extends Controller
 	return $this;
     }
 
+    // merci à Olivier Laviale www.weirdog.com/
+    protected function wd_remove_accents($str, $charset='utf-8')
+    {
+        $str = htmlentities($str, ENT_NOQUOTES, $charset);
+    	$str = preg_replace('#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $str);
+    	$str = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $str); // pour les ligatures e.g. '&oelig;'
+    	$str = preg_replace('#&[^;]+;#', '', $str); // supprime les autres caractères
+
+    	return $str;
+    }
+
     //liste une table
     public function listerAction()
     {
@@ -222,7 +233,7 @@ class SimpleStockController extends Controller
 
         //Output envoit le document PDF au navigateur internet avec un nom spécifique 
 	//qui aura un rapport avec le contenu à convertir (exemple : Facture, Règlement…)
-        $html2pdf->Output($this->listname.'.pdf', 'D');
+        $html2pdf->Output($this->wd_remove_accents($this->listname.'.pdf'), 'D');
         return new Response();
     }
 
