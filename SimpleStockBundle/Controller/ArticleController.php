@@ -104,6 +104,23 @@ class ArticleController extends /*Controller*/ SimpleStockController
     }
 
     /**
+     * créer le pdf d'une liste
+     *
+     * @Route("/viewpdf", name="sym16_simple_stock_article_pdflister")
+     */
+    public function pdflisterAction()
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// precise le repository et ce qu'on veut lister
+	 $this->aLister();
+	// appel de la fonction mère
+	return parent::pdflisterAction();
+    }
+
+    /**
      * filtrer un tableau en faisant appel à un service
      *
      * @Route("/filter", name="sym16_simple_stock_article_filtrer")

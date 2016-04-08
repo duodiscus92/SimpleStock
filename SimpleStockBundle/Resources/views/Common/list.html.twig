@@ -38,14 +38,14 @@
                 {# boucle sur les articles d'une ligne #}
 		{% for key, article in entitie %}
 		    {% if key  == 'id' %}
-                        <td><a href="{{ path(path.prop,{'valeur':entitie.id, 'exposant':entitie.id }) }}">{{article}}</a>
+                        <td><a href="{{ path(path.prop,{'valeur':entitie.id, 'exposant':entitie.id }) }}">{{article}}</a></td>
                     {% else %}
                         <td> {{ article }} </td>
                     {% endif %}
                 {% endfor %}
 		<td>
 		{% if path.prel !=NULL %}
-		<a href="{{ path(path.prel,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-export"></span>
+		<a href="{{ path(path.prel,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-export"></span></a>
 		{% endif %}
 	        {% if path.mod != 'NULL' %}
                 <a href="{{ path(path.mod,{'valeur':entitie.id, 'exposant':entitie.id }) }}"><span class="glyphicon glyphicon-pencil"></span></a>

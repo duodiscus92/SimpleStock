@@ -95,6 +95,22 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 	// appel de la fonction mère
 	return parent::listerAction();
     }
+    /**
+     * lister un tableau en faisant appel à un service
+     *
+     * @Route("/viewpdf", name="sym16_simple_stock_reference_pdflister")
+     */
+    public function pdflisterAction()
+    {
+	// contrôle d'accès
+	if(!$this->get('security.context')->isGranted('ROLE_EXAMINATEUR'))
+	    return $this->render('SYM16SimpleStockBundle:Common:alertaccessdenied.html.twig', 
+		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
+	// precise le repository et ce qu'on veut lister
+	 $this->aLister();
+	// appel de la fonction mère
+	return parent::pdflisterAction();
+    }
 
     /**
      * afficher les propriétés d'un item

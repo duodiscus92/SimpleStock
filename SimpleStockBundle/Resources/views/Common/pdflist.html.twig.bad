@@ -1,0 +1,30 @@
+{# app/Resources/views/Common/pdflist.html.twig #}
+{# template pour PDF lister les éléments d'un tableau #}
+
+    <h3>{{listname}}</h3>
+    <table class="table table-striped">
+	{# première ligne du tableau : intitulé des colonnes #}
+        <thead>
+	    <tr>
+		{# boucle sur les intitulés des colonnes #}
+		{% for colname in listColnames %}
+		    <th>{{ colname }}</th>
+		{% endfor %}
+            </tr>
+        </thead>
+	{# les autres lignes du tableau #}
+	<tbody>
+        {# boucle sur les lignes #}
+        {% for entitie in listEntities %}
+            <tr>
+                {# boucle sur les articles d'une ligne #}
+		{% for article in entitie %}
+                    <td> {{ article }} </td>
+                {% endfor %}
+	     </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <b>Nombre total d'item(s) dans cette liste : {{totaluser}}</b>
+
+

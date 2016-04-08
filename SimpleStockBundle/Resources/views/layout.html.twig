@@ -19,7 +19,7 @@
     {% block FOOTER %}
     <footer>
     <dl>
-    <ht><b>Mentions légales</b></dt>
+    <ht><b>Mentions légales</b></ht>
     <dd>Propulsé par : Symfony, Linux, Apache, PHP, MySQL</dd>
     <dd>Simple Stock est un projet à vocation pédagogique</dd>
     <dd>Conception d'JET Conseil - Formation - Projets</dd>
@@ -49,12 +49,14 @@
 			    {% if is_granted('ROLE_TEMPORAIRE') %}
             		    <li class="dropdown-header">Articles</li>
             		    <li><a href="{{ path('sym16_simple_stock_article_lister') }}">Voir les articles</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_article_pdflister') }}">Imprimer les articles dans un PDF</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_article_filtrer') }}">Voir les articles filtrés</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_article_ajouter') }}">Déposer un article dans le stock</a></li>
             		    <li><a href="#">Prélever des articles dans le stock (en construction)</a></li>
             		    <li class="divider"></li>
             		    <li class="dropdown-header">Références</li>
             		    <li><a href="{{ path('sym16_simple_stock_reference_lister') }}">Voir les références</a></li>
+            		    <li><a href="{{ path('sym16_simple_stock_reference_pdflister') }}">Imprimer les références dans un PDF</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_reference_filtrer') }}">Voir les références filtrées</a></li>
             		    <li><a href="{{ path('sym16_simple_stock_reference_ajouter') }}">Ajouter une référence</a></li>
 			    {% else %}

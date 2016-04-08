@@ -179,9 +179,51 @@ class SimpleStockController extends Controller
 	$alister = array('listcolnames' => $this->listColnames, 'entities' => $entities, 
 			'path' => $this->modsupr, 'totalusers' => $totalusers, 'listname' => $this->listname);
 	// récupération du service et de la prestation  "lister_tout"
-	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
+	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister, 'screen');
 	//lister
 	return $this->render($service['listtwig'], $service['tab']);
+    }
+
+    // crée un pdf d'une table
+    public function pdflisterAction()
+    {
+	// on récupère l'entity manager
+	$em = $this->getDoctrine()->getManager($this->emname);
+	// on récupère tout le contenu de la table
+	$repository = $em->getRepository($this->repositoryPath);
+	// on récupère le contenu de la table
+	$entities = $repository->findAll();
+	// si la table est vide
+	if ($entities == NULL)
+	    return $this->render('SYM16SimpleStockBundle:Common:nolist.html.twig');
+	//  nombre total de lignes dans la table
+	$totalusers = $repository->getNbItems();
+	//on place tous les paramètres à lister dans un tableau
+	$alister = array('listcolnames' => $this->listColnames, 'entities' => $entities, 
+			'path' => $this->modsupr, 'totalusers' => $totalusers, 'listname' => $this->listname);
+	// récupération du service et de la prestation  "lister_tout"
+	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister, 'pdf');
+	//lister
+	$html =  $this->render($service['listtwig'], $service['tab']);
+        //on instancie la classe Html2Pdf_Html2Pdf en lui passant en paramètre
+        //le sens de la page "portrait" => p ou "paysage" => l
+        //le format A4,A5...
+        //la langue du document fr,en,it...
+        $html2pdf = new \Html2Pdf_Html2Pdf('L','A4','fr');
+
+        //SetDisplayMode définit la manière dont le document PDF va être affiché par l’utilisateur
+        //fullpage : affiche la page entière sur l'écran
+        //fullwidth : utilise la largeur maximum de la fenêtre
+        //real : utilise la taille réelle
+        $html2pdf->pdf->SetDisplayMode('real');
+
+        //writeHTML va tout simplement prendre la vue stocker dans la variable $html pour la convertir en format PDF
+        $html2pdf->writeHTML($html);
+
+        //Output envoit le document PDF au navigateur internet avec un nom spécifique 
+	//qui aura un rapport avec le contenu à convertir (exemple : Facture, Règlement…)
+        $html2pdf->Output($this->listname.'.pdf', 'D');
+        return new Response();
     }
 
     // propriété d'une entité

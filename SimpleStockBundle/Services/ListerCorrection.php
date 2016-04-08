@@ -23,7 +23,7 @@ class ListerCorrection
     }
 
     // prestation : liste toute l'entité  passée en paramètre (pas de filtre)
-    public function listerEntite($liste) {
+    public function listerEntite($liste, $format) {
 
 	// nom des entêtes de colonne
 	$listColnames  = $liste['listcolnames'];
@@ -60,9 +60,15 @@ class ListerCorrection
 	// construction	 d'informations globales aux entités (ex : nombre de lignes de la liste, total TTC
 	$totaluser = $liste['totalusers'];
 	// lister !
+	// choix de la vue selon affichage écran ou génération pdf
+	if($format == 'screen')
+	    $view = 'SYM16SimpleStockBundle:Common:list.html.twig';
+	// $format vaut alors 'pdf'
+	else
+	    $view = 'SYM16SimpleStockBundle:Common:pdflist.html.twig';
 	return array(
 		// vue à utiliser pour lister
-		'listtwig' => 'SYM16SimpleStockBundle:Common:list.html.twig',
+		    'listtwig' => $view,
 		// ce qu'il faut lister
 		//'tab' => array('listColnames' => $listColnames, 'listEntities' => $listEntities, 'path' => $path, 'totaluser' => $totaluser)
 		'tab' => array('listColnames' => $entetes, 'listEntities' => $listEntities, 

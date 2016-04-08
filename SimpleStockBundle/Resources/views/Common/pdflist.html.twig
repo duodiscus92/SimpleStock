@@ -1,0 +1,39 @@
+{# app/Resources/views/Common/pdflist.html.twig #}
+{# template pour PDF lister les éléments d'un tableau #}
+
+    {# utilisation de variables de sessions déclarées dans AcceuilController.php #}
+    <h4>SimpleStock site : {{app.session.get('sitename')}} - 
+    Nom du stock : {{app.session.get('stockusage')}} - 
+    Utilisateur : {{ app.session.get('stockuser') }}</h4>
+    <h3>{{listname}}</h3>
+    {#<table class="table table-striped">#}
+    <table cellspacing="0" cellpadding="0" border="1" bgcolor="green" bordercolor="black" width="80%" align="left">
+	{# première ligne du tableau : intitulé des colonnes #}
+        <thead>
+	    <tr>
+		{# boucle sur les intitulés des colonnes #}
+		{% for colname in listColnames %}
+		    <th bgcolor="lightgrey">{{ colname }}</th>
+		{% endfor %}
+            </tr>
+        </thead>
+	{# les autres lignes du tableau #}
+	<tbody>
+        {# boucle sur les lignes #}
+        {% for entitie in listEntities %}
+            <tr>
+                {# boucle sur les articles d'une ligne #}
+		{% for key, article in entitie %}
+		    {% if key  == 'id' %}
+                        <td bgcolor="LavenderBlush"><a href="{{ path(path.prop,{'valeur':entitie.id, 'exposant':entitie.id }) }}">{{article}}</a></td>
+                    {% else %}
+                        <td bgcolor="LavenderBlush"> {{ article }} </td>
+                    {% endif %}
+                {% endfor %}
+	     </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <b>Nombre total d'item(s) dans cette liste : {{totaluser}}</b>
+
+
