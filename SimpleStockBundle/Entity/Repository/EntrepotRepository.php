@@ -30,4 +30,17 @@ class EntrepotRepository extends EntityRepository
 	{
 		return $this->getNbItems();
 	}
+
+	// findBy en excluant un id donnée
+	public function MyfindBy($attribut, $id)
+	{
+	    $querybuilder = $this->_em->CreateQueryBuilder();
+	    $querybuilder->select('e')
+		->from('SYM16SimpleStockBundle:Entrepot', 'e')
+		->where('e.nom = :nom')
+		->setParameter('nom', $attribut)
+		->andWhere('e.id <> :id')
+		->setParameter('id', $id);
+	    return $querybuilder->getQuery()->getResult();
+	}
 }

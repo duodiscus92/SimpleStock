@@ -302,7 +302,7 @@ class SimpleStockController extends Controller
 	$alister = array('listcolnames' => $this->listColnames, 'entities' => $entities, 
 			'path' => $this->modsupr, 'totalusers' => $totalusers, 'listname' => $this->listname);
 	// récupération du service et de la prestation  "lister_tout"
-	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister);
+	$service = $this->container->get('sym16_simple_stock.lister_tout')->listerEntite($alister, 'screen');
 	//lister
 	return $this->render($service['listtwig'], $service['tab']);
     }

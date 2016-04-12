@@ -23,9 +23,11 @@ class UniqueEntityByEmValidator extends ConstraintValidator
     {
 	// recupération de la session
 	$session = $this->request->getSession();
-	$username = $session->get('stockuser');
+	// récupération de la vriable de session contenant le nom interne de la connection à la BDD courante
+	$stockconnection = $session->get('stockconnection');
 	//on récupère l'entity manager associé à la connexion (c'est à dire à la bdd)
-	$em = $this->doctrine->getManager($constraint->connexion);
+	//$em = $this->doctrine->getManager($constraint->connexion);
+	$em = $this->doctrine->getManager($stockconnection);
 	// on récupère le repository de cette entité
 	$rep = $em->getRepository(get_class($entity));
 	// on construit le getter pour l'attribut de l'entité récupéré en paramètres de la contrainte (le champ "field")
@@ -35,8 +37,11 @@ class UniqueEntityByEmValidator extends ConstraintValidator
 	// on récupère la valeur de l'attribut
 	$value = $entity->{$getter}();
 	// on teste si cette valeur n'existe pas déjà dans la table
-        if($rep->{$repositoryMethod}($value) <> null )
-            $this->context->addViolation($constraint->message);
+        if( ($notunique=$rep->{$repositoryMethod}($value)) <> null ){
+	    // et si c'est pas elle-même
+	    if($notunique->getId() <> $entity->getId())
+                $this->context->addViolation($constraint->message);
+        }
     }
 }
 

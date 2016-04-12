@@ -142,8 +142,10 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// creation d'une instance de la classe de filtrage
 	$filtre = new ReferenceFiltre();
+ 	// precise le repository et ce qu'on veut lister
+	$this->aLister();
 	// creation du formulaire de saisie des parapètres du filtre
-	$form = $this->createForm(new ReferenceFiltreType, $filtre);
+	$form = $this->createForm(new ReferenceFiltreType(array('em' => $this->stockconnection)), $filtre);
 	// test de la méthode
 	if($request->getMethod() == 'POST'){
 	    // hydrater les variables ReferenceFiltre
@@ -176,8 +178,6 @@ class ReferenceController extends /*Controller*/ SimpleStockController
 		     $this->addCriteria('ref', array('colonne' => $filtre->getNom(),'ust' => $filtre->getNomfiltre() ) );
 		else
 		     $this->addCriteria('ref', array('colonne' => NULL, 'ust' => $filtre->getNomfiltre() ) );
-   		// precise le repository et ce qu'on veut lister
-		$this->aLister();
 		// change de repository
 		//$this->setRepositoryPath('SYM16SimpleStockBundle:ReferenceFiltre');
 		// appel de la fonction mère
@@ -260,6 +260,7 @@ class ReferenceController extends /*Controller*/ SimpleStockController
      * @Route("/reference-ajax", name="reference_ajax")
      */
     public function referenceAjaxAction(Request $request){
+	$this->aLister();
 	// A des fins pédago on montre qu'on peut récupérer aussi bien pat GET que par POST
 	if($request->getMethod() == 'POST')
 	//récupération de l'id entrepot transmise par le script Ajax par POST
@@ -268,7 +269,7 @@ class ReferenceController extends /*Controller*/ SimpleStockController
         else
 	    $entrepotId = $request->query->get('entrepot_id');
 	//récupération de l'entity manager
-	$em = $this->getDoctrine()->getManager();
+	$em = $this->getDoctrine()->getManager($this->stockconnection);
 	// création d'un objet rsm qui va recevoir les colonnes qui nous intéressent
         $rsm = new ResultSetMapping();
 	// on indique qu'on veut récupérer la colonne id
@@ -302,6 +303,7 @@ class ReferenceController extends /*Controller*/ SimpleStockController
      * @Route("/reference-ajax1", name="reference_ajax1")
      */
     public function referenceAjax1Action(Request $request){
+	$this->aLister();
 	// A des fins pédago on montre qu'on peut récupérer aussi bien pat GET que par POST
 	if($request->getMethod() == 'POST')
 	//récupération de l'id famille transmise par le script Ajax par POST
@@ -310,7 +312,7 @@ class ReferenceController extends /*Controller*/ SimpleStockController
         else
 	    $familleId = $request->query->get('famille_id');
 	//récupération de l'entity manager
-	$em = $this->getDoctrine()->getManager();
+	$em = $this->getDoctrine()->getManager($this->stockconnection);
 	// création d'un objet rsm qui va recevoir les colonnes qui nous intéressent
         $rsm = new ResultSetMapping();
 	// on indique qu'on veut récupérer la colonne id

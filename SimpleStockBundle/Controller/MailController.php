@@ -117,6 +117,22 @@ class MailController extends Controller
         	$this->get('mailer')->send($message);
 	    }
 	}
+
+        // notification au gestionnaire du stock
+        $message = \Swift_Message::newInstance()
+           ->setSubject("[SimpleStock-".$this->sitename."] Changement de paramètres")
+           ->setFrom($this->sendermail)
+           ->setTo($this->notificationmail)
+           ->setBody(
+                 $this->renderView(
+                     'SYM16SimpleStockBundle:Mails:ams.html.twig',
+                     array('site' => $this->sitename, 'nom' => $user->getNom(), 'prenom' => $user->getPrenom(),
+			'item' => $item, 'stock' => $stockusage, 'nature' => $nature, 'objet' => $objet, 'createur' => $session->get('stockuser'))
+                )
+           )
+        ;
+        $this->get('mailer')->send($message);
+
         return $this->redirect($this->generateUrl($route));
     }
 
@@ -164,6 +180,22 @@ class MailController extends Controller
         	$this->get('mailer')->send($message);
 	    }
 	}
+
+        // notification au gestionnaire du stock
+        $message = \Swift_Message::newInstance()
+           ->setSubject("[SimpleStock-".$this->sitename."] Dépôt ou retrait d'aticles")
+           ->setFrom($this->sendermail)
+           ->setTo($this->notificationmail)
+           ->setBody(
+                 $this->renderView(
+                     'SYM16SimpleStockBundle:Mails:adr.html.twig',
+                     array('site' => $this->sitename, 'nom' => $user->getNom(), 'prenom' => $user->getPrenom(),
+			'item' => $item, 'stock' => $stockusage, 'nature' => $nature, 'objet' => $objet, 'createur' => $session->get('stockuser'))
+                )
+           )
+        ;
+        $this->get('mailer')->send($message);
+
         return $this->redirect($this->generateUrl($route));
     }
 
@@ -215,11 +247,33 @@ class MailController extends Controller
         	$this->get('mailer')->send($message);
 	    }
 	}
+
+        // notification au gestionnaire du stock
+        $message = \Swift_Message::newInstance()
+           ->setSubject("[SimpleStock-".$this->sitename."] Alerte seuil bas !!!!")
+           ->setFrom($this->sendermail)
+           ->setTo($this->notificationmail)
+           ->setBody(
+                 $this->renderView(
+                     'SYM16SimpleStockBundle:Mails:asb.html.twig',
+                     array('site' => $this->sitename,
+			'nom' => $user->getNom(),
+			'prenom' => $user->getPrenom(),
+			'stock' => $stockusage,
+			'seuil' => $seuil,
+			'reliquat' => $reliquat,
+			'reference' => $reference,
+			'createur' => $session->get('stockuser'))
+                )
+           )
+        ;
+        $this->get('mailer')->send($message);
+
         return $this->redirect($this->generateUrl($route));
     }
 
     /**
-     * envoyer un mail de confirmation à un nouvel inscrit
+     * envoyer un mail contenant un nouveau mot de passe
      *
      * @Route("mdpenvoi/{id}", name="sym16_simple_stock_mail_mdpenvoi")
      */

@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ComposantType extends AbstractType
 {
     private $options = array();
-    public function __construct($options /*= array('em' => 'default')*/)
+    public function __construct($options = array('em' => 'default'))
     {
         $this->options = $options;
     }    

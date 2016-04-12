@@ -8,12 +8,21 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ArticleFiltreType extends AbstractType
 {
+    private $options = array();
+    public function __construct($options = array('em' => 'default'))
+    {
+        $this->options = $options;
+    }    
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+	// récupération de l'entity manager courant
+	$em = $this->options['em'];
+	// construction du formulaire
         $builder
 	    // Radio boutons
             ->add('recherchefiltre', 	'choice', array(
@@ -35,6 +44,7 @@ class ArticleFiltreType extends AbstractType
 		'required' => false,
 		'class' => 'SYM16SimpleStockBundle:Reference',
 		'property' => 'ref',
+		'em' => $em,
 		'label' => 'Réference',
 		'empty_value' => "-- Selectionnez une Référence --",
             ))
@@ -50,6 +60,7 @@ class ArticleFiltreType extends AbstractType
 		'required' => false,
 		'class' => 'SYM16SimpleStockBundle:Reference',
 		'property' => 'nom',
+		'em' => $em,
 		'label' => 'Nom',
 		'empty_value' => "-- Selectionnez un nom --",
             ))

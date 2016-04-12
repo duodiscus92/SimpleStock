@@ -133,8 +133,10 @@ class ArticleController extends /*Controller*/ SimpleStockController
 		array('statut' => 'EXAMINATEUR', 'homepath' => "sym16_simple_stock_homepage"));
 	// creation d'une instance de la classe de filtrage
 	$filtre = new ArticleFiltre();
-	// creation du formulaire de saisie des parapètres du filtre
-	$form = $this->createForm(new ArticleFiltreType, $filtre);
+   	// precise le repository et ce qu'on veut lister
+	$this->aLister();
+	// creation du formulaire de saisie des paramètres du filtre
+	$form = $this->createForm(new ArticleFiltreType(array('em' => $this->stockconnection)), $filtre);
 	// test de la méthode
 	if($request->getMethod() == 'POST'){
 	    // hydrater les variables ReferenceFiltre
@@ -167,8 +169,6 @@ class ArticleController extends /*Controller*/ SimpleStockController
 		     $this->addCriteria('commentaire', array('colonne' => $filtre->getRecherche(),'ust' => $filtre->getRecherchefiltre() ) );
 		else
 		     $this->addCriteria('commentaire', array('colonne' => NULL, 'ust' => $filtre->getRecherchefiltre() ) );
-   		// precise le repository et ce qu'on veut lister
-		$this->aLister();
 		// change de repository
 		// appel de la fonction mère
 		return parent::filtrerAction($request);

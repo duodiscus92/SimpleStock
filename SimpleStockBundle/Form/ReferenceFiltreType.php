@@ -8,12 +8,21 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ReferenceFiltreType extends AbstractType
 {
+    private $options = array();
+    public function __construct($options = array('em' => 'default'))
+    {
+        $this->options = $options;
+    }    
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+	// récupération de l'entity manager courant
+	$em = $this->options['em'];
+	// construction du formulaire
         $builder
 	    // Radio boutons
             ->add('nomfiltre', 	'choice', array(
@@ -35,6 +44,7 @@ class ReferenceFiltreType extends AbstractType
 		'required' => false,
 		'class' => 'SYM16SimpleStockBundle:Entrepot',
 		'property' => 'nom',
+		'em' => $em,
 		'label' => 'Entrepôt',
 		'empty_value' => "-- Selectionnez un entrepot --",
             ))
@@ -50,6 +60,7 @@ class ReferenceFiltreType extends AbstractType
 		'required' => false,
 		'class' => 'SYM16SimpleStockBundle:Famille',
 		'property' => 'nom',
+		'em' => $em,
 		'label' => 'Famille',
 		'empty_value' => "-- Selectionnez une famille --",
             ))

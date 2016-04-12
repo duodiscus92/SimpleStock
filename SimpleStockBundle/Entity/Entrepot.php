@@ -13,7 +13,14 @@ use SYM16\SimpleStockBundle\Validator as MyAssert;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="SYM16\SimpleStockBundle\Entity\Repository\EntrepotRepository")
  * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity(
+ * @MyAssert\UniqueEntityByEm(
+ * field="nom", 
+ * repositoryMethod="findOneBy",
+ * message="Ce nom d'entrepôt a déjà été utilisé"
+ * )
+ */
+ 
+/* @UniqueEntity(
  * fields={"nom"},
  * message="Ce nom  d'entrepot a déjà été utilisé"
  * )

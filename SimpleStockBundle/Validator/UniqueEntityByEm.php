@@ -10,9 +10,10 @@ class UniqueEntityByEm extends Constraint
 {
     // 
     public $field = array();
-    public $repositoryMethod = 'findBy';
+    public $repositoryMethod = 'findOneBy';
     public $message = "Nom déjà utilisé";
     public $connexion = 'default';
+    public $id;
 
     //
     public function validatedBy()
